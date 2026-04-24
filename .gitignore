@@ -1,55 +1,32 @@
-# Prerequisites
-*.d
-
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
-
-# Linker output
-*.ilk
-*.map
-*.exp
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
+# ==== BINARIOS ====
 *.exe
 *.out
 *.app
-*.i*86
-*.x86_64
-*.hex
 
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
+# ==== OBJETOS DE COMPILACIÓN ====
+*.o
+*.obj
+*.a
+*.so
+*.dll
 
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+# === CONFIGURACIÓN Y DEMÁS ===
+*.txt
 
-# debug information files
-*.dwo
+# ==== CODE::BLOCKS ====
+*.layout
+*.depend
+*.cbp
+*.cscope_file_list
+
+# ==== CARPETAS DE BUILD ====
+bin/
+obj/
+debug/
+bin/Debug
+
+# === LIBRERIAS ===
+lib/
+
+# === RESPALDO ===
+*.bak
