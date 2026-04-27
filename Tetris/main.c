@@ -4,12 +4,15 @@
 /*
 Integrantes del equipo:
 
-Apellido:Morales Pessacq, Bruno
-DNI:44834035
-Usuario:BrunoMoralesP
-Entrega:S�
+Apellido: Morales Pessacq, Bruno
+DNI: 44834035
+Usuario: BrunoMoralesP
+Entrega: Sí
 
-
+Apellido: Cardozo, Gonzalo Daniel
+DNI: 43777470
+Usuario: bochagit
+Entrega: Sí
 */
 
 int main()
@@ -22,9 +25,9 @@ int main()
 
 
     if(cargaMatriz(mat,2,2))
-        printf("cargo");
+        printf("Cargo\n");
     else
-        printf("no cargo");
+        printf("No cargo\n");
 
     mostrarMatriz(mat,2,2);
 
