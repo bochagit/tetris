@@ -7,8 +7,8 @@
 
 ### Desarrolladores:
 - Cardozo, Gonzalo. 43777470.
-- Apellido, Nombre. DNI.
-- Apellido, Nombre. DNI.
+- Morales Pessacq, Bruno. 44834035.
+- Pioli, Nicolas. 43781515.
 
 ---
 ## Objetivo del TP
