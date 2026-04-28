@@ -1,4 +1,4 @@
-#include "tetris.h"
+#include "matriz.h"
 
 char** crearMatriz( int cantFilas, int cantColumnas)
 {
@@ -21,7 +21,6 @@ char** crearMatriz( int cantFilas, int cantColumnas)
             return NULL;
         }
         i++;
-
     }
     return mat;
 }
@@ -53,7 +52,7 @@ bool cargaMatriz(char **mat, int cantFilas, int cantColumnas)
     {
         for(j = (*i); j < (*i) + cantColumnas; j++)
         {
-            *j = 'A'; // Podés cambiar 'A' por lo que quieras cargar
+            *j = 'A'; // Podï¿½s cambiar 'A' por lo que quieras cargar
         }
         i++;
     }
@@ -81,7 +80,7 @@ void mostrarMatriz(char **mat, int cantFilas, int cantColumnas)
             // Imprimimos el caracter apuntado por j y un espacio
             printf("%c ", *j);
         }
-        // Hacemos un salto de línea al terminar cada fila
+        // Hacemos un salto de lï¿½nea al terminar cada fila
         printf("\n");
     }
 }

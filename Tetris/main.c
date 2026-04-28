@@ -1,4 +1,4 @@
-#include "tetris.h"
+#include "matriz.h"
 
 
 /*
@@ -17,22 +17,20 @@ Entrega: Sí
 
 int main()
 {
-    char **mat=crearMatriz(2,2);
+    char **mat=crearMatriz(2, 2);
     if(!mat)
         printf("No se creo\n");
     else
         printf("Se creo\n");
 
 
-    if(cargaMatriz(mat,2,2))
+    if(cargaMatriz(mat, 2, 2))
         printf("Cargo\n");
     else
         printf("No cargo\n");
 
-    mostrarMatriz(mat,2,2);
+    mostrarMatriz(mat, 2, 2);
 
-
-
-    destruyeMatriz(mat,2);
+    destruyeMatriz(mat, 2);
     return 0;
 }
