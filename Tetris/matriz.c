@@ -1,6 +1,6 @@
 #include "matriz.h"
 
-char** crearMatriz( int cantFilas, int cantColumnas)
+char** crearMatriz(int cantFilas, int cantColumnas)
 {
     char **mat;
     char **i;
@@ -13,7 +13,7 @@ char** crearMatriz( int cantFilas, int cantColumnas)
         *i=malloc(cantColumnas*sizeof(char));
         if(!*i)
         {
-            for(i-=1;i>mat;i--)
+            for(i -= 1; i >= mat; i--)
             {
                 free(*i);
             }
@@ -29,8 +29,10 @@ bool destruyeMatriz(char **mat, int cantFilas)
 {
     if(mat == NULL)
         return false;
+
     char **i;
-    for(i=(mat+(cantFilas-1)); i>mat; i--)
+
+    for(i = (mat + (cantFilas - 1)); i >= mat; i--)
     {
         free(*i);
     }
@@ -38,7 +40,8 @@ bool destruyeMatriz(char **mat, int cantFilas)
 
     return true;
 }
-bool cargaMatriz(char **mat, int cantFilas, int cantColumnas)
+
+bool cargaMatriz(char **mat, int cantFilas, int cantColumnas, char relleno)
 {
     // Validamos que la matriz exista antes de intentar cargarla
     if (mat == NULL) {
@@ -52,35 +55,36 @@ bool cargaMatriz(char **mat, int cantFilas, int cantColumnas)
     {
         for(j = (*i); j < (*i) + cantColumnas; j++)
         {
-            *j = 'A'; // Pod�s cambiar 'A' por lo que quieras cargar
+            *j = relleno; // Pod�s cambiar 'A' por lo que quieras cargar
         }
         i++;
     }
 
     return true;
 }
-void mostrarMatriz(char **mat, int cantFilas, int cantColumnas)
-{
-    if (mat == NULL) {
-        printf("La matriz no existe (NULL).\n");
-        return;
-    }
 
-    char **i;
-    char *j;
+// void mostrarMatriz(char **mat, int cantFilas, int cantColumnas)
+// {
+//     if (mat == NULL) {
+//         printf("La matriz no existe (NULL).\n");
+//         return;
+//     }
 
-    printf("Contenido de la matriz:\n");
+//     char **i;
+//     char *j;
 
-    // Recorremos las filas
-    for(i = mat; i < (mat + cantFilas); i++)
-    {
-        // Recorremos las columnas de la fila actual (*i)
-        for(j = *i; j < (*i + cantColumnas); j++)
-        {
-            // Imprimimos el caracter apuntado por j y un espacio
-            printf("%c ", *j);
-        }
-        // Hacemos un salto de l�nea al terminar cada fila
-        printf("\n");
-    }
-}
+//     printf("Contenido de la matriz:\n");
+
+//     // Recorremos las filas
+//     for(i = mat; i < (mat + cantFilas); i++)
+//     {
+//         // Recorremos las columnas de la fila actual (*i)
+//         for(j = *i; j < (*i + cantColumnas); j++)
+//         {
+//             // Imprimimos el caracter apuntado por j y un espacio
+//             printf("%c ", *j);
+//         }
+//         // Hacemos un salto de l�nea al terminar cada fila
+//         printf("\n");
+//     }
+// }

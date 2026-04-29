@@ -1,6 +1,3 @@
-#include "matriz.h"
-
-
 /*
 Integrantes del equipo:
 
@@ -15,22 +12,19 @@ Usuario: bochagit
 Entrega: Sí
 */
 
+#include <stdio.h>
+#include "tablero.h"
+
 int main()
 {
-    char **mat=crearMatriz(2, 2);
-    if(!mat)
-        printf("No se creo\n");
-    else
-        printf("Se creo\n");
+    Tablero *t = tablero_crear();
+    if (!t){
+        fprintf(stderr, "Error creando tablero\n");
+        return 1;
+    }
 
+    tablero_mostrar(t);
+    tablero_destruir(t);
 
-    if(cargaMatriz(mat, 2, 2))
-        printf("Cargo\n");
-    else
-        printf("No cargo\n");
-
-    mostrarMatriz(mat, 2, 2);
-
-    destruyeMatriz(mat, 2);
     return 0;
 }
