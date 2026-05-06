@@ -26,8 +26,8 @@ int main()
         fprintf(stderr, "Error creando tablero\n");
         return 1;
     }
-
-    mezclarBolsa(bolsa_actual,(sizeof(bolsa_actual)/sizeof(bolsa_actual[0])));
+    PiezaActual p;
+    crearNuevaPieza(bolsa_actual,&indice,&p);
     while(1)
     {
         if(kbhit())
@@ -35,22 +35,36 @@ int main()
             tecla = getch();
             if(tecla == 27)   // ESC
                 break;
-        }
 
+            if(tecla == 'a')
+            {
+                if(puedeMover(&p,tecla,t))
+                    p.columna--;
+
+            }
+
+            if(tecla == 'd')
+            {
+                if(puedeMover(&p,tecla,t))
+                    p.columna++;
+            }
+
+            if(tecla == 's')
+            {
+                if(puedeMover(&p,tecla,t))
+                    p.fila++;
+            }
+
+        }
 
 
 
 
         system("cls");
-        tablero_mostrar(t);
-        mostrarBolsa(bolsa_actual,(sizeof(bolsa_actual)/sizeof(bolsa_actual[0])));
-        indice++;
-        if(indice==7)
-        {
-            mezclarBolsa(bolsa_actual,(sizeof(bolsa_actual)/sizeof(bolsa_actual[0])));
-            indice=0;
-        }
-        Sleep(750); // un sleep para que no vaya todo rapido
+        actualizarJuego(t,bolsa_actual,&indice,&p);
+        render(t,&p);
+
+        Sleep(200); // un sleep para que no vaya todo rapido
 
     }
     tablero_destruir(t);

@@ -31,5 +31,8 @@ int tipoAIndice(char tipo);
 void actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual* p);
 int puedeBajar(Tablero *tablero, PiezaActual *p);
 void fijarPieza(Tablero *tablero, PiezaActual *p);
+void render(Tablero *tablero, PiezaActual *p);
+int piezaOcupaCelda(PiezaActual *p, int filaActual, int columnaActual);
+int puedeMover(PiezaActual *p, int tecla,Tablero* t);
 
 #endif // TETRIS_H_INCLUDED

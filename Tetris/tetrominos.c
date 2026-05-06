@@ -159,6 +159,139 @@ int puedeBajar(Tablero* t, PiezaActual *p)
 }
 void fijarPieza(Tablero *tablero, PiezaActual *p)
 {
+    int i,j,Fila,Col;
+    int indice=tipoAIndice(p->tipo);
+    for(i = 0; i < 4; i++)
+    {
+        for(j = 0; j < 4; j++)
+        {
+            if(tetrominos[indice][i][j] == 1)
+            {
+                Fila = (p->fila + i);
+                Col  = (p->columna + j);
+                tablero->celdas[Fila][Col]='X';
+            }
+        }
+    }
+}
+void render(Tablero *tablero, PiezaActual *p)
+{
+    int ini = tablero->filasOcultas;
+    int fin = tablero->filasOcultas + tablero->filasVisibles;
+    int i,j;
+    for (i = ini; i < fin; i++)
+    {
+        for (j = 0; j < tablero->columnas; j++)
+        {
+            if(piezaOcupaCelda(p,i,j))
+            {
+                putchar('X');
+                putchar(' ');
+            }
+            else
+            {
+                putchar(tablero->celdas[i][j]);
+                putchar(' ');
+            }
+        }
+        printf("%d", (i - (tablero->filasOcultas - 1))); // debug
+        putchar('\n');
+    }
+
 
 }
+int piezaOcupaCelda(PiezaActual *p, int filaActual, int columnaActual)
+{
+    int filaRelativa;
+    int columnaRelativa;
+    int idx;
 
+    idx = tipoAIndice(p->tipo);
+
+    // Verificar si la celda está dentro del área 4x4 de la pieza
+    if(filaActual < p->fila || filaActual >= p->fila + 4)
+        return 0;
+
+    if(columnaActual < p->columna || columnaActual >= p->columna + 4)
+        return 0;
+
+    // Convertir coordenadas del tablero a coordenadas relativas
+    filaRelativa = filaActual - p->fila;
+    columnaRelativa = columnaActual - p->columna;
+
+    // Verificar si la pieza tiene bloque en esa posición
+    return tetrominos[idx][filaRelativa][columnaRelativa];
+}
+int puedeMover(PiezaActual *p, int tecla,Tablero* t)
+{
+    int nuevaCol, nuevaFila,i,j;
+    int indice=tipoAIndice(p->tipo);
+    if(tecla == 'a')
+    {
+        for(i = 0; i < 4; i++)
+        {
+            for(j = 0; j < 4; j++)
+            {
+                if(tetrominos[indice][i][j] == 1)
+                {
+                    nuevaFila = (p->fila + i);
+                    nuevaCol  = (p->columna + j)-1;
+
+                    // se nos va
+                    if(nuevaCol < 0)
+                        return 0;
+
+                    // colisión con bloque fijo
+                    if(t->celdas[nuevaFila][nuevaCol] != '.')
+                        return 0;
+                }
+            }
+        }
+    }
+    else if(tecla == 'd')
+    {
+        for(i = 0; i < 4; i++)
+        {
+            for(j = 0; j < 4; j++)
+            {
+                if(tetrominos[indice][i][j] == 1)
+                {
+                    nuevaFila = (p->fila + i);
+                    nuevaCol  = (p->columna + j)+1;
+
+                    // se nos va
+                    if(nuevaCol > CLASICO_COLUMNAS)
+                        return 0;
+
+                    // colisión con bloque fijo
+                    if(t->celdas[nuevaFila][nuevaCol] != '.')
+                        return 0;
+                }
+            }
+        }
+    }
+    else
+    {
+        for(i = 0; i < 4; i++)
+        {
+            for(j = 0; j < 4; j++)
+            {
+                if(tetrominos[indice][i][j] == 1)
+                {
+                    nuevaFila = (p->fila + i)+1;
+                    nuevaCol  = (p->columna + j);
+
+                    // se nos va
+                    if(nuevaFila > CLASICO_FILAS_VISIBLES)
+                        return 0;
+
+                    // colisión con bloque fijo
+                    if(t->celdas[nuevaFila][nuevaCol] != '.')
+                        return 0;
+                }
+            }
+        }
+    }
+
+    return 1;
+}
