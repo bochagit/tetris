@@ -18,13 +18,56 @@ Entrega: Sí
 
 int main()
 {
+    int tecla;
+    char bolsa_actual[]={'I','J','L','O','S','T','Z'};
+    int indice=0;
     Tablero *t = tablero_crear();
-    if (!t){
+    if (!t)
+    {
         fprintf(stderr, "Error creando tablero\n");
         return 1;
     }
+    PiezaActual p;
+    crearNuevaPieza(bolsa_actual,&indice,&p);
+    while(1)
+    {
+        if(kbhit())
+        {
+            tecla = getch();
+            if(tecla == 27)   // ESC
+                break;
 
-    tablero_mostrar(t);
+            if(tecla == 'a')
+            {
+                if(puedeMover(&p,tecla,t))
+                    p.columna--;
+
+            }
+
+            if(tecla == 'd')
+            {
+                if(puedeMover(&p,tecla,t))
+                    p.columna++;
+            }
+
+            if(tecla == 's')
+            {
+                if(puedeMover(&p,tecla,t))
+                    p.fila++;
+            }
+
+        }
+
+
+
+
+        system("cls");
+        actualizarJuego(t,bolsa_actual,&indice,&p);
+        render(t,&p);
+
+        Sleep(200); // un sleep para que no vaya todo rapido
+
+    }
     tablero_destruir(t);
 
     if (gbt_iniciar() != 0){
@@ -52,6 +95,5 @@ int main()
 
     gbt_destruir_ventana();
     gbt_cerrar();
-
     return 0;
 }
