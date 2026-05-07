@@ -13,6 +13,7 @@ Entrega: Sí
 */
 
 #include <stdio.h>
+#include <stdbool.h>
 #include "tablero.h"
 #include "graficos.h"
 
@@ -58,9 +59,6 @@ int main()
 
         }
 
-
-
-
         system("cls");
         actualizarJuego(t,bolsa_actual,&indice,&p);
         render(t,&p);
@@ -68,19 +66,10 @@ int main()
         Sleep(200); // un sleep para que no vaya todo rapido
 
     }
-    tablero_destruir(t);
 
-    if (gbt_iniciar() != 0){
-        fprintf(stderr, "Error al iniciar GBT: %s\n", gbt_obtener_log());
-        return -1;
-    }
-
-    char nombreVentana[128];
-    sprintf(nombreVentana, "Ventana %dx%d", ANCHO_VENTANA, ALTO_VENTANA);
-
-    if (gbt_crear_ventana(nombreVentana, ANCHO_VENTANA, ALTO_VENTANA, ESCALA_VENTANA) != 0){
-        fprintf(stderr, "Error al iniciar el modulo de graficos de GBT: %s\n", gbt_obtener_log());
-        return -1;
+    if (graficosIniciar() != 0){
+        tablero_destruir(t);
+        return 1;
     }
 
     bool corriendo = true;
@@ -90,10 +79,16 @@ int main()
 
         if (gbt_tecla_presionada(GBTK_ESCAPE)) corriendo = false;
 
-        gbt_esperar(16);
+        actualizarJuego(t, bolsa_actual, &indice, &p);
+
+        graficosComenzarFrame();
+        graficosDibujarTablero(t, &p);
+        graficosPresentarFrame();
+
+        gbt_esperar(200);
     }
 
-    gbt_destruir_ventana();
-    gbt_cerrar();
+    graficosCerrar();
+    tablero_destruir(t);
     return 0;
 }

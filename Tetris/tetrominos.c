@@ -149,7 +149,7 @@ int puedeBajar(Tablero* t, PiezaActual *p)
                 if(nuevaFila >= t->filasTotales)
                     return 0;
 
-                // colisión con bloque fijo
+                // colisiï¿½n con bloque fijo
                 if(t->celdas[nuevaFila][nuevaCol] != '.')
                     return 0;
             }
@@ -169,7 +169,7 @@ void fijarPieza(Tablero *tablero, PiezaActual *p)
             {
                 Fila = (p->fila + i);
                 Col  = (p->columna + j);
-                tablero->celdas[Fila][Col]='X';
+                tablero->celdas[Fila][Col]= 'X';
             }
         }
     }
@@ -208,7 +208,7 @@ int piezaOcupaCelda(PiezaActual *p, int filaActual, int columnaActual)
 
     idx = tipoAIndice(p->tipo);
 
-    // Verificar si la celda está dentro del área 4x4 de la pieza
+    // Verificar si la celda estï¿½ dentro del ï¿½rea 4x4 de la pieza
     if(filaActual < p->fila || filaActual >= p->fila + 4)
         return 0;
 
@@ -219,7 +219,7 @@ int piezaOcupaCelda(PiezaActual *p, int filaActual, int columnaActual)
     filaRelativa = filaActual - p->fila;
     columnaRelativa = columnaActual - p->columna;
 
-    // Verificar si la pieza tiene bloque en esa posición
+    // Verificar si la pieza tiene bloque en esa posiciï¿½n
     return tetrominos[idx][filaRelativa][columnaRelativa];
 }
 int puedeMover(PiezaActual *p, int tecla,Tablero* t)
@@ -241,7 +241,7 @@ int puedeMover(PiezaActual *p, int tecla,Tablero* t)
                     if(nuevaCol < 0)
                         return 0;
 
-                    // colisión con bloque fijo
+                    // colisiï¿½n con bloque fijo
                     if(t->celdas[nuevaFila][nuevaCol] != '.')
                         return 0;
                 }
@@ -263,7 +263,7 @@ int puedeMover(PiezaActual *p, int tecla,Tablero* t)
                     if(nuevaCol > CLASICO_COLUMNAS)
                         return 0;
 
-                    // colisión con bloque fijo
+                    // colisiï¿½n con bloque fijo
                     if(t->celdas[nuevaFila][nuevaCol] != '.')
                         return 0;
                 }
@@ -285,7 +285,7 @@ int puedeMover(PiezaActual *p, int tecla,Tablero* t)
                     if(nuevaFila > CLASICO_FILAS_VISIBLES)
                         return 0;
 
-                    // colisión con bloque fijo
+                    // colisiï¿½n con bloque fijo
                     if(t->celdas[nuevaFila][nuevaCol] != '.')
                         return 0;
                 }
