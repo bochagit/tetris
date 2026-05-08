@@ -17,6 +17,7 @@ Entrega: Sí
 
 int main()
 {
+    srand(time(NULL));
     int tecla;
     char bolsa_actual[]={'I','J','L','O','S','T','Z'};
     int indice=0;
@@ -54,10 +55,17 @@ int main()
                 if(puedeMover(&p,tecla,t))
                     p.fila++;
             }
+            if(tecla == 'x')
+            {
+                rotar(&p,tecla,t);
+            }
+            if(tecla == 'z')
+            {
+                rotar(&p,tecla,t);
+            }
+
 
         }
-
-
 
 
         system("cls");

@@ -7,6 +7,8 @@
 #define CELDA_VACIA '.'
 #include <stdlib.h>
 #include <stdio.h>
+#include "matriz.h"
+#include <time.h>
 
 typedef struct {
   int filasVisibles;
@@ -19,20 +21,22 @@ typedef struct {
   char tipo;     // I,J,L,O,S,T,Z
   int fila;
   int columna;
+  char**tetromino;
 } PiezaActual;
 
-extern int (*tetrominos[7])[4];
 
 void mezclarBolsa(char* bolsa, int n);
 void mostrarBolsa(char* bolsa, int n);
 void crearNuevaPieza(char* bolsa, int* indiceBolsa, PiezaActual *p);
 char siguientePieza(char* bolsa, int* indiceBolsa);
-int tipoAIndice(char tipo);
+void cargaPieza(PiezaActual *p);
 void actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual* p);
 int puedeBajar(Tablero *tablero, PiezaActual *p);
 void fijarPieza(Tablero *tablero, PiezaActual *p);
 void render(Tablero *tablero, PiezaActual *p);
-int piezaOcupaCelda(PiezaActual *p, int filaActual, int columnaActual);
+char piezaOcupaCelda(PiezaActual *p, int filaActual, int columnaActual);
 int puedeMover(PiezaActual *p, int tecla,Tablero* t);
+int puedeRotar(int nuevaFila, int nuevaCol, int fila, int col,Tablero *t);
+int rotar(PiezaActual *p, int tecla,Tablero* t);
 
 #endif // TETRIS_H_INCLUDED
