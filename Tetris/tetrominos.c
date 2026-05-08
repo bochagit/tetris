@@ -169,7 +169,7 @@ void fijarPieza(Tablero *tablero, PiezaActual *p)
             {
                 Fila = (p->fila + i);
                 Col  = (p->columna + j);
-                tablero->celdas[Fila][Col]= 'X';
+                tablero->celdas[Fila][Col]= p->tipo;
             }
         }
     }

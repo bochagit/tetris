@@ -4,8 +4,8 @@
 #include "GBT/gbt.h"
 #include "tablero.h"
 
-#define ANCHO_VENTANA 128
-#define ALTO_VENTANA 128
+#define ANCHO_VENTANA 80
+#define ALTO_VENTANA 120
 #define ESCALA_VENTANA 5
 
 #define CANT_COLORES 8
