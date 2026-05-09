@@ -4,11 +4,14 @@
 #include "GBT/gbt.h"
 #include "tablero.h"
 
-#define ANCHO_VENTANA 80
-#define ALTO_VENTANA 120
-#define ESCALA_VENTANA 5
+#define ANCHO_VENTANA 320
+#define ALTO_VENTANA 200
+#define ESCALA_VENTANA 3
 
-#define CANT_COLORES 8
+#define TABLERO_OFFSET_X 120
+#define TABLERO_OFFSET_Y 20
+
+#define CANT_COLORES 16
 
 #define PAL_FONDO 0
 #define PAL_I 1
@@ -19,7 +22,9 @@
 #define PAL_T 6
 #define PAL_Z 7
 
-#define PIXELES_CELDA 4
+#define PAL_REFLEJO 13
+
+#define PIXELES_CELDA 8
 #define PX_PADDING 1
 
 int graficosIniciar(void);

@@ -23,10 +23,12 @@ void mostrarBolsa(char* bolsa, int n)
 void crearNuevaPieza(char* bolsa, int* indiceBolsa, PiezaActual *p)
 {
 
-    p->tipo=siguientePieza(bolsa, indiceBolsa);
-    p->fila=0;
-    p->columna=(CLASICO_COLUMNAS/2)-2;
-    p->tetromino=crearMatriz(4,4);
+    p->tipo = siguientePieza(bolsa, indiceBolsa);
+    p->fila = 0;
+    p->columna = (CLASICO_COLUMNAS / 2) - 2;
+    if (p->tetromino) destruyeMatriz(p->tetromino, 4);
+    p->tetromino = crearMatriz(4, 4);
+    cargaMatriz(p->tetromino, 4, 4, '.');
     cargaPieza(p);
 
 }
@@ -46,6 +48,7 @@ char siguientePieza(char* bolsa, int* indiceBolsa)
 
     return pieza;
 }
+
 void cargaPieza(PiezaActual *p)
 {
     char **aux=p->tetromino;
@@ -203,9 +206,10 @@ void cargaPieza(PiezaActual *p)
         break;
     }
 }
+
 void actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual* p)
 {
-    if(puedeBajar(tablero, p))
+    if(puedeMover(p, 0, 1, tablero))
     {
         p->fila++;
     }
@@ -216,33 +220,28 @@ void actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual*
     }
 }
 
-int puedeBajar(Tablero* t, PiezaActual *p)
-{
-    int i,j,nuevaFila,nuevaCol;
-    char** aux=p->tetromino;
-    char*auxFila;
-    for(i = 0; i < 4; i++)
-    {
-        for(j = 0; j < 4; j++)
-        {
-            auxFila=(*aux)+j;
-            if(*auxFila==p->tipo)
-            {
-                nuevaFila = (p->fila + i) + 1;
-                nuevaCol  = (p->columna + j);
+bool puedeMover(PiezaActual *p, int dx, int dy, Tablero* t){
+    int i, j, nuevaFila, nuevaCol;
 
-                // piso
-                if(nuevaFila >= t->filasTotales)
-                    return 0;
+    for(i = 0; i < 4; i++){
+        for(j = 0; j < 4; j++){
+            if (p->tetromino[i][j] != p->tipo) continue;
 
-                // colisi�n con bloque fijo
-                if(t->celdas[nuevaFila][nuevaCol] != '.')
-                    return 0;
-            }
+            nuevaFila = p->fila + i + dy;
+            nuevaCol  = p->columna + j + dx;
+
+            // piso
+            if(nuevaFila >= t->filasTotales) return false;
+
+            // bordes
+            if (nuevaCol < 0 || nuevaCol >= t->columnas) return false;
+
+            // colision con bloque fijo
+            if(t->celdas[nuevaFila][nuevaCol] != '.') return false;
         }
-        aux++;
     }
-    return 1;
+
+    return true;
 }
 void fijarPieza(Tablero *tablero, PiezaActual *p)
 {
@@ -290,14 +289,14 @@ void render(Tablero *tablero, PiezaActual *p)
 
 
 }
-char piezaOcupaCelda(PiezaActual *p, int filaActual, int columnaActual)
+char piezaOcupaCelda(const PiezaActual *p, int filaActual, int columnaActual)
 {
     int filaRelativa;
     int columnaRelativa;
     char** aux;
     char* auxFila;
 
-    // Verificar si la celda est� dentro del �rea 4x4 de la pieza
+    // Verificar si la celda esta dentro del area 4x4 de la pieza
     if(filaActual < p->fila || filaActual >= p->fila + 4)
         return 0;
 
@@ -314,175 +313,68 @@ char piezaOcupaCelda(PiezaActual *p, int filaActual, int columnaActual)
     return (*auxFila);
 }
 
-int puedeMover(PiezaActual *p, int tecla,Tablero* t)
-{
-    int nuevaCol, nuevaFila,i,j;
-    char** aux=p->tetromino;
-    char*auxFila;
-    if(tecla == 'a')
-    {
-        for(i = 0; i < 4; i++)
-        {
-            for(j = 0; j < 4; j++)
-            {
-                auxFila=(*aux)+j;
-                if(*auxFila==p->tipo)
-                {
-                    nuevaFila = (p->fila + i);
-                    nuevaCol  = (p->columna + j)-1;
+bool puedeRotar(PiezaActual* p, char temp[4][4], Tablero* t){
+    int i, j, nuevaFila, nuevaCol;
 
-                    // se nos va
-                    if(nuevaCol < 0)
-                        return 0;
+    for(i = 0; i < 4; i++){
+        for(j = 0; j < 4; j++){
+            if(temp[i][j] != p->tipo) continue;
 
-                    // colisi�n con bloque fijo
-                    if(t->celdas[nuevaFila][nuevaCol] != '.')
-                        return 0;
-                }
-            }
-            aux++;
-        }
-    }
-    else if(tecla == 'd')
-    {
-        for(i = 0; i < 4; i++)
-        {
-            for(j = 0; j < 4; j++)
-            {
-                auxFila=(*aux)+j;
-                if(*auxFila==p->tipo)
-                {
-                    nuevaFila = (p->fila + i);
-                    nuevaCol  = (p->columna + j)+1;
+            nuevaFila = p->fila + i;
+            nuevaCol = p->columna + j;
 
-                    // se nos va
-                    if(nuevaCol > CLASICO_COLUMNAS)
-                        return 0;
+            // piso
+            if(nuevaFila >= t->filasTotales) return false;
 
-                    // colisi�n con bloque fijo
-                    if(t->celdas[nuevaFila][nuevaCol] != '.')
-                        return 0;
-                }
-            }
-            aux++;
-        }
-    }
-    else
-    {
-        for(i = 0; i < 4; i++)
-        {
-            for(j = 0; j < 4; j++)
-            {
-                auxFila=(*aux)+j;
-                if(*auxFila==p->tipo)
-                {
-                    nuevaFila = (p->fila + i)+1;
-                    nuevaCol  = (p->columna + j);
+            // bordes
+            if(nuevaCol < 0 || nuevaCol >= t->columnas) return false;
 
-                    // se nos va
-                    if(nuevaFila > CLASICO_FILAS_VISIBLES)
-                        return 0;
-
-                    // colisi�n con bloque fijo
-                    if(t->celdas[nuevaFila][nuevaCol] != '.')
-                        return 0;
-                }
-            }
-            aux++;
+            // colisión con bloque fijo
+            if(t->celdas[nuevaFila][nuevaCol] != '.') return false;
         }
     }
 
-    return 1;
+    return true;
 }
-int puedeRotar(int nuevaFila, int nuevaCol, int fila, int col,Tablero *t)
-{
-    // se nos va
-    if(nuevaFila > CLASICO_FILAS_VISIBLES)
-        return 0;
 
-    // colisi�n con bloque fijo
-    if(t->celdas[nuevaFila][nuevaCol] != '.')
-        return 0;
-
-    return 1;
-}
-int rotar(PiezaActual *p, int tecla,Tablero* t)
+int rotar(PiezaActual *p, int dir, Tablero* t)
 {
-    int nuevaCol, nuevaFila,i,j;
+    int i, j;
     char temp[4][4];
-    char** aux=p->tetromino;
-    char*auxFila;
-    if(p->tipo=='O')
-        return 0;
-    if(tecla=='X')
-    {
-        for(i = 0; i < 4; i++)
-        {
-            for(j = 0; j < 4; j++)
-            {
-                auxFila=(*aux)+j;
-                if(*auxFila==p->tipo)
-                {
-                    nuevaFila = j;
-                    nuevaCol = 3 - i;
-                    temp[nuevaFila][nuevaCol]=p->tipo;
 
-                    if(!puedeRotar(nuevaFila,nuevaCol,i,j,t))
-                        return 0;
-                }
-                else
-                {
-                    temp[i][j]='.';
-                }
-            }
-            aux++;
-        }
-        aux=p->tetromino;
-        for(i = 0; i < 4; i++)
-        {
-            for(j = 0; j < 4; j++)
-            {
-                auxFila=(*aux)+j;
-                *auxFila=temp[i][j];
-            }
-            aux++;
+    if(!p || !p->tetromino || p->tipo=='O') return 0;
+
+    for (i = 0; i < 4; i++){
+        for (j = 0; j < 4; j++){
+            temp[i][j] = '.';
         }
     }
-    else
-    {
-       for(i = 0; i < 4; i++)
-        {
-            for(j = 0; j < 4; j++)
-            {
-                auxFila=(*aux)+j;
-                if(*auxFila==p->tipo)
-                {
-                    nuevaFila = j;
-                    nuevaCol = 3 - i;
-                    temp[nuevaFila][nuevaCol]=p->tipo;
 
-                    if(!puedeRotar(nuevaFila,nuevaCol,i,j,t))
-                        return 0;
-                }
-                else
-                {
-                    temp[i][j]='.';
+    if (dir == 0){
+        for (i = 0; i < 4; i++){
+            for (j = 0; j < 4; j++){
+                if (p->tetromino[j][3 - i] == p->tipo){
+                    temp[i][j] = p->tipo;
                 }
             }
-            aux++;
         }
-        aux=p->tetromino;
-        for(i = 0; i < 4; i++)
-        {
-            for(j = 0; j < 4; j++)
-            {
-                auxFila=(*aux)+j;
-                *auxFila=temp[i][j];
+    } else if (dir == 1){
+        for (i = 0; i < 4; i++){
+            for (j = 0; j < 4; j++){
+                if (p->tetromino[3 - j][i] == p->tipo){
+                    temp[i][j] = p->tipo;
+                }
             }
-            aux++;
+        }
+    }
+
+    if (!puedeRotar(p, temp, t)) return 0;
+
+    for (i = 0; i < 4; i++){
+        for (j = 0; j < 4; j++){
+            p->tetromino[i][j] = temp[i][j];
         }
     }
 
     return 1;
-
 }

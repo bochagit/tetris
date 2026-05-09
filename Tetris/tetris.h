@@ -17,11 +17,12 @@ typedef struct {
   int columnas;
   char** celdas;
 } Tablero;
+
 typedef struct {
-  char tipo;     // I,J,L,O,S,T,Z
+  char tipo;     // I, J, L, O, S, T, Z
   int fila;
   int columna;
-  char**tetromino;
+  char** tetromino;
 } PiezaActual;
 
 
@@ -31,12 +32,11 @@ void crearNuevaPieza(char* bolsa, int* indiceBolsa, PiezaActual *p);
 char siguientePieza(char* bolsa, int* indiceBolsa);
 void cargaPieza(PiezaActual *p);
 void actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual* p);
-int puedeBajar(Tablero *tablero, PiezaActual *p);
 void fijarPieza(Tablero *tablero, PiezaActual *p);
 void render(Tablero *tablero, PiezaActual *p);
-char piezaOcupaCelda(PiezaActual *p, int filaActual, int columnaActual);
-int puedeMover(PiezaActual *p, int tecla,Tablero* t);
-int puedeRotar(int nuevaFila, int nuevaCol, int fila, int col,Tablero *t);
+char piezaOcupaCelda(const PiezaActual *p, int filaActual, int columnaActual);
+bool puedeMover(PiezaActual *p, int dx, int dy, Tablero* t);
+bool puedeRotar(PiezaActual* p, char temp[4][4], Tablero* t);
 int rotar(PiezaActual *p, int tecla,Tablero* t);
 
 #endif // TETRIS_H_INCLUDED

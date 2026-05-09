@@ -1,14 +1,22 @@
 #include "graficos.h"
 
 tGBT_ColorRGB paleta[CANT_COLORES] = {
-  {0x00, 0x00, 0x00}, // 0: Negro
-  {0x00, 0x00, 0xAA}, // 1: Azul
-  {0x00, 0xAA, 0x00}, // 2: Verde
-  {0x00, 0xAA, 0xAA}, // 3: Cian
-  {0xAA, 0x00, 0x00}, // 4: Rojo
-  {0xAA, 0x00, 0xAA}, // 5: Magenta
-  {0xAA, 0x55, 0x00}, // 6: Marron
-  {0xFF, 0xFF, 0x00}  // 7: Amarillo
+  {0x00, 0x00, 0x00}, // Negro
+  {0x55, 0xFF, 0xFF}, // Cyan
+  {0x55, 0x55, 0xFF}, // Azul
+  {0xAA, 0x55, 0x00}, // Marron
+  {0xFF, 0xFF, 0x55}, // Amarillo
+  {0x55, 0xFF, 0x55}, // Verde
+  {0xAA, 0x00, 0xAA}, // Violeta
+  {0xFF, 0x55, 0x55}, // Rojo
+  {0x00, 0x00, 0xAA}, // Azul oscuro
+  {0x00, 0xAA, 0x00}, // Verde oscuro
+  {0x00, 0xAA, 0xAA}, // Cyan oscuro
+  {0xAA, 0x00, 0x00}, // Rojo oscuro
+  {0x11, 0x11, 0x11}, // Gris oscuro
+  {0xCC, 0xCC, 0xCC}, // Gris claro
+  {0xFF, 0x55, 0xFF}, // Rosa
+  {0xFF, 0xFF, 0xFF}, // Transparente (GBT)
 };
 
 int graficosIniciar(void){
@@ -33,7 +41,7 @@ void graficosCerrar(void){
 }
 
 void graficosComenzarFrame(void){
-  gbt_borrar_backbuffer(PAL_FONDO);
+  gbt_borrar_backbuffer(12);
 }
 
 void graficosPresentarFrame(void){
@@ -52,60 +60,50 @@ static uint8_t obtenerColorCelda(char celda){
     case 'Z': return PAL_Z;
     default: return PAL_FONDO;
   }
-}
+};
 
 static void dibujarCelda(uint8_t color, uint16_t oX, uint16_t oY){
-  uint16_t offsetX = oX * (PIXELES_CELDA + PX_PADDING);
-  uint16_t offsetY = oY * (PIXELES_CELDA + PX_PADDING);
+  uint16_t offsetX = TABLERO_OFFSET_X + (oX * (PIXELES_CELDA + PX_PADDING));
+  uint16_t offsetY = TABLERO_OFFSET_Y + (oY * (PIXELES_CELDA + PX_PADDING));
 
   for (uint16_t y = 0; y < PIXELES_CELDA; y++){
     for (uint16_t x = 0; x < PIXELES_CELDA; x++){
       gbt_dibujar_pixel(offsetX + x, offsetY + y, color);
     }
   }
+
+  if (color != PAL_FONDO){
+    for (uint16_t x = 0; x < PIXELES_CELDA - 1; x++){
+      gbt_dibujar_pixel(offsetX + x, offsetY, PAL_REFLEJO);
+    }
+
+    for (uint16_t y = 0; y < PIXELES_CELDA - 1; y++){
+      gbt_dibujar_pixel(offsetX, offsetY + y, PAL_REFLEJO);
+    }
+  }
 }
 
-// --- Probar y analizar lo de abajo --- !!!!!!!
-
-void graficosDibujarTablero(const Tablero *tablero, const PiezaActual *pieza)
-{
+void graficosDibujarTablero(const Tablero *tablero, const PiezaActual *pieza){
   if (!tablero || !tablero->celdas) return;
 
   int filaInicio = tablero->filasOcultas;
   int filaFin = filaInicio + tablero->filasVisibles;
 
-  // Dibujar tablero fijo
-  for (int fila = filaInicio; fila < filaFin; fila++) {
-    for (int col = 0; col < tablero->columnas; col++) {
-      char celda = tablero->celdas[fila][col];
-      uint8_t color = obtenerColorCelda(celda);
+  //Dibujo el tablero y la pieza
+  for (int fila = filaInicio; fila < filaFin; fila++){
+    for (int col = 0; col < tablero->columnas; col++){
+      uint8_t color = PAL_FONDO;
 
-      // Offset visual para centrar
-      int oX = col + 2;
-      int oY = (fila - filaInicio) + 2;
-
-      dibujarCelda(color, oX, oY);
-    }
-  }
-
-  // Dibujar pieza actual
-  if (pieza) {
-    int indice = tipoAIndice(pieza->tipo);
-    uint8_t colorPieza = obtenerColorCelda(pieza->tipo);
-
-    for (int i = 0; i < 4; i++) {
-      for (int j = 0; j < 4; j++) {
-        if (tetrominos[indice][i][j] == 1) {
-          int filaActual = pieza->fila + i;
-          int colActual = pieza->columna + j;
-
-          if (filaActual >= filaInicio && filaActual < filaFin) {
-            int oX = colActual + 2;
-            int oY = (filaActual - filaInicio) + 2;
-            dibujarCelda(colorPieza, oX, oY);
-          }
-        }
+      if (pieza && piezaOcupaCelda(pieza, fila, col) == pieza->tipo){
+        color = obtenerColorCelda(pieza->tipo);
+      } else {
+        color = obtenerColorCelda(tablero->celdas[fila][col]);
       }
+
+      int oX = col;
+      int oY = fila - filaInicio;
+
+      dibujarCelda(color, (uint16_t)oX, (uint16_t)oY);
     }
   }
 }
