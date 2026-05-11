@@ -20,9 +20,8 @@ void mostrarBolsa(char* bolsa, int n)
     }
     printf("\n");
 }
-void crearNuevaPieza(char* bolsa, int* indiceBolsa, PiezaActual *p)
+int crearNuevaPieza(char* bolsa, int* indiceBolsa, PiezaActual *p, Tablero * t)
 {
-
     p->tipo = siguientePieza(bolsa, indiceBolsa);
     p->fila = 0;
     p->columna = (CLASICO_COLUMNAS / 2) - 2;
@@ -30,6 +29,10 @@ void crearNuevaPieza(char* bolsa, int* indiceBolsa, PiezaActual *p)
     p->tetromino = crearMatriz(4, 4);
     cargaMatriz(p->tetromino, 4, 4, '.');
     cargaPieza(p);
+    if(puedeMover(p,0,1,t))
+        return 0;
+    else
+        return 1;
 
 }
 char siguientePieza(char* bolsa, int* indiceBolsa)
@@ -207,8 +210,9 @@ void cargaPieza(PiezaActual *p)
     }
 }
 
-void actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual* p)
+int actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual* p, int * puntaje)
 {
+    int lineas,gameOver=0;
     if(puedeMover(p, 0, 1, tablero))
     {
         p->fila++;
@@ -216,9 +220,11 @@ void actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual*
     else
     {
         fijarPieza(tablero, p);
-        evaluarFilas(tablero);
-        crearNuevaPieza(bolsa,indiceBolsa,p);
+        lineas=evaluarFilas(tablero);
+        actualizarPuntaje(puntaje,lineas);
+        gameOver=crearNuevaPieza(bolsa,indiceBolsa,p,tablero);
     }
+    return gameOver;
 }
 
 bool puedeMover(PiezaActual *p, int dx, int dy, Tablero* t){
@@ -438,5 +444,30 @@ void limpiaLinea(char* fila, int columnas)
     for(i = 0; i < columnas; i++)
     {
         *(fila + i) = '.';
+    }
+}
+void actualizarPuntaje(int * puntaje,int lineas)
+{
+    switch(lineas)
+    {
+    case 1:
+        *puntaje+=100;
+        break;
+
+    case 2:
+        *puntaje+=300;
+        break;
+
+    case 3:
+        *puntaje+=500;
+        break;
+
+    case 4:
+        *puntaje+=700;
+        break;
+
+    default:
+        break;
+
     }
 }

@@ -28,10 +28,10 @@ typedef struct {
 
 void mezclarBolsa(char* bolsa, int n);
 void mostrarBolsa(char* bolsa, int n);
-void crearNuevaPieza(char* bolsa, int* indiceBolsa, PiezaActual *p);
+int crearNuevaPieza(char* bolsa, int* indiceBolsa, PiezaActual *p, Tablero * t);
 char siguientePieza(char* bolsa, int* indiceBolsa);
 void cargaPieza(PiezaActual *p);
-void actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual* p);
+int actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual* p, int * puntaje);
 void fijarPieza(Tablero *tablero, PiezaActual *p);
 void render(Tablero *tablero, PiezaActual *p);
 char piezaOcupaCelda(const PiezaActual *p, int filaActual, int columnaActual);
@@ -41,5 +41,6 @@ int rotar(PiezaActual *p, int tecla,Tablero* t);
 int evaluarFilas(Tablero *tablero);
 int analizaLinea(char* fila, int columnas);
 void limpiaLinea(char* fila, int columnas);
+void actualizarPuntaje(int * puntaje,int lineas);
 
 #endif // TETRIS_H_INCLUDED
