@@ -115,7 +115,7 @@ int main()
         graficosDibujarTablero(t, &p);
         graficosPresentarFrame();
 
-        gbt_esperar(200);
+        gbt_esperar(150);
     }
 
     graficosCerrar();

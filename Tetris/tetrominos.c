@@ -216,6 +216,7 @@ void actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual*
     else
     {
         fijarPieza(tablero, p);
+        evaluarFilas(tablero);
         crearNuevaPieza(bolsa,indiceBolsa,p);
     }
 }
@@ -377,4 +378,65 @@ int rotar(PiezaActual *p, int dir, Tablero* t)
     }
 
     return 1;
+}
+int evaluarFilas(Tablero *tablero)
+{
+    char ** lectura=(tablero->celdas)+(tablero->filasTotales)-1;
+    char ** escritura=(tablero->celdas)+(tablero->filasTotales)-1;
+    char ** aux;
+    char** filasCompletas=malloc(sizeof(char*)*4);
+    if(!filasCompletas)
+        return -1;
+
+    int cantCompletas=0;
+    int i;
+    for(i=tablero->filasTotales-1;i>=tablero->filasOcultas;i--)
+    {
+        if(analizaLinea(*lectura,tablero->columnas))
+        {
+            aux=filasCompletas+cantCompletas;
+            *aux=*lectura;
+            cantCompletas++;
+        }
+        else
+        {
+            (*escritura)=(*lectura);
+            escritura--;
+        }
+        lectura--;
+    }
+    aux=filasCompletas;
+    for(i = 0; i < cantCompletas; i++)
+    {
+        limpiaLinea(*aux,tablero->columnas);
+        *escritura=*aux;
+        aux++;
+        escritura--;
+    }
+
+
+    return cantCompletas;
+
+
+}
+int analizaLinea(char* fila, int columnas)
+{
+    int i;
+
+    for(i = 0; i < columnas; i++)
+    {
+        if(*(fila + i) == '.')
+            return 0;
+    }
+
+    return 1;
+}
+void limpiaLinea(char* fila, int columnas)
+{
+    int i;
+
+    for(i = 0; i < columnas; i++)
+    {
+        *(fila + i) = '.';
+    }
 }
