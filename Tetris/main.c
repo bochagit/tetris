@@ -24,6 +24,7 @@ int main()
     int indice=0;
     int puntaje=0;
     int gameOver=0;
+    int pausa=0;
     Tablero *t = tablero_crear();
     if (!t)
     {
@@ -41,48 +42,62 @@ int main()
 
     bool corriendo = true;
 
-    while (!gameOver){
+    while (!gameOver)
+    {
         gbt_procesar_entrada();
 
         if (gbt_tecla_presionada(GBTK_ESCAPE)) gameOver = true;
 
-        if (gbt_tecla_sostenida(GBTK_a)){
-            if (puedeMover(&p, -1, 0, t))
+        if(gbt_tecla_presionada(GBTK_p)) pausa = !pausa;
+
+
+        if(!pausa)
+        {
+
+
+            if (gbt_tecla_sostenida(GBTK_a))
             {
-                p.columna--;
+                if (puedeMover(&p, -1, 0, t))
+                {
+                    p.columna--;
+                }
             }
-        }
 
-        if (gbt_tecla_sostenida(GBTK_d)){
-            if (puedeMover(&p, 1, 0, t))
+            if (gbt_tecla_sostenida(GBTK_d))
             {
-                p.columna++;
+                if (puedeMover(&p, 1, 0, t))
+                {
+                    p.columna++;
+                }
             }
-        }
 
-        if (gbt_tecla_sostenida(GBTK_s)){
-            if (puedeMover(&p, 0, 1, t))
+            if (gbt_tecla_sostenida(GBTK_s))
             {
-                p.fila++;
-                puntaje++;
+                if (puedeMover(&p, 0, 1, t))
+                {
+                    p.fila++;
+                    puntaje++;
+                }
             }
+
+            if (gbt_tecla_presionada(GBTK_q))
+            {
+                rotar(&p, 0, t); // Rotar izq
+            }
+
+            if (gbt_tecla_presionada(GBTK_e))
+            {
+                rotar(&p, 1, t); // Rotar der
+            }
+
+            gameOver=actualizarJuego(t, bolsa_actual, &indice, &p,&puntaje);
+
+            graficosComenzarFrame();
+            graficosDibujarTablero(t, &p);
+            graficosPresentarFrame();
+
+            gbt_esperar(150);
         }
-
-        if (gbt_tecla_presionada(GBTK_q)){
-            rotar(&p, 0, t); // Rotar izq
-        }
-
-        if (gbt_tecla_presionada(GBTK_e)){
-            rotar(&p, 1, t); // Rotar der
-        }
-
-        gameOver=actualizarJuego(t, bolsa_actual, &indice, &p,&puntaje);
-
-        graficosComenzarFrame();
-        graficosDibujarTablero(t, &p);
-        graficosPresentarFrame();
-
-        gbt_esperar(150);
     }
 
     graficosCerrar();
