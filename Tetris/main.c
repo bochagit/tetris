@@ -16,6 +16,7 @@ Entrega: Sí
 #include <stdbool.h>
 #include "tablero.h"
 #include "graficos.h"
+#include "fuentes.h"
 
 int main()
 {
@@ -90,12 +91,18 @@ int main()
 
             gameOver=actualizarJuego(t, bolsa_actual, &indice, &p,&puntaje);
 
-            graficosComenzarFrame();
-            graficosDibujarTablero(t, &p);
-            graficosPresentarFrame();
+        graficosComenzarFrame();
+        graficosDibujarTablero(t, &p);
+        //fuenteDibujarTexto("TETRIS", 125, 8, PAL_REFLEJO, 1, 1);
+        fuenteDibujarChar('T', 125, 8, PAL_T, 1);
+        fuenteDibujarChar('E', 138, 8, PAL_O, 1);
+        fuenteDibujarChar('T', 151, 8, PAL_T, 1);
+        fuenteDibujarChar('R', 164, 8, PAL_J, 1);
+        fuenteDibujarChar('I', 177, 8, PAL_I, 1);
+        fuenteDibujarChar('S', 190, 8, PAL_S, 1);
+        graficosPresentarFrame();
 
-            gbt_esperar(150);
-        }
+        gbt_esperar(150);
     }
 
     graficosCerrar();

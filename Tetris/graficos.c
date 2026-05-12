@@ -62,7 +62,7 @@ static uint8_t obtenerColorCelda(char celda){
   }
 };
 
-static void dibujarCelda(uint8_t color, uint16_t oX, uint16_t oY){
+void graficosDibujarCelda(uint8_t color, uint16_t oX, uint16_t oY){
   uint16_t offsetX = TABLERO_OFFSET_X + (oX * (PIXELES_CELDA + PX_PADDING));
   uint16_t offsetY = TABLERO_OFFSET_Y + (oY * (PIXELES_CELDA + PX_PADDING));
 
@@ -103,7 +103,7 @@ void graficosDibujarTablero(const Tablero *tablero, const PiezaActual *pieza){
       int oX = col;
       int oY = fila - filaInicio;
 
-      dibujarCelda(color, (uint16_t)oX, (uint16_t)oY);
+      graficosDibujarCelda(color, (uint16_t)oX, (uint16_t)oY);
     }
   }
 }

@@ -36,7 +36,7 @@ void fijarPieza(Tablero *tablero, PiezaActual *p);
 void render(Tablero *tablero, PiezaActual *p);
 char piezaOcupaCelda(const PiezaActual *p, int filaActual, int columnaActual);
 bool puedeMover(PiezaActual *p, int dx, int dy, Tablero* t);
-bool puedeRotar(PiezaActual* p, char temp[4][4], Tablero* t);
+bool puedeRotar(PiezaActual *p, char temp[4][4], Tablero* t);
 int rotar(PiezaActual *p, int tecla,Tablero* t);
 int evaluarFilas(Tablero *tablero);
 int analizaLinea(char* fila, int columnas);
