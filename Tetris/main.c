@@ -40,8 +40,6 @@ int main()
         return 1;
     }
 
-    bool corriendo = true;
-
     while (!gameOver)
     {
         gbt_procesar_entrada();
