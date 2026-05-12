@@ -34,5 +34,6 @@ void graficosComenzarFrame(void);
 void graficosPresentarFrame(void);
 
 void graficosDibujarTablero(const Tablero* tablero, const PiezaActual* pieza);
+void graficosDibujarCelda(uint8_t color, uint16_t oX, uint16_t oY);
 
 #endif // GRAFICOS_H_INCLUDED
