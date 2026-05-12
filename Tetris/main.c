@@ -45,9 +45,9 @@ int main()
     {
         gbt_procesar_entrada();
 
-        if (gbt_tecla_presionada(GBTK_ESCAPE)) gameOver = true;
+        if (gbt_tecla_presionada(GBTK_ESCAPE)) break;
 
-        if(gbt_tecla_presionada(GBTK_p)) pausa = !pausa;
+        if (gbt_tecla_presionada(GBTK_p)) pausa = !pausa;
 
 
         if(!pausa)
@@ -91,20 +91,25 @@ int main()
 
             gameOver=actualizarJuego(t, bolsa_actual, &indice, &p,&puntaje);
 
-        graficosComenzarFrame();
-        graficosDibujarTablero(t, &p);
-        //fuenteDibujarTexto("TETRIS", 125, 8, PAL_REFLEJO, 1, 1);
-        fuenteDibujarChar('T', 125, 8, PAL_T, 1);
-        fuenteDibujarChar('E', 138, 8, PAL_O, 1);
-        fuenteDibujarChar('T', 151, 8, PAL_T, 1);
-        fuenteDibujarChar('R', 164, 8, PAL_J, 1);
-        fuenteDibujarChar('I', 177, 8, PAL_I, 1);
-        fuenteDibujarChar('S', 190, 8, PAL_S, 1);
-        graficosPresentarFrame();
+            graficosComenzarFrame();
+            graficosDibujarTablero(t, &p);
 
-        gbt_esperar(150);
+            fuenteDibujarChar('T', 125, 8, PAL_T, 1);
+            fuenteDibujarChar('E', 138, 8, PAL_O, 1);
+            fuenteDibujarChar('T', 151, 8, PAL_T, 1);
+            fuenteDibujarChar('R', 164, 8, PAL_J, 1);
+            fuenteDibujarChar('I', 177, 8, PAL_I, 1);
+            fuenteDibujarChar('S', 190, 8, PAL_S, 1);
+
+            char scoreText[16];
+            sprintf(scoreText, "P: %d", puntaje);
+            fuenteDibujarTexto(scoreText, 10, 8, PAL_REFLEJO, 1, 1);
+            graficosPresentarFrame();
+
+            gbt_esperar(150);
+        }
     }
-
+    
     graficosCerrar();
     tablero_destruir(t);
     return 0;
