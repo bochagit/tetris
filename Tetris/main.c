@@ -94,16 +94,16 @@ int main()
             graficosComenzarFrame();
             graficosDibujarTablero(t, &p);
 
-            fuenteDibujarChar('T', 125, 8, PAL_T, 1);
-            fuenteDibujarChar('E', 138, 8, PAL_O, 1);
-            fuenteDibujarChar('T', 151, 8, PAL_T, 1);
-            fuenteDibujarChar('R', 164, 8, PAL_J, 1);
-            fuenteDibujarChar('I', 177, 8, PAL_I, 1);
-            fuenteDibujarChar('S', 190, 8, PAL_S, 1);
+            fuenteDibujarChar(FUENTE_GRANDE, 'T', 125, 8, PAL_T, 1);
+            fuenteDibujarChar(FUENTE_GRANDE, 'E', 138, 8, PAL_O, 1);
+            fuenteDibujarChar(FUENTE_GRANDE, 'T', 151, 8, PAL_T, 1);
+            fuenteDibujarChar(FUENTE_GRANDE, 'R', 164, 8, PAL_J, 1);
+            fuenteDibujarChar(FUENTE_GRANDE, 'I', 177, 8, PAL_I, 1);
+            fuenteDibujarChar(FUENTE_GRANDE, 'S', 190, 8, PAL_S, 1);
 
             char scoreText[16];
-            sprintf(scoreText, "P: %d", puntaje);
-            fuenteDibujarTexto(scoreText, 10, 8, PAL_REFLEJO, 1, 1);
+            sprintf(scoreText, "puntos: %d", puntaje);
+            fuenteDibujarTexto(FUENTE_CHICA, scoreText, 10, 8, PAL_REFLEJO, 1, 1);
             graficosPresentarFrame();
 
             gbt_esperar(150);

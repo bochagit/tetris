@@ -3,10 +3,18 @@
 
 #include <stdint.h>
 
-#define FONT_WIDTH 12
-#define FONT_HEIGHT 12
+#define GRANDE_W 12
+#define GRANDE_H 12
 
-void fuenteDibujarChar(char c, int x, int y, uint8_t color, int scale);
-void fuenteDibujarTexto(const char *s, int x, int y, uint8_t color, int scale, int spacing);
+#define CHICA_W 6
+#define CHICA_H 8
+
+typedef enum {
+  FUENTE_GRANDE,
+  FUENTE_CHICA
+} TipoFuente;
+
+void fuenteDibujarChar(TipoFuente tipo, char c, int x, int y, uint8_t color, int scale);
+void fuenteDibujarTexto(TipoFuente tipo, const char *s, int x, int y, uint8_t color, int scale, int spacing);
 
 #endif // FUENTES_H_INCLUDED

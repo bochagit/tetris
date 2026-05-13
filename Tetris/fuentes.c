@@ -1,7 +1,7 @@
 #include "fuentes.h"
 #include "graficos.h"
 
-static const char font_E[FONT_HEIGHT][FONT_WIDTH + 1] = {
+static const char grande_E[12][12 + 1] = {
   "############",
   "############",
   "############",
@@ -16,7 +16,7 @@ static const char font_E[FONT_HEIGHT][FONT_WIDTH + 1] = {
   "............"
 };
 
-static const char font_I[FONT_HEIGHT][FONT_WIDTH + 1] = {
+static const char grande_I[12][12 + 1] = {
   "############",
   "############",
   "############",
@@ -31,7 +31,7 @@ static const char font_I[FONT_HEIGHT][FONT_WIDTH + 1] = {
   "............"
 };
 
-static const char font_N[FONT_HEIGHT][FONT_WIDTH + 1] = {
+static const char grande_N[12][12 + 1] = {
   "#####....###",
   "######...###",
   "###.###..###",
@@ -46,7 +46,7 @@ static const char font_N[FONT_HEIGHT][FONT_WIDTH + 1] = {
   "............"
 };
 
-static const char font_O[FONT_HEIGHT][FONT_WIDTH + 1] = {
+static const char grande_O[12][12 + 1] = {
   "############",
   "############",
   "############",
@@ -61,7 +61,7 @@ static const char font_O[FONT_HEIGHT][FONT_WIDTH + 1] = {
   "............"
 };
 
-static const char font_P[FONT_HEIGHT][FONT_WIDTH + 1] = {
+static const char grande_P[12][12 + 1] = {
   "############",
   "############",
   "############",
@@ -76,7 +76,7 @@ static const char font_P[FONT_HEIGHT][FONT_WIDTH + 1] = {
   "............"
 };
 
-static const char font_R[FONT_HEIGHT][FONT_WIDTH + 1] = {
+static const char grande_R[12][12 + 1] = {
   "##########..",
   "###########.",
   "###....#####",
@@ -91,7 +91,7 @@ static const char font_R[FONT_HEIGHT][FONT_WIDTH + 1] = {
   "............"
 };
 
-static const char font_S[FONT_HEIGHT][FONT_WIDTH + 1] = {
+static const char grande_S[12][12 + 1] = {
   "############",
   "############",
   "############",
@@ -106,7 +106,7 @@ static const char font_S[FONT_HEIGHT][FONT_WIDTH + 1] = {
   "............"
 };
 
-static const char font_T[FONT_HEIGHT][FONT_WIDTH + 1] = {
+static const char grande_T[12][12 + 1] = {
   "############",
   "############",
   "############",
@@ -121,7 +121,7 @@ static const char font_T[FONT_HEIGHT][FONT_WIDTH + 1] = {
   "............"
 };
 
-static const char font_U[FONT_HEIGHT][FONT_WIDTH + 1] = {
+static const char grande_U[12][12 + 1] = {
   "###......###",
   "###......###",
   "###......###",
@@ -136,7 +136,7 @@ static const char font_U[FONT_HEIGHT][FONT_WIDTH + 1] = {
   "............"
 };
 
-static const char font_BLANK[FONT_HEIGHT][FONT_WIDTH + 1] = {
+static const char grande_BLANK[12][12 + 1] = {
   "............",
   "............",
   "............",
@@ -151,7 +151,7 @@ static const char font_BLANK[FONT_HEIGHT][FONT_WIDTH + 1] = {
   "............"
 };
 
-static const char font_TWOPOINTS[FONT_HEIGHT][FONT_WIDTH + 1] = {
+static const char grande_TWOPOINTS[12][12 + 1] = {
   "............",
   "....####....",
   "....####....",
@@ -166,7 +166,7 @@ static const char font_TWOPOINTS[FONT_HEIGHT][FONT_WIDTH + 1] = {
   "............"
 };
 
-static const char font_0[FONT_HEIGHT][FONT_WIDTH + 1] = {
+static const char grande_0[12][12 + 1] = {
   "############",
   "############",
   "############",
@@ -181,7 +181,7 @@ static const char font_0[FONT_HEIGHT][FONT_WIDTH + 1] = {
   "............"
 };
 
-static const char font_1[FONT_HEIGHT][FONT_WIDTH + 1] = {
+static const char grande_1[12][12 + 1] = {
   "..######....",
   ".#######....",
   "###..###....",
@@ -196,7 +196,7 @@ static const char font_1[FONT_HEIGHT][FONT_WIDTH + 1] = {
   "............"
 };
 
-static const char font_2[FONT_HEIGHT][FONT_WIDTH + 1] = {
+static const char grande_2[12][12 + 1] = {
   "############",
   "############",
   "############",
@@ -211,7 +211,7 @@ static const char font_2[FONT_HEIGHT][FONT_WIDTH + 1] = {
   "............"
 };
 
-static const char font_3[FONT_HEIGHT][FONT_WIDTH + 1] = {
+static const char grande_3[12][12 + 1] = {
   "############",
   "############",
   "############",
@@ -226,7 +226,7 @@ static const char font_3[FONT_HEIGHT][FONT_WIDTH + 1] = {
   "............"
 };
 
-static const char font_4[FONT_HEIGHT][FONT_WIDTH + 1] = {
+static const char grande_4[12][12 + 1] = {
   "###....#####",
   "###....#####",
   "###....#####",
@@ -241,7 +241,7 @@ static const char font_4[FONT_HEIGHT][FONT_WIDTH + 1] = {
   "............"
 };
 
-static const char font_5[FONT_HEIGHT][FONT_WIDTH + 1] = {
+static const char grande_5[12][12 + 1] = {
   "############",
   "############",
   "############",
@@ -256,7 +256,7 @@ static const char font_5[FONT_HEIGHT][FONT_WIDTH + 1] = {
   "............"
 };
 
-static const char font_6[FONT_HEIGHT][FONT_WIDTH + 1] = {
+static const char grande_6[12][12 + 1] = {
   "############",
   "############",
   "############",
@@ -271,7 +271,7 @@ static const char font_6[FONT_HEIGHT][FONT_WIDTH + 1] = {
   "............"
 };
 
-static const char font_7[FONT_HEIGHT][FONT_WIDTH + 1] = {
+static const char grande_7[12][12 + 1] = {
   "############",
   "############",
   "############",
@@ -286,7 +286,7 @@ static const char font_7[FONT_HEIGHT][FONT_WIDTH + 1] = {
   "............"
 };
 
-static const char font_8[FONT_HEIGHT][FONT_WIDTH + 1] = {
+static const char grande_8[12][12 + 1] = {
   "############",
   "############",
   "############",
@@ -301,7 +301,7 @@ static const char font_8[FONT_HEIGHT][FONT_WIDTH + 1] = {
   "............"
 };
 
-static const char font_9[FONT_HEIGHT][FONT_WIDTH + 1] = {
+static const char grande_9[12][12 + 1] = {
   "############",
   "############",
   "############",
@@ -316,28 +316,247 @@ static const char font_9[FONT_HEIGHT][FONT_WIDTH + 1] = {
   "............"
 };
 
-static const char (*getCaracter(char c))[FONT_WIDTH + 1]{
-  if (c == 'E') return font_E;
-  if (c == 'I') return font_I;
-  if (c == 'N') return font_N;
-  if (c == 'O') return font_O;
-  if (c == 'P') return font_P;
-  if (c == 'R') return font_R;
-  if (c == 'S') return font_S;
-  if (c == 'T') return font_T;
-  if (c == 'U') return font_U;
-  if (c == ':') return font_TWOPOINTS;
-  if (c == '0') return font_0;
-  if (c == '1') return font_1;
-  if (c == '2') return font_2;
-  if (c == '3') return font_3;
-  if (c == '4') return font_4;
-  if (c == '5') return font_5;
-  if (c == '6') return font_6;
-  if (c == '7') return font_7;
-  if (c == '8') return font_8;
-  if (c == '9') return font_9;
-  return font_BLANK;
+static const char chica_n[8][6 + 1] = {
+  "......",
+  "......",
+  "......",
+  ".####.",
+  "#....#",
+  "#....#",
+  "#....#",
+  "......"
+};
+
+static const char chica_o[8][6 + 1] = {
+  "......",
+  "......",
+  "......",
+  ".####.",
+  "#....#",
+  "#....#",
+  ".####.",
+  "......"
+};
+
+static const char chica_p[8][6 + 1] = {
+  "#####.",
+  "#....#",
+  "#....#",
+  "#####.",
+  "#.....",
+  "#.....",
+  "#.....",
+  "......"
+};
+
+static const char chica_s[8][6 + 1] = {
+  "......",
+  "......",
+  "......",
+  "..###.",
+  ".#...#",
+  "#....#",
+  "#..###",
+  "......"
+};
+
+static const char chica_t[8][6 + 1] = {
+  "......",
+  "......",
+  "......",
+  "######",
+  "..#...",
+  "..#...",
+  "..###.",
+  "......"
+};
+
+static const char chica_u[8][6 + 1] = {
+  "......",
+  "......",
+  "......",
+  "#....#",
+  "#....#",
+  "#....#",
+  ".####.",
+  "......"
+};
+
+static const char chica_twopoints[8][6 + 1] = {
+  "......",
+  "......",
+  "..##..",
+  "......",
+  "..##..",
+  "......",
+  "......",
+  "......"
+};
+
+static const char chica_0[8][6 + 1] = {
+  ".####.",
+  "#....#",
+  "#....#",
+  "#.##.#",
+  "#....#",
+  "#....#",
+  ".####.",
+  "......"
+};
+
+static const char chica_1[8][6 + 1] = {
+  "..##..",
+  ".#.#..",
+  "#..#..",
+  "...#..",
+  "...#..",
+  "...#..",
+  "######",
+  "......"
+};
+
+static const char chica_2[8][6 + 1] = {
+  ".####.",
+  "#....#",
+  ".....#",
+  ".####.",
+  "#.....",
+  "#....#",
+  ".####.",
+  "......"
+};
+
+static const char chica_3[8][6 + 1] = {
+  ".####.",
+  "#....#",
+  ".....#",
+  "..###.",
+  ".....#",
+  "#....#",
+  ".####.",
+  "......"
+};
+
+static const char chica_4[8][6 + 1] = {
+  "#....#",
+  "#....#",
+  "#....#",
+  ".####.",
+  ".....#",
+  ".....#",
+  ".....#",
+  "......"
+};
+
+static const char chica_5[8][6 + 1] = {
+  ".#####",
+  "#.....",
+  "#.....",
+  ".####.",
+  ".....#",
+  ".....#",
+  "#####.",
+  "......"
+};
+
+static const char chica_6[8][6 + 1] = {
+  ".#####",
+  "#.....",
+  "#.....",
+  "#.###.",
+  "#....#",
+  "#....#",
+  ".####.",
+  "......"
+};
+
+static const char chica_7[8][6 + 1] = {
+  "#####.",
+  ".....#",
+  "....#.",
+  "...#..",
+  "..#...",
+  ".#....",
+  "#.....",
+  "......"
+};
+
+static const char chica_8[8][6 + 1] = {
+  ".####.",
+  "#....#",
+  "#....#",
+  ".####.",
+  "#....#",
+  "#....#",
+  ".####.",
+  "......"
+};
+
+static const char chica_9[8][6 + 1] = {
+  ".####.",
+  "#....#",
+  "#....#",
+  ".####.",
+  ".....#",
+  ".....#",
+  "#####.",
+  "......"
+};
+
+static const char chica_BLANK[8][6 + 1] = {
+  "......",
+  "......",
+  "......",
+  "......",
+  "......",
+  "......",
+  "......",
+  "......"
+};
+
+static const char (*obtenerCaracterGrande(char c))[13]{
+  if (c == 'E') return grande_E;
+  if (c == 'I') return grande_I;
+  if (c == 'N') return grande_N;
+  if (c == 'O') return grande_O;
+  if (c == 'P') return grande_P;
+  if (c == 'R') return grande_R;
+  if (c == 'S') return grande_S;
+  if (c == 'T') return grande_T;
+  if (c == 'U') return grande_U;
+  if (c == ':') return grande_TWOPOINTS;
+  if (c == '0') return grande_0;
+  if (c == '1') return grande_1;
+  if (c == '2') return grande_2;
+  if (c == '3') return grande_3;
+  if (c == '4') return grande_4;
+  if (c == '5') return grande_5;
+  if (c == '6') return grande_6;
+  if (c == '7') return grande_7;
+  if (c == '8') return grande_8;
+  if (c == '9') return grande_9;
+  return grande_BLANK;
+}
+
+static const char (*obtenerCaracterChica(char c))[7]{
+  if (c == 'n') return chica_n;
+  if (c == 'o') return chica_o;
+  if (c == 'p') return chica_p;
+  if (c == 's') return chica_s;
+  if (c == 't') return chica_t;
+  if (c == 'u') return chica_u;
+  if (c == ':') return chica_twopoints;
+  if (c == '0') return chica_0;
+  if (c == '1') return chica_1;
+  if (c == '2') return chica_2;
+  if (c == '3') return chica_3;
+  if (c == '4') return chica_4;
+  if (c == '5') return chica_5;
+  if (c == '6') return chica_6;
+  if (c == '7') return chica_7;
+  if (c == '8') return chica_8;
+  if (c == '9') return chica_9;
+  return chica_BLANK;
 }
 
 static void dibujarBloque(int x, int y, uint8_t color, int scale)
@@ -349,40 +568,47 @@ static void dibujarBloque(int x, int y, uint8_t color, int scale)
   }
 }
 
-void fuenteDibujarChar(char c, int x, int y, uint8_t color, int scale){
+void fuenteDibujarChar(TipoFuente tipo, char c, int x, int y, uint8_t color, int scale){
   if (scale < 1) scale = 1;
-  const char (*f)[FONT_WIDTH + 1] = getCaracter(c);
 
-  for (int fila = 0; fila < FONT_HEIGHT; fila++){
-    for (int col = 0; col < FONT_WIDTH; col++){
-      if (f[fila][col] != '#') continue;
-
-      int px = x + col * scale;
-      int py = y + fila * scale;
-
-      dibujarBloque(px, py, color, scale);
-
-      if (fila == 0 || col == 0){
-        dibujarBloque(px, py, PAL_REFLEJO, 1);
+  if (tipo == FUENTE_GRANDE){
+    const char (*f)[GRANDE_W + 1] = obtenerCaracterGrande(c);
+    for (int fila = 0; fila < GRANDE_H; fila++){
+      for (int col = 0; col < GRANDE_W; col++){
+        if (f[fila][col] != '#') continue;
+        int px = x + col * scale;
+        int py = y + fila * scale;
+        dibujarBloque(px, py, color, scale); 
+        if (fila == 0 || col == 0) dibujarBloque(px, py, PAL_REFLEJO, scale);
+      }
+    }
+  } else {
+    const char (*f)[CHICA_W + 1] = obtenerCaracterChica(c);
+    for (int fila = 0; fila < CHICA_H; fila++){
+      for (int col = 0; col < CHICA_W; col++){
+        if (f[fila][col] != '#') continue;
+        int px = x + col * scale;
+        int py = y + fila * scale;
+        dibujarBloque(px, py, color, scale); 
       }
     }
   }
 }
 
-void fuenteDibujarTexto(const char *s, int x, int y, uint8_t color, int scale, int spacing){
+void fuenteDibujarTexto(TipoFuente tipo, const char *s, int x, int y, uint8_t color, int scale, int spacing){
   if (!s) return;
   int cx = x;
   int cy = y;
-  int step = FONT_WIDTH * scale + spacing;
+  int step = (tipo == FUENTE_GRANDE ? 12 : 6) * scale + spacing;
 
   const char *aux = s;
 
   while (*aux != '\0'){
     if (*aux == '\n'){
       cx = x;
-      cy += FONT_HEIGHT * scale + spacing;
+      cy += (tipo == FUENTE_GRANDE ? 12 : 8) * scale + spacing;
     } else {
-      fuenteDibujarChar(*aux, cx, cy, color, scale);
+      fuenteDibujarChar(tipo, *aux, cx, cy, color, scale);
       cx += step;
     }
     aux++;
