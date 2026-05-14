@@ -26,6 +26,7 @@ int main()
     int puntaje=0;
     int gameOver=0;
     int pausa=0;
+    int gravedad=0;
     Tablero *t = tablero_crear();
     if (!t)
     {
@@ -89,7 +90,12 @@ int main()
                 rotar(&p, 1, t); // Rotar der
             }
 
-            gameOver=actualizarJuego(t, bolsa_actual, &indice, &p,&puntaje);
+
+            if(gravedad == 30)
+            {
+                gameOver=actualizarJuego(t, bolsa_actual, &indice, &p,&puntaje);
+                gravedad=0;
+            }
 
             graficosComenzarFrame();
             graficosDibujarTablero(t, &p);
@@ -106,10 +112,11 @@ int main()
             fuenteDibujarTexto(FUENTE_CHICA, scoreText, 10, 8, PAL_REFLEJO, 1, 1);
             graficosPresentarFrame();
 
-            gbt_esperar(150);
         }
+        gravedad++;
+        gbt_esperar(30);
     }
-    
+
     graficosCerrar();
     tablero_destruir(t);
     return 0;
