@@ -1,22 +1,23 @@
 #include "graficos.h"
 
 tGBT_ColorRGB paleta[CANT_COLORES] = {
-  {0x00, 0x00, 0x00}, // Negro
-  {0x55, 0xFF, 0xFF}, // Cyan
-  {0x55, 0x55, 0xFF}, // Azul
-  {0xAA, 0x55, 0x00}, // Marron
-  {0xFF, 0xFF, 0x55}, // Amarillo
-  {0x55, 0xFF, 0x55}, // Verde
-  {0xAA, 0x00, 0xAA}, // Violeta
-  {0xFF, 0x55, 0x55}, // Rojo
+  {0x02, 0x06, 0x17}, // Azul muy oscuro - celdas tablero
+  {0x55, 0xFF, 0xFF}, // Cyan - I
+  {0x55, 0x55, 0xFF}, // Azul - J
+  {0xAA, 0x55, 0x00}, // Marron - L
+  {0xFF, 0xFF, 0x55}, // Amarillo - O
+  {0x55, 0xFF, 0x55}, // Verde - S
+  {0xAA, 0x00, 0xAA}, // Violeta - T
+  {0xFF, 0x55, 0x55}, // Rojo - Z
   {0x00, 0x00, 0xAA}, // Azul oscuro
   {0x00, 0xAA, 0x00}, // Verde oscuro
-  {0x00, 0xAA, 0xAA}, // Cyan oscuro
+  {0x11, 0x18, 0x27}, // Cyan oscuro
   {0xAA, 0x00, 0x00}, // Rojo oscuro
-  {0x11, 0x11, 0x11}, // Gris oscuro
-  {0xCC, 0xCC, 0xCC}, // Gris claro
-  {0xFF, 0x55, 0xFF}, // Rosa
-  {0xFF, 0xFF, 0xFF}, // Transparente (GBT)
+  {0x1F, 0x29, 0x37}, // Gris acero oscuro - fondo tablero
+  {0xEF, 0xEF, 0xEF}, // Gris claro - reflejos
+  {0x47, 0x55, 0x69}, // Gris acero - bordes
+  {0x0F, 0x17, 0x2A}, // Azul - fondo layout
+  {0xFF, 0xFF, 0xFF}  // Transparente (GBT)
 };
 
 int graficosIniciar(void){
@@ -41,7 +42,7 @@ void graficosCerrar(void){
 }
 
 void graficosComenzarFrame(void){
-  gbt_borrar_backbuffer(12);
+  gbt_borrar_backbuffer(15);
 }
 
 void graficosPresentarFrame(void){
@@ -106,4 +107,53 @@ void graficosDibujarTablero(const Tablero *tablero, const PiezaActual *pieza){
       graficosDibujarCelda(color, (uint16_t)oX, (uint16_t)oY);
     }
   }
+}
+
+void graficosDibujarRect(int x, int y, int w, int h, uint8_t color){
+  for (int py = y; py < y + h; py++){
+    for (int px = x; px < x + w; px++){
+      gbt_dibujar_pixel(px, py, color);
+    }
+  }
+}
+
+void graficosDibujarBorde(int x, int y, int w, int h, uint8_t color, int grosor){
+  graficosDibujarRect(x, y, w, grosor, color); // borde superior
+  graficosDibujarRect(x, y + h - grosor, w, grosor, color); // borde inferior
+  graficosDibujarRect(x, y, grosor, h, color); // borde izq
+  graficosDibujarRect(x + w - grosor, y, grosor, h, color); // borde der
+}
+
+void graficosDibujarLayout(const Tablero *t){
+  int tableroW = t->columnas * PIXELES_CELDA + (t->columnas - 1) * PX_PADDING;
+  int tableroH = t->filasVisibles * PIXELES_CELDA + (t->filasVisibles - 1) * PX_PADDING;
+
+  int margin = 10;
+  int top = 18;
+  int gap = 15;
+
+  int tableroX = TABLERO_OFFSET_X;
+  int tableroY = TABLERO_OFFSET_Y;
+
+  int panelIzqX = margin;
+  int panelIzqY = top;
+  int panelIzqW = tableroX - gap - panelIzqX;
+  int panelIzqH = tableroH;
+
+  int panelDerX = tableroX + tableroW + gap;
+  int panelDerY = top;
+  int panelDerW = ANCHO_VENTANA - panelDerX - margin;
+  int panelDerH = tableroH;
+
+  graficosDibujarRect(panelIzqX, panelIzqY, panelIzqW, panelIzqH, 10);
+  graficosDibujarBorde(panelIzqX, panelIzqY, panelIzqW, panelIzqH, 14, 1);
+
+  graficosDibujarRect(panelDerX, panelDerY - 1, panelDerW, (panelDerH / 2), 10);
+  graficosDibujarBorde(panelDerX, panelDerY - 1, panelDerW, (panelDerH / 2), 14, 1);
+
+  graficosDibujarRect(panelDerX, panelDerY + (panelDerH / 2) + 1, panelDerW, (panelDerH / 2), 10);
+  graficosDibujarBorde(panelDerX, panelDerY + (panelDerH / 2) + 1, panelDerW, (panelDerH / 2), 14, 1);
+
+  graficosDibujarRect(tableroX - 4, tableroY - 4, tableroW + 8, tableroH + 8, 12);
+  graficosDibujarBorde(tableroX - 4, tableroY - 4, tableroW + 8, tableroH + 8, 14, 1);
 }
