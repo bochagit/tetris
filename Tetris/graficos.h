@@ -9,9 +9,9 @@
 #define ESCALA_VENTANA 3
 
 #define TABLERO_OFFSET_X 120
-#define TABLERO_OFFSET_Y 20
+#define TABLERO_OFFSET_Y 15
 
-#define CANT_COLORES 16
+#define CANT_COLORES 17
 
 #define PAL_FONDO 0
 #define PAL_I 1
@@ -35,5 +35,8 @@ void graficosPresentarFrame(void);
 
 void graficosDibujarTablero(const Tablero* tablero, const PiezaActual* pieza);
 void graficosDibujarCelda(uint8_t color, uint16_t oX, uint16_t oY);
+void graficosDibujarRect(int x, int y, int w, int h, uint8_t color);
+void graficosDibujarBorde(int x, int y, int w, int h, uint8_t color, int grosor);
+void graficosDibujarLayout(const Tablero *t);
 
 #endif // GRAFICOS_H_INCLUDED

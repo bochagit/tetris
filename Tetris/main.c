@@ -92,14 +92,15 @@ int main()
             gameOver=actualizarJuego(t, bolsa_actual, &indice, &p,&puntaje);
 
             graficosComenzarFrame();
+            graficosDibujarLayout(t);
             graficosDibujarTablero(t, &p);
 
-            fuenteDibujarChar(FUENTE_GRANDE, 'T', 125, 8, PAL_T, 1);
-            fuenteDibujarChar(FUENTE_GRANDE, 'E', 138, 8, PAL_O, 1);
-            fuenteDibujarChar(FUENTE_GRANDE, 'T', 151, 8, PAL_T, 1);
-            fuenteDibujarChar(FUENTE_GRANDE, 'R', 164, 8, PAL_J, 1);
-            fuenteDibujarChar(FUENTE_GRANDE, 'I', 177, 8, PAL_I, 1);
-            fuenteDibujarChar(FUENTE_GRANDE, 'S', 190, 8, PAL_S, 1);
+            fuenteDibujarChar(FUENTE_GRANDE, 'T', 125, 2, PAL_T, 1);
+            fuenteDibujarChar(FUENTE_GRANDE, 'E', 138, 2, PAL_O, 1);
+            fuenteDibujarChar(FUENTE_GRANDE, 'T', 151, 2, PAL_T, 1);
+            fuenteDibujarChar(FUENTE_GRANDE, 'R', 164, 2, PAL_J, 1);
+            fuenteDibujarChar(FUENTE_GRANDE, 'I', 177, 2, PAL_I, 1);
+            fuenteDibujarChar(FUENTE_GRANDE, 'S', 190, 2, PAL_S, 1);
 
             char scoreText[16];
             sprintf(scoreText, "puntos: %d", puntaje);
