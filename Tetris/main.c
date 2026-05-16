@@ -27,6 +27,12 @@ int main()
     int gameOver=0;
     int pausa=0;
     int gravedad=0;
+    int animacion = 0;
+    int animacion_filas[4];
+    int animacion_cont = 0;
+    int animacion_col = 0;
+    int animacion_delay = 0;
+
     Tablero *t = tablero_crear();
     if (!t)
     {
@@ -53,49 +59,80 @@ int main()
 
         if(!pausa)
         {
+            if (!animacion){
+                if (gbt_tecla_sostenida(GBTK_a)){
+                    if (puedeMover(&p, -1, 0, t)) p.columna--;
+                }
 
+                if (gbt_tecla_sostenida(GBTK_d)){
+                    if (puedeMover(&p, 1, 0, t)) p.columna++;
+                }
 
-            if (gbt_tecla_sostenida(GBTK_a))
-            {
-                if (puedeMover(&p, -1, 0, t))
-                {
-                    p.columna--;
+                if (gbt_tecla_sostenida(GBTK_s)){
+                    if (puedeMover(&p, 0, 1, t)){
+                        p.fila++;
+                        puntaje++;
+                    }
+                }
+
+                if (gbt_tecla_presionada(GBTK_q)){
+                    rotar(&p, 0, t); // Rotar izq
+                }
+
+                if (gbt_tecla_presionada(GBTK_e)){
+                    rotar(&p, 1, t); // Rotar der
                 }
             }
 
-            if (gbt_tecla_sostenida(GBTK_d))
+            if (animacion)
             {
-                if (puedeMover(&p, 1, 0, t))
+                animacion_delay++;
+                if (animacion_delay >= 1)   // 1=rapido, 2=medio, 3=lento
                 {
-                    p.columna++;
+                    animacion_delay = 0;
+                    for (int i = 0; i < animacion_cont; i++)
+                    {
+                        int filaAbs = animacion_filas[i];
+                        if (filaAbs >= 0 && filaAbs < t->filasTotales && animacion_col < t->columnas)
+                        {
+                            t->celdas[filaAbs][animacion_col] = '#';
+                        }
+                    }
+                    animacion_col++;
+                }
+
+                if (animacion_col >= t->columnas)
+                {
+                    compactarFilas(t, animacion_filas, animacion_cont);
+
+                    gameOver = crearNuevaPieza(bolsa_actual, &indice, &p, t);
+                    animacion = 0;
+                    animacion_cont = 0;
+                    animacion_col = 0;
+                    animacion_delay = 0;
                 }
             }
 
-            if (gbt_tecla_sostenida(GBTK_s))
+            if (!animacion && gravedad == 30)
             {
-                if (puedeMover(&p, 0, 1, t))
+                gameOver = actualizarJuego(t, bolsa_actual, &indice, &p, &puntaje);
+
+                int filasDetectadas[4];
+                int nfilas = tetrominosObtieneUltimasFilas(filasDetectadas);
+                if (nfilas > 0)
                 {
-                    p.fila++;
-                    puntaje++;
+                    animacion_cont = nfilas;
+                    for (int i = 0; i < nfilas; i++) animacion_filas[i] = filasDetectadas[i];
+                    animacion_col = 0;
+                    animacion_delay = 0;
+                    animacion = 1;
+
                 }
+
+                gravedad = 0;
             }
 
-            if (gbt_tecla_presionada(GBTK_q))
-            {
-                rotar(&p, 0, t); // Rotar izq
-            }
-
-            if (gbt_tecla_presionada(GBTK_e))
-            {
-                rotar(&p, 1, t); // Rotar der
-            }
-
-
-            if(gravedad == 30)
-            {
-                gameOver=actualizarJuego(t, bolsa_actual, &indice, &p,&puntaje);
-                gravedad=0;
-            }
+            if (animacion) gravedad = 0;
 
             graficosComenzarFrame();
             graficosDibujarLayout(t);

@@ -12,7 +12,7 @@ tGBT_ColorRGB paleta[CANT_COLORES] = {
   {0x00, 0x00, 0xAA}, // Azul oscuro
   {0x00, 0xAA, 0x00}, // Verde oscuro
   {0x11, 0x18, 0x27}, // Cyan oscuro
-  {0xAA, 0x00, 0x00}, // Rojo oscuro
+  {0x0F, 0x5B, 0x7F}, // Azul acero oscuro - Animacion
   {0x1F, 0x29, 0x37}, // Gris acero oscuro - fondo tablero
   {0xEF, 0xEF, 0xEF}, // Gris claro - reflejos
   {0x47, 0x55, 0x69}, // Gris acero - bordes
@@ -52,6 +52,7 @@ void graficosPresentarFrame(void){
 static uint8_t obtenerColorCelda(char celda){
   switch (celda){
     case '.': return PAL_FONDO;
+    case '#': return 11; // Animacion
     case 'I': return PAL_I;
     case 'J': return PAL_J;
     case 'L': return PAL_L;
@@ -95,7 +96,10 @@ void graficosDibujarTablero(const Tablero *tablero, const PiezaActual *pieza){
     for (int col = 0; col < tablero->columnas; col++){
       uint8_t color = PAL_FONDO;
 
-      if (pieza && piezaOcupaCelda(pieza, fila, col) == pieza->tipo){
+      if (tablero->celdas[fila][col] == '#'){
+        color = obtenerColorCelda('#');
+      }
+      else if (pieza && piezaOcupaCelda(pieza, fila, col) == pieza->tipo){
         color = obtenerColorCelda(pieza->tipo);
       } else {
         color = obtenerColorCelda(tablero->celdas[fila][col]);

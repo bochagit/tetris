@@ -222,8 +222,14 @@ int actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual* 
         fijarPieza(tablero, p);
         lineas=evaluarFilas(tablero);
         actualizarPuntaje(puntaje,lineas);
-        gameOver=crearNuevaPieza(bolsa,indiceBolsa,p,tablero);
+
+        if (lineas == 0){
+            gameOver=crearNuevaPieza(bolsa,indiceBolsa,p,tablero);
+        } else {
+            gameOver = 0;
+        }
     }
+    
     return gameOver;
 }
 
@@ -385,46 +391,118 @@ int rotar(PiezaActual *p, int dir, Tablero* t)
 
     return 1;
 }
-int evaluarFilas(Tablero *tablero)
-{
-    char** lectura=(tablero->celdas)+(tablero->filasTotales)-1;
-    char** escritura=(tablero->celdas)+(tablero->filasTotales)-1;
-    char** aux;
-    char** filasCompletas=malloc(sizeof(char*)*4);
-    if(!filasCompletas)
-        return -1;
 
-    int cantCompletas=0;
-    int i;
-    for(i=tablero->filasTotales-1;i>=tablero->filasOcultas;i--)
-    {
-        if(analizaLinea(*lectura,tablero->columnas))
-        {
-            aux=filasCompletas+cantCompletas;
-            *aux=*lectura;
-            cantCompletas++;
+static int ultimas_filas[4];
+static int ultimas_cant = 0;
+
+int evaluarFilas(Tablero *tablero){
+    int contador = 0;
+    for (int i = tablero->filasTotales - 1; i >= tablero->filasOcultas; i--){
+        if (analizaLinea(tablero->celdas[i], tablero->columnas)){
+            if (contador < 4) ultimas_filas[contador] = i;
+            contador++;
+            if (contador == 4) break;
         }
-        else
-        {
-            (*escritura)=(*lectura);
+    }
+
+    if (contador > 4) contador = 4;
+    ultimas_cant = contador;
+
+    return contador;
+}
+
+int tetrominosObtieneUltimasFilas(int *ult){
+    if (!ult) return 0;
+    for (int i = 0; i < ultimas_cant; i++) ult[i] = ultimas_filas[i];
+    return ultimas_cant;
+}
+
+// int evaluarFilas(Tablero *tablero)
+// {
+//     char** lectura=(tablero->celdas)+(tablero->filasTotales)-1;
+//     char** escritura=(tablero->celdas)+(tablero->filasTotales)-1;
+//     char** aux;
+//     char** filasCompletas=malloc(sizeof(char*)*4);
+//     if(!filasCompletas)
+//         return -1;
+
+//     int cantCompletas=0;
+//     int i;
+//     for(i=tablero->filasTotales-1;i>=tablero->filasOcultas;i--)
+//     {
+//         if(analizaLinea(*lectura,tablero->columnas))
+//         {
+//             aux=filasCompletas+cantCompletas;
+//             *aux=*lectura;
+//             cantCompletas++;
+//         }
+//         else
+//         {
+//             (*escritura)=(*lectura);
+//             escritura--;
+//         }
+//         lectura--;
+//     }
+//     aux=filasCompletas;
+//     for(i = 0; i < cantCompletas; i++)
+//     {
+//         limpiaLinea(*aux,tablero->columnas);
+//         *escritura=*aux;
+//         aux++;
+//         escritura--;
+//     }
+
+
+//     return cantCompletas;
+// }
+
+void compactarFilas(Tablero *tablero, const int *filas, int cant){
+    if (!tablero || !tablero->celdas || !filas || cant <= 0) return;
+
+    int total = tablero->filasTotales;
+    if (cant > 4) cant = 4;
+
+    int *marcadas = calloc(total, sizeof(int));
+    char **filasCompletas = malloc(sizeof(char*) * cant);
+
+    if (!marcadas || !filasCompletas){
+        free(marcadas);
+        free(filasCompletas);
+        return;
+    }
+
+    for (int i = 0; i < cant; i++){
+        if (filas[i] >= 0 && filas[i] < total){
+            marcadas[filas[i]] = 1;
+        }
+    }
+
+    int cantGuardadas = 0;
+    int escritura = total - 1;
+
+    for (int lectura = total - 1; lectura >= tablero->filasOcultas; lectura--){
+        if (marcadas[lectura]){
+            filasCompletas[cantGuardadas] = tablero->celdas[lectura];
+            cantGuardadas++;
+        } else {
+            if (escritura != lectura){
+                tablero->celdas[escritura] = tablero->celdas[lectura];
+            }
             escritura--;
         }
-        lectura--;
     }
-    aux=filasCompletas;
-    for(i = 0; i < cantCompletas; i++)
-    {
-        limpiaLinea(*aux,tablero->columnas);
-        *escritura=*aux;
-        aux++;
+
+    for (int i = 0; i < cantGuardadas; i++){
+        limpiaLinea(filasCompletas[i], tablero->columnas);
+        tablero->celdas[escritura] = filasCompletas[i];
         escritura--;
     }
 
-
-    return cantCompletas;
-
-
+    free(marcadas);
+    free(filasCompletas);
+    ultimas_cant = 0;
 }
+
 int analizaLinea(char* fila, int columnas)
 {
     int i;
