@@ -115,7 +115,7 @@ int main()
 
         }
         gravedad++;
-        gbt_esperar(30);
+        gbt_esperar(50);
     }
 
     graficosCerrar();

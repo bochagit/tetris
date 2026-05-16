@@ -387,9 +387,9 @@ int rotar(PiezaActual *p, int dir, Tablero* t)
 }
 int evaluarFilas(Tablero *tablero)
 {
-    char ** lectura=(tablero->celdas)+(tablero->filasTotales)-1;
-    char ** escritura=(tablero->celdas)+(tablero->filasTotales)-1;
-    char ** aux;
+    char** lectura=(tablero->celdas)+(tablero->filasTotales)-1;
+    char** escritura=(tablero->celdas)+(tablero->filasTotales)-1;
+    char** aux;
     char** filasCompletas=malloc(sizeof(char*)*4);
     if(!filasCompletas)
         return -1;
