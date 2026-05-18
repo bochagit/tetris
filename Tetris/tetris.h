@@ -25,6 +25,13 @@ typedef struct {
   char** tetromino;
 } PiezaActual;
 
+typedef enum {
+  ESTADO_MENU,
+  ESTADO_CORRIENDO,
+  ESTADO_PAUSA,
+  ESTADO_GAMEOVER,
+} EstadoJuego;
+
 
 void mezclarBolsa(char* bolsa, int n);
 void mostrarBolsa(char* bolsa, int n);

@@ -1,4 +1,5 @@
 #include "graficos.h"
+#include "fuentes.h"
 
 tGBT_ColorRGB paleta[CANT_COLORES] = {
   {0x02, 0x06, 0x17}, // Azul muy oscuro - celdas tablero
@@ -9,7 +10,7 @@ tGBT_ColorRGB paleta[CANT_COLORES] = {
   {0x55, 0xFF, 0x55}, // Verde - S
   {0xAA, 0x00, 0xAA}, // Violeta - T
   {0xFF, 0x55, 0x55}, // Rojo - Z
-  {0x00, 0x00, 0xAA}, // Azul oscuro
+  {0xBB, 0x00, 0x00}, // Rojo oscuro - Game Over
   {0x00, 0xAA, 0x00}, // Verde oscuro
   {0x11, 0x18, 0x27}, // Cyan oscuro
   {0x0F, 0x5B, 0x7F}, // Azul acero oscuro - Animacion
@@ -41,8 +42,8 @@ void graficosCerrar(void){
   gbt_cerrar();
 }
 
-void graficosComenzarFrame(void){
-  gbt_borrar_backbuffer(15);
+void graficosComenzarFrame(uint8_t color){
+  gbt_borrar_backbuffer(color);
 }
 
 void graficosPresentarFrame(void){
@@ -160,4 +161,22 @@ void graficosDibujarLayout(const Tablero *t){
 
   graficosDibujarRect(tableroX - 4, tableroY - 4, tableroW + 8, tableroH + 8, 12);
   graficosDibujarBorde(tableroX - 4, tableroY - 4, tableroW + 8, tableroH + 8, 14, 1);
+}
+
+void graficosDibujarJuego(const Tablero *t, const PiezaActual *p, int puntaje){
+  graficosComenzarFrame(15);
+  graficosDibujarLayout(t);
+  graficosDibujarTablero(t, p);
+
+  fuenteDibujarChar(FUENTE_GRANDE, 'T', 125, 2, PAL_T, 1);
+  fuenteDibujarChar(FUENTE_GRANDE, 'E', 138, 2, PAL_O, 1);
+  fuenteDibujarChar(FUENTE_GRANDE, 'T', 151, 2, PAL_T, 1);
+  fuenteDibujarChar(FUENTE_GRANDE, 'R', 164, 2, PAL_J, 1);
+  fuenteDibujarChar(FUENTE_GRANDE, 'I', 177, 2, PAL_I, 1);
+  fuenteDibujarChar(FUENTE_GRANDE, 'S', 190, 2, PAL_S, 1);
+
+  char scoreText[16];
+  sprintf(scoreText, "puntos: %d", puntaje);
+  fuenteDibujarTexto(FUENTE_CHICA, scoreText, 10, 8, PAL_REFLEJO, 1, 1);
+  graficosPresentarFrame();
 }
