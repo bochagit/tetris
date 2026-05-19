@@ -46,7 +46,7 @@ Desarrollar un videojuego equivalente al juego TETRIS utilizando la biblioteca G
 ## Checklist
 ### Funcionalidades minimas
 
-- [ ] Pantalla de presentación.
+- [x] Pantalla de presentación.
 - [ ] Documentación en el formato de nuestra preferencia explicando todo lo necesario para que un usuario pueda compilar, ejecutar y jugar.
 - [ ] Resoluciones lógicas: CGA: 320x200 y VGA: 640x480.
 - Sistema de puntuación
@@ -57,7 +57,7 @@ Desarrollar un videojuego equivalente al juego TETRIS utilizando la biblioteca G
    - [ ] Velocidad de la caída del tetrominó, la cual debe aumentar un 3% por cada 10 fichas caídas
    - [ ] Velocidad de fijación del tetrominó
    - [ ] A mayor velocidad, mayor los puntos obtenidos por el jugador.
-- [ ] Selección del tetrominó de forma aleatoria por algoritmo sin tendencias hacia ciertos tipos.
+- [x] Selección del tetrominó de forma aleatoria por algoritmo sin tendencias hacia ciertos tipos.
 - [ ] Solicitar nombre del jugador a través de interfaz gráfica.
 - [ ] Mostrar estadísticas del juego por nombre del jugador.
 - [x] Crear al menos dos sets de fuentes con diferentes tamaños.
