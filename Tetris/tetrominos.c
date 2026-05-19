@@ -29,7 +29,7 @@ int crearNuevaPieza(char* bolsa, int* indiceBolsa, PiezaActual *p, Tablero * t)
     p->tetromino = crearMatriz(4, 4);
     cargaMatriz(p->tetromino, 4, 4, '.');
     cargaPieza(p);
-    if(puedeMover(p,0,1,t))
+    if(puedeMover(p,0,CLASICO_FILAS_OCULTAS,t))
         return 0;
     else
         return 1;
@@ -229,7 +229,7 @@ int actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual* 
             gameOver = 0;
         }
     }
-    
+
     return gameOver;
 }
 

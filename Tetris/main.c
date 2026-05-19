@@ -66,7 +66,7 @@ int main()
                     animacion_cont = 0;
                     animacion_col = 0;
                     animacion_delay = 0;
-                    
+
                     if (p.tetromino){
                         destruyeMatriz(p.tetromino, 4);
                         p.tetromino = NULL;
@@ -193,7 +193,7 @@ int main()
                     animacion_cont = 0;
                     animacion_col = 0;
                     animacion_delay = 0;
-                    
+
                     if (p.tetromino){
                         destruyeMatriz(p.tetromino, 4);
                         p.tetromino = NULL;
@@ -205,7 +205,7 @@ int main()
                 }
 
                 if (gbt_tecla_presionada(GBTK_m)) estado = ESTADO_MENU;
-                
+
                 break;
         }
     }
