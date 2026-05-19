@@ -25,7 +25,6 @@ int main()
     int indice=0;
     int puntaje=0;
     int gameOver=0;
-    int lockDelay=0;
     int pausa=0;
     int gravedad=0;
     Tablero *t = tablero_crear();
@@ -92,11 +91,10 @@ int main()
 
 
 
-            if(gravedad == 30 || lockDelay==10)
+            if(gravedad >= 30)
             {
                 gameOver=actualizarJuego(t, bolsa_actual, &indice, &p,&puntaje);
                 gravedad=0;
-                lockDelay=0;
             }
             graficosComenzarFrame();
             graficosDibujarLayout(t);

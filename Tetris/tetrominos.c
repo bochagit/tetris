@@ -216,7 +216,6 @@ int actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual* 
     if(puedeMover(p, 0, 1, tablero))
     {
         p->fila++;
-        return 2;
     }
     else
     {
