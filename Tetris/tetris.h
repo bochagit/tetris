@@ -25,6 +25,13 @@ typedef struct {
   char** tetromino;
 } PiezaActual;
 
+typedef enum {
+  ESTADO_MENU,
+  ESTADO_CORRIENDO,
+  ESTADO_PAUSA,
+  ESTADO_GAMEOVER,
+} EstadoJuego;
+
 
 void mezclarBolsa(char* bolsa, int n);
 void mostrarBolsa(char* bolsa, int n);
@@ -42,5 +49,7 @@ int evaluarFilas(Tablero *tablero);
 int analizaLinea(char* fila, int columnas);
 void limpiaLinea(char* fila, int columnas);
 void actualizarPuntaje(int * puntaje,int lineas);
+int tetrominosObtieneUltimasFilas(int *ult);
+void compactarFilas(Tablero *tablero, const int *filas, int cant);
 
 #endif // TETRIS_H_INCLUDED

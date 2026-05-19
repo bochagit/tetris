@@ -30,7 +30,7 @@
 int graficosIniciar(void);
 void graficosCerrar(void);
 
-void graficosComenzarFrame(void);
+void graficosComenzarFrame(uint8_t color);
 void graficosPresentarFrame(void);
 
 void graficosDibujarTablero(const Tablero* tablero, const PiezaActual* pieza);
@@ -38,5 +38,9 @@ void graficosDibujarCelda(uint8_t color, uint16_t oX, uint16_t oY);
 void graficosDibujarRect(int x, int y, int w, int h, uint8_t color);
 void graficosDibujarBorde(int x, int y, int w, int h, uint8_t color, int grosor);
 void graficosDibujarLayout(const Tablero *t);
+void graficosDibujarMenu(void);
+void graficosDibujarJuego(const Tablero *t, const PiezaActual *p, int puntaje);
+void graficosDibujarPausa(void);
+void graficosDibujarGameOver(void);
 
 #endif // GRAFICOS_H_INCLUDED
