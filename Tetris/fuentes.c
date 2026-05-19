@@ -61,6 +61,21 @@ static const char grande_I[12][12 + 1] = {
   "............"
 };
 
+static const char grande_J[12][12 + 1] = {
+  "############",
+  "############",
+  "############",
+  "........####",
+  "........####",
+  "........####",
+  "###.....####",
+  "###.....####",
+  "############",
+  "############",
+  "############",
+  "............"
+};
+
 static const char grande_M[12][12 + 1] = {
   "#####...####",
   "######.#####",
@@ -222,6 +237,21 @@ static const char grande_TWOPOINTS[12][12 + 1] = {
   "....####....",
   "....####....",
   "....####....",
+  "............",
+  "............"
+};
+
+static const char grande_GUION[12][12 + 1] = {
+  "............",
+  "............",
+  "............",
+  "............",
+  "############",
+  "############",
+  "############",
+  "............",
+  "............",
+  "............",
   "............",
   "............"
 };
@@ -477,11 +507,11 @@ static const char chica_i[8][6 + 1] = {
 
 static const char chica_j[8][6 + 1] = {
   "......",
-  "...#..",
+  "....#.",
   "......",
-  "...#..",
-  "#..#..",
-  ".##...",
+  "....#.",
+  ".#..#.",
+  "..##..",
   "......",
   "......"
 };
@@ -811,6 +841,7 @@ static const char (*obtenerCaracterGrande(char c))[13]{
   if (c == 'E') return grande_E;
   if (c == 'G') return grande_G;
   if (c == 'I') return grande_I;
+  if (c == 'J') return grande_J;
   if (c == 'M') return grande_M;
   if (c == 'N') return grande_N;
   if (c == 'O') return grande_O;
@@ -821,6 +852,7 @@ static const char (*obtenerCaracterGrande(char c))[13]{
   if (c == 'U') return grande_U;
   if (c == 'V') return grande_V;
   if (c == ':') return grande_TWOPOINTS;
+  if (c == '-') return grande_GUION;
   if (c == '0') return grande_0;
   if (c == '1') return grande_1;
   if (c == '2') return grande_2;

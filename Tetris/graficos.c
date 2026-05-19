@@ -163,6 +163,28 @@ void graficosDibujarLayout(const Tablero *t){
   graficosDibujarBorde(tableroX - 4, tableroY - 4, tableroW + 8, tableroH + 8, 14, 1);
 }
 
+void graficosDibujarMenu(void){
+  graficosComenzarFrame(15);
+
+  fuenteDibujarTexto(FUENTE_GRANDE, "MENU", ANCHO_VENTANA / 2 - ((13 * strlen("MENU")) / 2), ALTO_VENTANA / 4, PAL_REFLEJO, 1, 1);
+
+  fuenteDibujarChar(FUENTE_GRANDE, 'T', ANCHO_VENTANA / 2 - ((26 * strlen("TETRIS")) / 2), 5, PAL_T, 2);
+  fuenteDibujarChar(FUENTE_GRANDE, 'E', ANCHO_VENTANA / 2 - ((26 * strlen("TETRIS")) / 2) + 26, 5, PAL_O, 2);
+  fuenteDibujarChar(FUENTE_GRANDE, 'T', ANCHO_VENTANA / 2 - ((26 * strlen("TETRIS")) / 2) + 52, 5, PAL_T, 2);
+  fuenteDibujarChar(FUENTE_GRANDE, 'R', ANCHO_VENTANA / 2 - ((26 * strlen("TETRIS")) / 2) + 78, 5, PAL_J, 2);
+  fuenteDibujarChar(FUENTE_GRANDE, 'I', ANCHO_VENTANA / 2 - ((26 * strlen("TETRIS")) / 2) + 104, 5, PAL_I, 2);
+  fuenteDibujarChar(FUENTE_GRANDE, 'S', ANCHO_VENTANA / 2 - ((26 * strlen("TETRIS")) / 2) + 130, 5, PAL_S, 2);
+
+  graficosDibujarRect(10, ALTO_VENTANA - (ALTO_VENTANA / 3) - 10, 25, 25, 12);
+  graficosDibujarRect(10 + 2, (ALTO_VENTANA - (ALTO_VENTANA / 3)) - 8, 25, 25, 0);
+  graficosDibujarBorde(10 + 2, (ALTO_VENTANA - (ALTO_VENTANA / 3)) - 8, 25, 25, 14, 1);
+  fuenteDibujarChar(FUENTE_GRANDE, 'J', (10 + 2) + ((25 - 13) / 2), ((ALTO_VENTANA - (ALTO_VENTANA / 3)) - 8) + ((25 - 13) / 2), PAL_REFLEJO, 1);
+
+  fuenteDibujarTexto(FUENTE_CHICA, "jugar", 10 + 30, (ALTO_VENTANA - (ALTO_VENTANA / 3)), PAL_REFLEJO, 1, 1);
+  
+  graficosPresentarFrame();
+}
+
 void graficosDibujarJuego(const Tablero *t, const PiezaActual *p, int puntaje){
   graficosComenzarFrame(15);
   graficosDibujarLayout(t);
@@ -178,5 +200,37 @@ void graficosDibujarJuego(const Tablero *t, const PiezaActual *p, int puntaje){
   char scoreText[16];
   sprintf(scoreText, "puntos: %d", puntaje);
   fuenteDibujarTexto(FUENTE_CHICA, scoreText, 10, 8, PAL_REFLEJO, 1, 1);
+  graficosPresentarFrame();
+}
+
+void graficosDibujarPausa(void){
+  graficosComenzarFrame(15);
+
+  fuenteDibujarTexto(FUENTE_CHICA, "pausa", (ANCHO_VENTANA / 2) - ((7 * strlen("pausa") / 2)), 90, PAL_REFLEJO, 1, 1);
+  fuenteDibujarTexto(FUENTE_CHICA, "pulsa -p- para continuar", (ANCHO_VENTANA / 2) - ((7 * strlen("pulsa -p- para continuar") / 2)), 110, PAL_REFLEJO, 1, 1);
+
+  graficosPresentarFrame();
+}
+
+void graficosDibujarGameOver(void){
+  graficosComenzarFrame(0);
+
+  fuenteDibujarTexto(FUENTE_GRANDE, "- GAME OVER -", (ANCHO_VENTANA / 2) - ((13 * strlen("- GAME OVER -") / 2)), 90, 8, 1, 1);
+
+  graficosDibujarRect(10, ALTO_VENTANA - (ALTO_VENTANA / 3) - 10, 25, 25, 12);
+  graficosDibujarRect(10 + 2, (ALTO_VENTANA - (ALTO_VENTANA / 3)) - 8, 25, 25, 0);
+  graficosDibujarBorde(10 + 2, (ALTO_VENTANA - (ALTO_VENTANA / 3)) - 8, 25, 25, 14, 1);
+  fuenteDibujarChar(FUENTE_GRANDE, 'R', (10 + 2) + ((25 - 13) / 2), ((ALTO_VENTANA - (ALTO_VENTANA / 3)) - 8) + ((25 - 13) / 2), PAL_REFLEJO, 1);
+
+  fuenteDibujarTexto(FUENTE_CHICA, "volver a jugar", 10 + 30, (ALTO_VENTANA - (ALTO_VENTANA / 3)), PAL_REFLEJO, 1, 1);
+
+  graficosDibujarRect(10, ALTO_VENTANA - (ALTO_VENTANA / 3) + 20, 25, 25, 12);
+  graficosDibujarRect(10 + 2, (ALTO_VENTANA - (ALTO_VENTANA / 3)) + 22, 25, 25, 0);
+  graficosDibujarBorde(10 + 2, (ALTO_VENTANA - (ALTO_VENTANA / 3)) + 22, 25, 25, 14, 1);
+  fuenteDibujarChar(FUENTE_GRANDE, 'M', (10 + 2) + ((25 - 13) / 2), ((ALTO_VENTANA - (ALTO_VENTANA / 3)) + 22) + ((25 - 13) / 2), PAL_REFLEJO, 1);
+
+  fuenteDibujarTexto(FUENTE_CHICA, "volver al menu", 10 + 30, (ALTO_VENTANA - (ALTO_VENTANA / 3)) + 30, PAL_REFLEJO, 1, 1);
+
+  
   graficosPresentarFrame();
 }

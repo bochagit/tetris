@@ -22,14 +22,16 @@ int main()
 {
     srand(time(NULL));
     char bolsa_actual[]={'I','J','L','O','S','T','Z'};
-    EstadoJuego estado = ESTADO_CORRIENDO; // Temporal en CORRIENDO hasta tener menu
+    PiezaActual p;
+    p.tetromino = NULL;
+    EstadoJuego estado = ESTADO_MENU; // Temporal en CORRIENDO hasta tener menu
 
     int indice=0;
     int puntaje=0;
     int gravedad=0;
 
-    int animacion = 0;
     int animacion_filas[4];
+    int animacion = 0;
     int animacion_cont = 0;
     int animacion_col = 0;
     int animacion_delay = 0;
@@ -40,11 +42,6 @@ int main()
         fprintf(stderr, "Error creando tablero\n");
         return 1;
     }
-
-    PiezaActual p;
-    p.tetromino = NULL;
-
-    crearNuevaPieza(bolsa_actual,&indice,&p,t);
 
     if (graficosIniciar() != 0){
         tablero_destruir(t);
@@ -58,7 +55,28 @@ int main()
 
         switch (estado){
             case ESTADO_MENU:
-                //Codigo para el menu
+                graficosDibujarMenu();
+
+                if (gbt_tecla_presionada(GBTK_j)){
+                    tablero_vaciar(t);
+                    indice=0;
+                    puntaje=0;
+                    gravedad=0;
+                    animacion = 0;
+                    animacion_cont = 0;
+                    animacion_col = 0;
+                    animacion_delay = 0;
+                    
+                    if (p.tetromino){
+                        destruyeMatriz(p.tetromino, 4);
+                        p.tetromino = NULL;
+                    }
+
+                    crearNuevaPieza(bolsa_actual, &indice, &p, t);
+
+                    estado = ESTADO_CORRIENDO;
+                }
+
                 break;
 
             case ESTADO_CORRIENDO:
@@ -155,10 +173,7 @@ int main()
             }
 
             case ESTADO_PAUSA:
-                graficosComenzarFrame(15);
-                fuenteDibujarTexto(FUENTE_CHICA, "pausa", (ANCHO_VENTANA / 2) - ((7 * strlen("pausa") / 2)), 90, PAL_REFLEJO, 1, 1);
-                fuenteDibujarTexto(FUENTE_CHICA, "pulsa -p- para continuar", (ANCHO_VENTANA / 2) - ((7 * strlen("pulsa -p- para continuar") / 2)), 110, PAL_REFLEJO, 1, 1);
-                graficosPresentarFrame();
+                graficosDibujarPausa();
 
                 if (gbt_tecla_presionada(GBTK_p))
                     estado = ESTADO_CORRIENDO;
@@ -167,20 +182,30 @@ int main()
                 break;
 
             case ESTADO_GAMEOVER:
-                int botonW = 110;
-                int botonH = 15;
-                graficosComenzarFrame(0);
-                fuenteDibujarTexto(FUENTE_GRANDE, "GAME OVER", (ANCHO_VENTANA / 2) - ((13 * strlen("GAME OVER") / 2)), 90, 8, 1, 1);
+                graficosDibujarGameOver();
 
-                graficosDibujarRect((ANCHO_VENTANA / 2) - (botonW / 2), ALTO_VENTANA - (ALTO_VENTANA / 2) + 15, botonW, botonH, 15);
-                graficosDibujarBorde((ANCHO_VENTANA / 2) - (botonW / 2), ALTO_VENTANA - (ALTO_VENTANA / 2) + 15, botonW, botonH, 14, 1);
-                fuenteDibujarTexto(FUENTE_CHICA, "jugar de nuevo", ((ANCHO_VENTANA / 2) - (botonW / 2)) + ((botonW - (7 * strlen("jugar de nuevo"))) / 2), ALTO_VENTANA - (ALTO_VENTANA / 2) + 15 + ((botonH - 8) / 2), PAL_REFLEJO, 1, 1);
+                if (gbt_tecla_presionada(GBTK_r)){
+                    tablero_vaciar(t);
+                    indice=0;
+                    puntaje=0;
+                    gravedad=0;
+                    animacion = 0;
+                    animacion_cont = 0;
+                    animacion_col = 0;
+                    animacion_delay = 0;
+                    
+                    if (p.tetromino){
+                        destruyeMatriz(p.tetromino, 4);
+                        p.tetromino = NULL;
+                    }
 
-                graficosDibujarRect((ANCHO_VENTANA / 2) - (botonW / 2), ALTO_VENTANA - (ALTO_VENTANA / 2) + 45, botonW, botonH, 15);
-                graficosDibujarBorde((ANCHO_VENTANA / 2) - (botonW / 2), ALTO_VENTANA - (ALTO_VENTANA / 2) + 45, botonW, botonH, 14, 1);
-                fuenteDibujarTexto(FUENTE_CHICA, "volver al menu", ((ANCHO_VENTANA / 2) - (botonW / 2)) + ((botonW - (7 * strlen("volver al menu"))) / 2), ALTO_VENTANA - (ALTO_VENTANA / 2) + 45 + ((botonH - 8) / 2), PAL_REFLEJO, 1, 1);
+                    crearNuevaPieza(bolsa_actual, &indice, &p, t);
 
-                graficosPresentarFrame();
+                    estado = ESTADO_CORRIENDO;
+                }
+
+                if (gbt_tecla_presionada(GBTK_m)) estado = ESTADO_MENU;
+                
                 break;
         }
     }
