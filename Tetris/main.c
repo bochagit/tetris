@@ -30,8 +30,9 @@ int main()
     int puntaje=0;
     int gravedad=0;
     int lockDelay=0;
-    int velocidadCaida=10;
+    int velocidadCaida=30;
     int contadorPiezas=0;
+    int timeFreeze=0;
     int lockDelayMaximo=velocidadCaida/2;
 
     Tablero *t = tablero_crear();
@@ -100,8 +101,13 @@ int main()
 
                 if (gbt_tecla_presionada(GBTK_p)) estado = ESTADO_PAUSA;
 
+                if (gbt_tecla_presionada(GBTK_f)) timeFreeze = !timeFreeze;
 
-                aplicarGravedad(t,&p,&lockDelay,&gravedad, velocidadCaida);
+
+                if(!timeFreeze)
+                {
+                    aplicarGravedad(t,&p,&lockDelay,&gravedad, velocidadCaida);
+                }
 
                 if(lockDelay >= lockDelayMaximo)
                 {
@@ -119,7 +125,10 @@ int main()
 
                 graficosDibujarJuego(t, &p, puntaje);
 
-                gravedad++;
+                if(!timeFreeze)
+                {
+                    gravedad++;
+                }
                 gbt_esperar(30);
                 break;
             }
