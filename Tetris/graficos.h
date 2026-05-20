@@ -4,13 +4,6 @@
 #include "GBT/gbt.h"
 #include "tablero.h"
 
-#define ANCHO_VENTANA 320
-#define ALTO_VENTANA 200
-#define ESCALA_VENTANA 3
-
-#define TABLERO_OFFSET_X 120
-#define TABLERO_OFFSET_Y 15
-
 #define CANT_COLORES 17
 
 #define PAL_FONDO 0
@@ -24,23 +17,21 @@
 
 #define PAL_REFLEJO 13
 
-#define PIXELES_CELDA 8
-#define PX_PADDING 1
-
-int graficosIniciar(void);
+int graficosIniciar(const Pantalla* pant);
 void graficosCerrar(void);
 
 void graficosComenzarFrame(uint8_t color);
 void graficosPresentarFrame(void);
 
-void graficosDibujarTablero(const Tablero* tablero, const PiezaActual* pieza);
-void graficosDibujarCelda(uint8_t color, uint16_t oX, uint16_t oY);
+void graficosDibujarTablero(const Pantalla* pant, const Tablero* tablero, const PiezaActual* pieza);
+void graficosDibujarCelda(const Pantalla* pant, uint8_t color, uint16_t oX, uint16_t oY);
 void graficosDibujarRect(int x, int y, int w, int h, uint8_t color);
 void graficosDibujarBorde(int x, int y, int w, int h, uint8_t color, int grosor);
-void graficosDibujarLayout(const Tablero *t);
-void graficosDibujarMenu(void);
-void graficosDibujarJuego(const Tablero *t, const PiezaActual *p, int puntaje);
-void graficosDibujarPausa(void);
-void graficosDibujarGameOver(void);
+void graficosDibujarLayout(const Tablero* t, const Pantalla* pant);
+void graficosDibujarMenu(const Pantalla* pant);
+void graficosDibujarJuego(const Pantalla* pant, const Tablero* t, const PiezaActual* p, int puntaje);
+void graficosDibujarPausa(const Pantalla* pant);
+void graficosDibujarGameOver(const Pantalla* pant);
+void graficosConfigurarResolucion(Pantalla* pant, int res, int escala);
 
 #endif // GRAFICOS_H_INCLUDED
