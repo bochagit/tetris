@@ -29,6 +29,10 @@ int main()
     int indice=0;
     int puntaje=0;
     int gravedad=0;
+    int lockDelay=0;
+    int velocidadCaida=10;
+    int contadorPiezas=0;
+    int lockDelayMaximo=velocidadCaida/2;
 
     Tablero *t = tablero_crear();
     if (!t)
@@ -96,15 +100,27 @@ int main()
 
                 if (gbt_tecla_presionada(GBTK_p)) estado = ESTADO_PAUSA;
 
-                if (gravedad == 30){
-                    if (actualizarJuego(t, bolsa_actual, &indice, &p, &puntaje)) estado = ESTADO_GAMEOVER;
-                    gravedad = 0;
+
+                aplicarGravedad(t,&p,&lockDelay,&gravedad, velocidadCaida);
+
+                if(lockDelay >= lockDelayMaximo)
+                {
+                    if(actualizarJuego(t,bolsa_actual,&indice,&p,&puntaje,&lockDelay)) estado = ESTADO_GAMEOVER;
+                    gravedad=0;
+                    contadorPiezas++;
+
+                }
+                if(contadorPiezas==10)
+                {
+                    velocidadCaida*=(0.97);
+                    contadorPiezas=0;
+                    lockDelayMaximo=velocidadCaida/2;
                 }
 
                 graficosDibujarJuego(t, &p, puntaje);
 
                 gravedad++;
-                gbt_esperar(50);
+                gbt_esperar(30);
                 break;
             }
 
@@ -125,7 +141,7 @@ int main()
                     indice=0;
                     puntaje=0;
                     gravedad=0;
-                    
+
                     if (p.tetromino){
                         destruyeMatriz(p.tetromino, 4);
                         p.tetromino = NULL;

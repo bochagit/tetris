@@ -210,22 +210,22 @@ void cargaPieza(PiezaActual *p)
     }
 }
 
-int actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual* p, int * puntaje)
+void aplicarGravedad(Tablero *tablero,PiezaActual* p, int* lockDelay,int *gravedad, int velocidadCaida)
 {
-    int lineas,gameOver=0;
-    if(puedeMover(p, 0, 1, tablero))
+    int puedeBajar=puedeMover(p, 0, 1, tablero);
+    if((*gravedad)>=velocidadCaida && puedeBajar)
     {
         p->fila++;
+        (*lockDelay)=0;
+        (*gravedad)=0;
     }
-    else
+    else if(!puedeBajar)
     {
-        fijarPieza(tablero, p);
-        lineas=evaluarFilas(tablero);
-        actualizarPuntaje(puntaje,lineas);
-        gameOver=crearNuevaPieza(bolsa,indiceBolsa,p,tablero);
+        (*lockDelay)++;
     }
 
-    return gameOver;
+
+    return;
 }
 
 bool puedeMover(PiezaActual *p, int dx, int dy, Tablero* t){
@@ -471,4 +471,17 @@ void actualizarPuntaje(int * puntaje,int lineas)
         break;
 
     }
+}
+int actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual* p, int * puntaje,int* lockDelay)
+{
+    int lineas,gameOver=0;
+
+    fijarPieza(tablero, p);
+    lineas=evaluarFilas(tablero);
+    actualizarPuntaje(puntaje,lineas);
+    gameOver=crearNuevaPieza(bolsa,indiceBolsa,p,tablero);
+    (*lockDelay)=0;
+
+
+    return gameOver;
 }
