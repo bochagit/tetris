@@ -11,8 +11,8 @@ tGBT_ColorRGB paleta[CANT_COLORES] = {
   {0xAA, 0x00, 0xAA}, // Violeta - T
   {0xFF, 0x55, 0x55}, // Rojo - Z
   {0xBB, 0x00, 0x00}, // Rojo oscuro - Game Over
-  {0x00, 0xAA, 0x00}, // Verde oscuro
-  {0x11, 0x18, 0x27}, // Cyan oscuro
+  {0x77, 0x77, 0x77}, // Ghost
+  {0x11, 0x18, 0x27}, // Cyan oscuro - fondo estadisticas
   {0x0F, 0x5B, 0x7F}, // Azul acero oscuro - Animacion
   {0x1F, 0x29, 0x37}, // Gris acero oscuro - fondo tablero
   {0xEF, 0xEF, 0xEF}, // Gris claro - reflejos
@@ -81,6 +81,7 @@ static uint8_t obtenerColorCelda(char celda){
     case 'S': return PAL_S;
     case 'T': return PAL_T;
     case 'Z': return PAL_Z;
+    case 'G': return PAL_GHOST;
     default: return PAL_FONDO;
   }
 };
@@ -111,20 +112,29 @@ void graficosDibujarTablero(const Pantalla* pant, const Tablero *tablero, const 
 
   int filaInicio = tablero->filasOcultas;
   int filaFin = filaInicio + tablero->filasVisibles;
+  int diferencia = (pieza->GhostFila - pieza->fila)-1;
 
   //Dibujo el tablero y la pieza
   for (int fila = filaInicio; fila < filaFin; fila++){
     for (int col = 0; col < tablero->columnas; col++){
       uint8_t color = PAL_FONDO;
 
-      if (tablero->celdas[fila][col] == '#'){
-        color = obtenerColorCelda('#');
-      }
-      else if (pieza && piezaOcupaCelda(pieza, fila, col) == pieza->tipo){
-        color = obtenerColorCelda(pieza->tipo);
-      } else {
-        color = obtenerColorCelda(tablero->celdas[fila][col]);
-      }
+        if (tablero->celdas[fila][col] == '#')
+        {
+            color = obtenerColorCelda('#');
+        }
+        else if(pieza && piezaOcupaCelda(pieza, fila, col) == pieza->tipo)
+        {
+            color = obtenerColorCelda(pieza->tipo);
+        }
+        else if (pieza && piezaOcupaCelda(pieza, fila-diferencia, col) == pieza->tipo)
+        {
+            color = obtenerColorCelda('G');}
+        else
+        {
+            color = obtenerColorCelda(tablero->celdas[fila][col]);
+        }
+
 
       int oX = col;
       int oY = fila - filaInicio;

@@ -29,6 +29,11 @@ int main(int argc, char *argv[]){
     int indice=0;
     int puntaje=0;
     int gravedad=0;
+    int lockDelay=0;
+    int velocidadCaida=33;
+    int contadorPiezas=0;
+    int timeFreeze=0;
+    int lockDelayMaximo=velocidadCaida/2;
 
     int res = 320;
     int escala = 3;
@@ -91,7 +96,7 @@ int main(int argc, char *argv[]){
                     if (puedeMover(&p, 1, 0, t)) p.columna++;
                 }
 
-                if (gbt_tecla_sostenida(GBTK_s)){
+                if (gbt_tecla_sostenida(GBTK_s) && !timeFreeze){
                     if (puedeMover(&p, 0, 1, t)){
                         p.fila++;
                         puntaje++;
@@ -108,15 +113,39 @@ int main(int argc, char *argv[]){
 
                 if (gbt_tecla_presionada(GBTK_p)) estado = ESTADO_PAUSA;
 
-                if (gravedad == 30){
-                    if (actualizarJuego(t, bolsa_actual, &indice, &p, &puntaje)) estado = ESTADO_GAMEOVER;
-                    gravedad = 0;
+                if (gbt_tecla_presionada(GBTK_f)) timeFreeze = !timeFreeze;
+
+                calcularGhost(&p,t);
+
+                if(gbt_tecla_presionada(GBTK_ESPACIO)) p.fila=p.GhostFila-1;
+
+
+                if(!timeFreeze)
+                {
+                    aplicarGravedad(t,&p,&lockDelay,&gravedad, velocidadCaida);
+                }
+
+                if(lockDelay >= lockDelayMaximo)
+                {
+                    if(actualizarJuego(t,bolsa_actual,&indice,&p,&puntaje,&lockDelay)) estado = ESTADO_GAMEOVER;
+                    gravedad=0;
+                    contadorPiezas++;
+
+                }
+                if(contadorPiezas==10)
+                {
+                    velocidadCaida*=(0.97);
+                    contadorPiezas=0;
+                    lockDelayMaximo=velocidadCaida/2;
                 }
 
                 graficosDibujarJuego(&pant, t, &p, puntaje);
 
-                gravedad++;
-                gbt_esperar(50);
+                if(!timeFreeze)
+                {
+                    gravedad++;
+                }
+                gbt_esperar(30);
                 break;
 
             case ESTADO_PAUSA:
@@ -136,7 +165,7 @@ int main(int argc, char *argv[]){
                     indice=0;
                     puntaje=0;
                     gravedad=0;
-                    
+
                     if (p.tetromino){
                         destruyeMatriz(p.tetromino, 4);
                         p.tetromino = NULL;

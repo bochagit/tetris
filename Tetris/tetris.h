@@ -32,6 +32,7 @@ typedef struct {
   char tipo;     // I, J, L, O, S, T, Z
   int fila;
   int columna;
+  int GhostFila;
   char** tetromino;
 } PiezaActual;
 
@@ -48,7 +49,7 @@ void mostrarBolsa(char* bolsa, int n);
 int crearNuevaPieza(char* bolsa, int* indiceBolsa, PiezaActual *p, Tablero * t);
 char siguientePieza(char* bolsa, int* indiceBolsa);
 void cargaPieza(PiezaActual *p);
-int actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual* p, int * puntaje);
+void aplicarGravedad(Tablero *tablero,PiezaActual* p, int* lockDelay,int *gravedad, int velocidadCaida);
 void fijarPieza(Tablero *tablero, PiezaActual *p);
 void render(Tablero *tablero, PiezaActual *p);
 char piezaOcupaCelda(const PiezaActual *p, int filaActual, int columnaActual);
@@ -61,5 +62,7 @@ void limpiaLinea(char* fila, int columnas);
 void actualizarPuntaje(int * puntaje,int lineas);
 int tetrominosObtieneUltimasFilas(int *ult);
 void compactarFilas(Tablero *tablero, const int *filas, int cant);
+int actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual* p, int * puntaje, int* lockDelay);
+void calcularGhost(PiezaActual *p,Tablero *t);
 
 #endif // TETRIS_H_INCLUDED
