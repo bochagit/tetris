@@ -11,6 +11,16 @@
 #include <time.h>
 
 typedef struct {
+  int anchoVentana;
+  int altoVentana;
+  int escala;
+  int tableroOffsetX;
+  int tableroOffsetY;
+  int pixelesCelda;
+  int pxPadding;
+} Pantalla;
+
+typedef struct {
   int filasVisibles;
   int filasOcultas;
   int filasTotales;

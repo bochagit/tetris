@@ -18,31 +18,46 @@ Entrega: Sí
 #include "graficos.h"
 #include "fuentes.h"
 
-int main()
-{
+int main(int argc, char *argv[]){
     srand(time(NULL));
     char bolsa_actual[]={'I','J','L','O','S','T','Z'};
     PiezaActual p;
     p.tetromino = NULL;
-    EstadoJuego estado = ESTADO_MENU; // Temporal en CORRIENDO hasta tener menu
+    EstadoJuego estado = ESTADO_MENU;
+    Pantalla pant;
 
     int indice=0;
     int puntaje=0;
     int gravedad=0;
     int lockDelay=0;
-    int velocidadCaida=33;
+    int velocidadCaida=20;
     int contadorPiezas=0;
     int timeFreeze=0;
     int lockDelayMaximo=velocidadCaida/2;
 
+    int res = 320;
+    int escala = 3;
+
+    for (int i = 1; i < argc - 1; i++){
+        if (strcmp(argv[i], "--resolucion") == 0){
+            res = atoi(argv[i + 1]);
+            if (res != 320 || res != 640) res = 320;
+        }
+        if (strcmp(argv[i], "--escala") == 0){
+            escala = atoi(argv[i + 1]);
+            if (escala <= 0) escala = 1;
+        }
+    }
+
+    graficosConfigurarResolucion(&pant, res, escala);
+
     Tablero *t = tablero_crear();
-    if (!t)
-    {
+    if (!t){
         fprintf(stderr, "Error creando tablero\n");
         return 1;
     }
 
-    if (graficosIniciar() != 0){
+    if (graficosIniciar(&pant) != 0){
         tablero_destruir(t);
         return 1;
     }
@@ -54,7 +69,7 @@ int main()
 
         switch (estado){
             case ESTADO_MENU:
-                graficosDibujarMenu();
+                graficosDibujarMenu(&pant);
 
                 if (gbt_tecla_presionada(GBTK_j)){
                     tablero_vaciar(t);
@@ -75,7 +90,6 @@ int main()
                 break;
 
             case ESTADO_CORRIENDO:
-            {
                 if (gbt_tecla_sostenida(GBTK_a)){
                     if (puedeMover(&p, -1, 0, t)) p.columna--;
                 }
@@ -127,18 +141,17 @@ int main()
                     lockDelayMaximo=velocidadCaida/2;
                 }
 
-                graficosDibujarJuego(t, &p, puntaje);
+                graficosDibujarJuego(&pant, t, &p, puntaje);
 
                 if(!timeFreeze)
                 {
                     gravedad++;
                 }
-                gbt_esperar(30);
+                gbt_esperar(50);
                 break;
-            }
 
             case ESTADO_PAUSA:
-                graficosDibujarPausa();
+                graficosDibujarPausa(&pant);
 
                 if (gbt_tecla_presionada(GBTK_p))
                     estado = ESTADO_CORRIENDO;
@@ -147,7 +160,7 @@ int main()
                 break;
 
             case ESTADO_GAMEOVER:
-                graficosDibujarGameOver();
+                graficosDibujarGameOver(&pant);
 
                 if (gbt_tecla_presionada(GBTK_r)){
                     tablero_vaciar(t);
