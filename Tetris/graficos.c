@@ -186,22 +186,38 @@ void graficosDibujarLayout(const Tablero *t, const Pantalla* pant){
 void graficosDibujarMenu(const Pantalla* pant){
   graficosComenzarFrame(15);
 
-  fuenteDibujarTexto(FUENTE_GRANDE, "MENU", pant->anchoVentana / 2 - ((13 * strlen("MENU")) / 2), pant->altoVentana / 4, PAL_REFLEJO, 1, 1);
+  int escalaTexto, escalaChar, escalaCharTitulo, botonH, botonW;
 
-  fuenteDibujarChar(FUENTE_GRANDE, 'T', pant->anchoVentana / 2 - ((26 * strlen("TETRIS")) / 2), 5, PAL_T, 2);
-  fuenteDibujarChar(FUENTE_GRANDE, 'E', pant->anchoVentana / 2 - ((26 * strlen("TETRIS")) / 2) + 26, 5, PAL_O, 2);
-  fuenteDibujarChar(FUENTE_GRANDE, 'T', pant->anchoVentana / 2 - ((26 * strlen("TETRIS")) / 2) + 52, 5, PAL_T, 2);
-  fuenteDibujarChar(FUENTE_GRANDE, 'R', pant->anchoVentana / 2 - ((26 * strlen("TETRIS")) / 2) + 78, 5, PAL_J, 2);
-  fuenteDibujarChar(FUENTE_GRANDE, 'I', pant->anchoVentana / 2 - ((26 * strlen("TETRIS")) / 2) + 104, 5, PAL_I, 2);
-  fuenteDibujarChar(FUENTE_GRANDE, 'S', pant->anchoVentana / 2 - ((26 * strlen("TETRIS")) / 2) + 130, 5, PAL_S, 2);
+  if (pant->anchoVentana == 320){
+    escalaTexto = 1;
+    escalaCharTitulo = 2;
+    escalaChar = 1;
+    botonW = 25;
+    botonH = 25;
+  } else {
+    escalaTexto = 2;
+    escalaChar = 3;
+    escalaCharTitulo = 3;
+    botonW = 50;
+    botonH = 50;
+  }
 
-  graficosDibujarRect(10, pant->altoVentana - (pant->altoVentana / 3) - 10, 25, 25, 12);
-  graficosDibujarRect(10 + 2, (pant->altoVentana - (pant->altoVentana / 3)) - 8, 25, 25, 0);
-  graficosDibujarBorde(10 + 2, (pant->altoVentana - (pant->altoVentana / 3)) - 8, 25, 25, 14, 1);
-  fuenteDibujarChar(FUENTE_GRANDE, 'J', (10 + 2) + ((25 - 13) / 2), ((pant->altoVentana - (pant->altoVentana / 3)) - 8) + ((25 - 13) / 2), PAL_REFLEJO, 1);
+  fuenteDibujarTexto(FUENTE_GRANDE, "MENU", pant->anchoVentana / 2 - ((13 * escalaTexto * strlen("MENU")) / 2), pant->altoVentana / 4, PAL_REFLEJO, escalaTexto, 1);
 
-  fuenteDibujarTexto(FUENTE_CHICA, "jugar", 10 + 30, (pant->altoVentana - (pant->altoVentana / 3)), PAL_REFLEJO, 1, 1);
-  
+  fuenteDibujarChar(FUENTE_GRANDE, 'T', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2), 20, PAL_T, escalaCharTitulo);
+  fuenteDibujarChar(FUENTE_GRANDE, 'E', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2) + 13 * escalaCharTitulo, 20, PAL_O, escalaCharTitulo);
+  fuenteDibujarChar(FUENTE_GRANDE, 'T', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2) + 26 * escalaCharTitulo, 20, PAL_T, escalaCharTitulo);
+  fuenteDibujarChar(FUENTE_GRANDE, 'R', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2) + 39 * escalaCharTitulo, 20, PAL_J, escalaCharTitulo);
+  fuenteDibujarChar(FUENTE_GRANDE, 'I', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2) + 52 * escalaCharTitulo, 20, PAL_I, escalaCharTitulo);
+  fuenteDibujarChar(FUENTE_GRANDE, 'S', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2) + 65 * escalaCharTitulo, 20, PAL_S, escalaCharTitulo);
+
+  graficosDibujarRect(((pant->anchoVentana / 2) - (botonW / 2)), pant->altoVentana - (pant->altoVentana / 3) - 10, botonW, botonH, 12);
+  graficosDibujarRect(((pant->anchoVentana / 2) - (botonW / 2)) + 2, (pant->altoVentana - (pant->altoVentana / 3)) - 8, botonW, botonH, 0);
+  graficosDibujarBorde(((pant->anchoVentana / 2) - (botonW / 2)) + 2, (pant->altoVentana - (pant->altoVentana / 3)) - 8, botonW, botonH, 14, 1);
+  fuenteDibujarChar(FUENTE_GRANDE, 'J', ((pant->anchoVentana / 2) - ((12 * escalaChar) / 2)), ((pant->altoVentana - (pant->altoVentana / 3)) - 8) + ((botonH - (12 * escalaChar)) / 2), PAL_REFLEJO, escalaChar);
+
+  fuenteDibujarTexto(FUENTE_CHICA, "jugar", (pant->anchoVentana / 2) - ((6 * escalaTexto * strlen("jugar")) / 2), (pant->altoVentana - (pant->altoVentana / 3) - (botonH / 2)) - 10, PAL_REFLEJO, escalaTexto, 1);
+
   graficosPresentarFrame();
 }
 
@@ -251,6 +267,6 @@ void graficosDibujarGameOver(const Pantalla* pant){
 
   fuenteDibujarTexto(FUENTE_CHICA, "volver al menu", 10 + 30, (pant->altoVentana - (pant->altoVentana / 3)) + 30, PAL_REFLEJO, 1, 1);
 
-  
+
   graficosPresentarFrame();
 }

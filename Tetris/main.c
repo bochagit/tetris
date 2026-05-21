@@ -23,7 +23,7 @@ int main(int argc, char *argv[]){
     char bolsa_actual[]={'I','J','L','O','S','T','Z'};
     PiezaActual p;
     p.tetromino = NULL;
-    EstadoJuego estado = ESTADO_MENU; // Temporal en CORRIENDO hasta tener menu
+    EstadoJuego estado = ESTADO_MENU;
     Pantalla pant;
 
     int indice=0;
