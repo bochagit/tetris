@@ -30,7 +30,7 @@ int main()
     int puntaje=0;
     int gravedad=0;
     int lockDelay=0;
-    int velocidadCaida=30;
+    int velocidadCaida=33;
     int contadorPiezas=0;
     int timeFreeze=0;
     int lockDelayMaximo=velocidadCaida/2;
@@ -84,7 +84,7 @@ int main()
                     if (puedeMover(&p, 1, 0, t)) p.columna++;
                 }
 
-                if (gbt_tecla_sostenida(GBTK_s)){
+                if (gbt_tecla_sostenida(GBTK_s) && !timeFreeze){
                     if (puedeMover(&p, 0, 1, t)){
                         p.fila++;
                         puntaje++;
@@ -102,6 +102,10 @@ int main()
                 if (gbt_tecla_presionada(GBTK_p)) estado = ESTADO_PAUSA;
 
                 if (gbt_tecla_presionada(GBTK_f)) timeFreeze = !timeFreeze;
+
+                calcularGhost(&p,t);
+
+                if(gbt_tecla_presionada(GBTK_ESPACIO)) p.fila=p.GhostFila-1;
 
 
                 if(!timeFreeze)

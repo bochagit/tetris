@@ -22,6 +22,7 @@ typedef struct {
   char tipo;     // I, J, L, O, S, T, Z
   int fila;
   int columna;
+  int GhostFila;
   char** tetromino;
 } PiezaActual;
 
@@ -52,5 +53,6 @@ void actualizarPuntaje(int * puntaje,int lineas);
 int tetrominosObtieneUltimasFilas(int *ult);
 void compactarFilas(Tablero *tablero, const int *filas, int cant);
 int actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual* p, int * puntaje, int* lockDelay);
+void calcularGhost(PiezaActual *p,Tablero *t);
 
 #endif // TETRIS_H_INCLUDED

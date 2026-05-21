@@ -485,3 +485,12 @@ int actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual* 
 
     return gameOver;
 }
+void calcularGhost(PiezaActual *p,Tablero *t)
+{
+    int dy=0;
+    while(puedeMover(p,0,dy,t))
+    {
+        dy++;
+    }
+    p->GhostFila=dy+p->fila;
+}
