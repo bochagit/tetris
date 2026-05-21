@@ -30,7 +30,7 @@ int main(int argc, char *argv[]){
     int puntaje=0;
     int gravedad=0;
     int lockDelay=0;
-    int velocidadCaida=33;
+    int velocidadCaida=20;
     int contadorPiezas=0;
     int timeFreeze=0;
     int lockDelayMaximo=velocidadCaida/2;
@@ -41,9 +41,11 @@ int main(int argc, char *argv[]){
     for (int i = 1; i < argc - 1; i++){
         if (strcmp(argv[i], "--resolucion") == 0){
             res = atoi(argv[i + 1]);
+            if (res != 320 || res != 640) res = 320;
         }
         if (strcmp(argv[i], "--escala") == 0){
             escala = atoi(argv[i + 1]);
+            if (escala <= 0) escala = 1;
         }
     }
 
@@ -145,7 +147,7 @@ int main(int argc, char *argv[]){
                 {
                     gravedad++;
                 }
-                gbt_esperar(30);
+                gbt_esperar(50);
                 break;
 
             case ESTADO_PAUSA:
