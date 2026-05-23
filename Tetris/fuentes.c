@@ -1,7 +1,7 @@
 #include "fuentes.h"
 #include "graficos.h"
 
-static const char grande_A[12][12 + 1] = {
+static const char* grande_A[] = {
   "..########..",
   ".##########.",
   "############",
@@ -16,7 +16,52 @@ static const char grande_A[12][12 + 1] = {
   "............"
 };
 
-static const char grande_E[12][12 + 1] = {
+static const char* grande_B[] = {
+  "############",
+  "############",
+  "############",
+  "###......###",
+  "###########.",
+  "########....",
+  "###########.",
+  "###......###",
+  "############",
+  "############",
+  "############",
+  "............"
+};
+
+static const char* grande_C[] = {
+  "############",
+  "############",
+  "############",
+  "###.........",
+  "###.........",
+  "###.........",
+  "###.........",
+  "###.........",
+  "############",
+  "############",
+  "############",
+  "............"
+};
+
+static const char* grande_D[] = {
+  "#########...",
+  "##########..",
+  "###########.",
+  "###......###",
+  "###......###",
+  "###......###",
+  "###......###",
+  "###......###",
+  "###########.",
+  "##########..",
+  "#########...",
+  "............"
+};
+
+static const char* grande_E[] = {
   "############",
   "############",
   "############",
@@ -31,7 +76,22 @@ static const char grande_E[12][12 + 1] = {
   "............"
 };
 
-static const char grande_G[12][12 + 1] = {
+static const char* grande_F[] = {
+  "############",
+  "############",
+  "############",
+  "###.........",
+  "#######.....",
+  "#######.....",
+  "#######.....",
+  "###.........",
+  "###.........",
+  "###.........",
+  "###.........",
+  "............"
+};
+
+static const char* grande_G[] = {
   "############",
   "############",
   "############",
@@ -46,7 +106,22 @@ static const char grande_G[12][12 + 1] = {
   "............"
 };
 
-static const char grande_I[12][12 + 1] = {
+static const char* grande_H[] = {
+  "###......###",
+  "###......###",
+  "###......###",
+  "###......###",
+  "############",
+  "############",
+  "############",
+  "###......###",
+  "###......###",
+  "###......###",
+  "###......###",
+  "............"
+};
+
+static const char* grande_I[] = {
   "############",
   "############",
   "############",
@@ -61,7 +136,7 @@ static const char grande_I[12][12 + 1] = {
   "............"
 };
 
-static const char grande_J[12][12 + 1] = {
+static const char* grande_J[] = {
   "############",
   "############",
   "############",
@@ -76,7 +151,37 @@ static const char grande_J[12][12 + 1] = {
   "............"
 };
 
-static const char grande_M[12][12 + 1] = {
+static const char* grande_K[] = {
+  "###.....####",
+  "###....####.",
+  "###...####..",
+  "###.####....",
+  "#######.....",
+  "#######.....",
+  "#######.....",
+  "###..####...",
+  "###...####..",
+  "###....####.",
+  "###.....####",
+  "............"
+};
+
+static const char* grande_L[] = {
+  "###.........",
+  "###.........",
+  "###.........",
+  "###.........",
+  "###.........",
+  "###.........",
+  "###.........",
+  "###.........",
+  "############",
+  "############",
+  "############",
+  "............"
+};
+
+static const char* grande_M[] = {
   "#####...####",
   "######.#####",
   "###.####.###",
@@ -91,7 +196,7 @@ static const char grande_M[12][12 + 1] = {
   "............"
 };
 
-static const char grande_N[12][12 + 1] = {
+static const char* grande_N[] = {
   "#####....###",
   "######...###",
   "###.###..###",
@@ -106,7 +211,7 @@ static const char grande_N[12][12 + 1] = {
   "............"
 };
 
-static const char grande_O[12][12 + 1] = {
+static const char* grande_O[] = {
   "############",
   "############",
   "############",
@@ -121,7 +226,7 @@ static const char grande_O[12][12 + 1] = {
   "............"
 };
 
-static const char grande_P[12][12 + 1] = {
+static const char* grande_P[] = {
   "############",
   "############",
   "############",
@@ -136,7 +241,22 @@ static const char grande_P[12][12 + 1] = {
   "............"
 };
 
-static const char grande_R[12][12 + 1] = {
+static const char* grande_Q[] = {
+  "############",
+  "############",
+  "############",
+  "###......###",
+  "###......###",
+  "###......###",
+  "###..###.###",
+  "###..###.###",
+  "############",
+  "############",
+  ".....###....",
+  "............"
+};
+
+static const char* grande_R[] = {
   "##########..",
   "###########.",
   "###....#####",
@@ -151,7 +271,7 @@ static const char grande_R[12][12 + 1] = {
   "............"
 };
 
-static const char grande_S[12][12 + 1] = {
+static const char* grande_S[] = {
   "############",
   "############",
   "############",
@@ -166,7 +286,7 @@ static const char grande_S[12][12 + 1] = {
   "............"
 };
 
-static const char grande_T[12][12 + 1] = {
+static const char* grande_T[] = {
   "############",
   "############",
   "############",
@@ -181,7 +301,7 @@ static const char grande_T[12][12 + 1] = {
   "............"
 };
 
-static const char grande_U[12][12 + 1] = {
+static const char* grande_U[] = {
   "###......###",
   "###......###",
   "###......###",
@@ -196,7 +316,7 @@ static const char grande_U[12][12 + 1] = {
   "............"
 };
 
-static const char grande_V[12][12 + 1] = {
+static const char* grande_V[] = {
   "###......###",
   "###......###",
   "###......###",
@@ -211,14 +331,89 @@ static const char grande_V[12][12 + 1] = {
   "............"
 };
 
-static const char grande_BLANK[12][12 + 1] = {
+static const char* grande_W[] = {
+  "###......###",
+  "###......###",
+  "###......###",
+  "###......###",
+  "###......###",
+  "###......###",
+  "###......###",
+  "###..##..###",
+  "###.####.###",
+  "######.#####",
+  "#####...####",
+  "............"
+};
+
+static const char* grande_X[] = {
+  "###......###",
+  "###.....###.",
+  ".###...###..",
+  "..###.###...",
+  "...#####....",
+  "....###.....",
+  "...#####....",
+  "..###.###...",
+  ".###...###..",
+  "###.....###.",
+  "###......###",
+  "............"
+};
+
+static const char* grande_Y[] = {
+  "###......###",
+  "###......###",
+  "###......###",
+  "..###..###..",
+  "....####....",
+  "....####....",
+  "....####....",
+  "....####....",
+  "....####....",
+  "....####....",
+  "....####....",
+  "............"
+};
+
+static const char* grande_Z[] = {
+  "############",
+  "############",
+  "############",
+  "........####",
+  ".......###..",
+  ".....###....",
+  "...###......",
+  "####........",
+  "############",
+  "############",
+  "############",
+  "............"
+};
+
+static const char* grande_TWOPOINTS[] = {
+  "............",
+  "....####....",
+  "....####....",
+  "....####....",
+  "............",
+  "............",
+  "............",
+  "....####....",
+  "....####....",
+  "....####....",
+  "............",
+  "............"
+};
+
+static const char* grande_GUION[] = {
   "............",
   "............",
   "............",
   "............",
-  "............",
-  "............",
-  "............",
+  "############",
+  "############",
+  "############",
   "............",
   "............",
   "............",
@@ -226,37 +421,7 @@ static const char grande_BLANK[12][12 + 1] = {
   "............"
 };
 
-static const char grande_TWOPOINTS[12][12 + 1] = {
-  "............",
-  "....####....",
-  "....####....",
-  "....####....",
-  "............",
-  "............",
-  "............",
-  "....####....",
-  "....####....",
-  "....####....",
-  "............",
-  "............"
-};
-
-static const char grande_GUION[12][12 + 1] = {
-  "............",
-  "............",
-  "............",
-  "............",
-  "############",
-  "############",
-  "############",
-  "............",
-  "............",
-  "............",
-  "............",
-  "............"
-};
-
-static const char grande_0[12][12 + 1] = {
+static const char* grande_0[] = {
   "############",
   "############",
   "############",
@@ -271,7 +436,7 @@ static const char grande_0[12][12 + 1] = {
   "............"
 };
 
-static const char grande_1[12][12 + 1] = {
+static const char* grande_1[] = {
   "..######....",
   ".#######....",
   "###..###....",
@@ -286,7 +451,7 @@ static const char grande_1[12][12 + 1] = {
   "............"
 };
 
-static const char grande_2[12][12 + 1] = {
+static const char* grande_2[] = {
   "############",
   "############",
   "############",
@@ -301,7 +466,7 @@ static const char grande_2[12][12 + 1] = {
   "............"
 };
 
-static const char grande_3[12][12 + 1] = {
+static const char* grande_3[] = {
   "############",
   "############",
   "############",
@@ -316,7 +481,7 @@ static const char grande_3[12][12 + 1] = {
   "............"
 };
 
-static const char grande_4[12][12 + 1] = {
+static const char* grande_4[] = {
   "###....#####",
   "###....#####",
   "###....#####",
@@ -331,7 +496,7 @@ static const char grande_4[12][12 + 1] = {
   "............"
 };
 
-static const char grande_5[12][12 + 1] = {
+static const char* grande_5[] = {
   "############",
   "############",
   "############",
@@ -346,7 +511,7 @@ static const char grande_5[12][12 + 1] = {
   "............"
 };
 
-static const char grande_6[12][12 + 1] = {
+static const char* grande_6[] = {
   "############",
   "############",
   "############",
@@ -361,7 +526,7 @@ static const char grande_6[12][12 + 1] = {
   "............"
 };
 
-static const char grande_7[12][12 + 1] = {
+static const char* grande_7[] = {
   "############",
   "############",
   "############",
@@ -376,7 +541,7 @@ static const char grande_7[12][12 + 1] = {
   "............"
 };
 
-static const char grande_8[12][12 + 1] = {
+static const char* grande_8[] = {
   "############",
   "############",
   "############",
@@ -391,7 +556,7 @@ static const char grande_8[12][12 + 1] = {
   "............"
 };
 
-static const char grande_9[12][12 + 1] = {
+static const char* grande_9[] = {
   "############",
   "############",
   "############",
@@ -406,7 +571,7 @@ static const char grande_9[12][12 + 1] = {
   "............"
 };
 
-static const char grande_TROFEO[12][12 + 1] = {
+static const char* grande_TROFEO[] = {
   "............",
   ".##########.",
   ".##########.",
@@ -421,7 +586,7 @@ static const char grande_TROFEO[12][12 + 1] = {
   "............"
 };
 
-static const char grande_ESTRELLA[12][12 + 1] = {
+static const char* grande_ESTRELLA[] = {
   "............",
   ".....##.....",
   "....####....",
@@ -436,22 +601,22 @@ static const char grande_ESTRELLA[12][12 + 1] = {
   "............"
 };
 
-static const char grande_LINEAS[12][12 + 1] = {
+static const char* grande_LINEAS[] = {
   "............",
-  "###........",
-  "###........",
-  "###........",
-  "###........",
-  "###.###....",
-  "###.###....",
-  "###.###....",
-  "###.###....",
-  "###.###.###",
-  "###.###.###",
+  "###.........",
+  "###.........",
+  "###.........",
+  "###.........",
+  "###.###.....",
+  "###.###.....",
+  "###.###.....",
+  "###.###.....",
+  "###.###.###.",
+  "###.###.###.",
   "............"
 };
 
-static const char grande_RECORD[12][12 + 1] = {
+static const char* grande_RECORD[] = {
   "............",
   ".#........#.",
   "............",
@@ -466,7 +631,52 @@ static const char grande_RECORD[12][12 + 1] = {
   "............"
 };
 
-static const char chica_a[8][6 + 1] = {
+static const char* grande_ARRIBA[] = {
+  "............",
+  "............",
+  ".....##.....",
+  "....####....",
+  "...##..##...",
+  "..##....##..",
+  ".##......##.",
+  "##..####..##",
+  "#.###..###.#",
+  "###......###",
+  "............",
+  "............"
+};
+
+static const char* grande_ABAJO[] = {
+  "............",
+  "............",
+  "###......###",
+  "#.###..###.#",
+  "##..####..##",
+  ".##......##.",
+  "..##....##..",
+  "...##..##...",
+  "....####....",
+  ".....##.....",
+  "............",
+  "............"
+};
+
+static const char* grande_BLANK[] = {
+  "............",
+  "............",
+  "............",
+  "............",
+  "............",
+  "............",
+  "............",
+  "............",
+  "............",
+  "............",
+  "............",
+  "............"
+};
+
+static const char* chica_a[] = {
   "......",
   "......",
   ".###..",
@@ -477,7 +687,7 @@ static const char chica_a[8][6 + 1] = {
   "......"
 };
 
-static const char chica_b[8][6 + 1] = {
+static const char* chica_b[] = {
   "......",
   "#.....",
   "#.....",
@@ -488,7 +698,7 @@ static const char chica_b[8][6 + 1] = {
   "......"
 };
 
-static const char chica_c[8][6 + 1] = {
+static const char* chica_c[] = {
   "......",
   "......",
   ".#####",
@@ -499,7 +709,7 @@ static const char chica_c[8][6 + 1] = {
   "......"
 };
 
-static const char chica_d[8][6 + 1] = {
+static const char* chica_d[] = {
   "......",
   ".....#",
   ".....#",
@@ -510,7 +720,7 @@ static const char chica_d[8][6 + 1] = {
   "......"
 };
 
-static const char chica_e[8][6 + 1] = {
+static const char* chica_e[] = {
   "......",
   ".####.",
   "#....#",
@@ -521,7 +731,7 @@ static const char chica_e[8][6 + 1] = {
   "......"
 };
 
-static const char chica_f[8][6 + 1] = {
+static const char* chica_f[] = {
   "......",
   "......",
   "..####",
@@ -532,7 +742,7 @@ static const char chica_f[8][6 + 1] = {
   "......"
 };
 
-static const char chica_g[8][6 + 1] = {
+static const char* chica_g[] = {
   "......",
   "......",
   ".####.",
@@ -543,7 +753,7 @@ static const char chica_g[8][6 + 1] = {
   "......"
 };
 
-static const char chica_h[8][6 + 1] = {
+static const char* chica_h[] = {
   "......",
   "#.....",
   "#.....",
@@ -554,7 +764,7 @@ static const char chica_h[8][6 + 1] = {
   "......"
 };
 
-static const char chica_i[8][6 + 1] = {
+static const char* chica_i[] = {
   "......",
   "...#..",
   "......",
@@ -565,7 +775,7 @@ static const char chica_i[8][6 + 1] = {
   "......"
 };
 
-static const char chica_j[8][6 + 1] = {
+static const char* chica_j[] = {
   "......",
   "....#.",
   "......",
@@ -576,7 +786,7 @@ static const char chica_j[8][6 + 1] = {
   "......"
 };
 
-static const char chica_k[8][6 + 1] = {
+static const char* chica_k[] = {
   "......",
   "......",
   "#.#...",
@@ -587,7 +797,7 @@ static const char chica_k[8][6 + 1] = {
   "......"
 };
 
-static const char chica_l[8][6 + 1] = {
+static const char* chica_l[] = {
   "......",
   "......",
   "#.....",
@@ -598,7 +808,7 @@ static const char chica_l[8][6 + 1] = {
   "......"
 };
 
-static const char chica_m[8][6 + 1] = {
+static const char* chica_m[] = {
   "......",
   "......",
   ".#..#.",
@@ -609,7 +819,7 @@ static const char chica_m[8][6 + 1] = {
   "......"
 };
 
-static const char chica_n[8][6 + 1] = {
+static const char* chica_n[] = {
   "......",
   "......",
   ".####.",
@@ -620,7 +830,7 @@ static const char chica_n[8][6 + 1] = {
   "......"
 };
 
-static const char chica_o[8][6 + 1] = {
+static const char* chica_o[] = {
   "......",
   "......",
   ".####.",
@@ -631,7 +841,7 @@ static const char chica_o[8][6 + 1] = {
   "......"
 };
 
-static const char chica_p[8][6 + 1] = {
+static const char* chica_p[] = {
   "......",
   "......",
   "..###.",
@@ -642,7 +852,7 @@ static const char chica_p[8][6 + 1] = {
   "......"
 };
 
-static const char chica_q[8][6 + 1] = {
+static const char* chica_q[] = {
   "......",
   "......",
   ".####.",
@@ -653,7 +863,7 @@ static const char chica_q[8][6 + 1] = {
   "......"
 };
 
-static const char chica_r[8][6 + 1] = {
+static const char* chica_r[] = {
   "......",
   "......",
   "#.###.",
@@ -664,7 +874,7 @@ static const char chica_r[8][6 + 1] = {
   "......"
 };
 
-static const char chica_s[8][6 + 1] = {
+static const char* chica_s[] = {
   "......",
   "......",
   "..###.",
@@ -675,7 +885,7 @@ static const char chica_s[8][6 + 1] = {
   "......"
 };
 
-static const char chica_t[8][6 + 1] = {
+static const char* chica_t[] = {
   "......",
   "......",
   "######",
@@ -686,7 +896,7 @@ static const char chica_t[8][6 + 1] = {
   "......"
 };
 
-static const char chica_u[8][6 + 1] = {
+static const char* chica_u[] = {
   "......",
   "......",
   "#....#",
@@ -697,7 +907,7 @@ static const char chica_u[8][6 + 1] = {
   "......"
 };
 
-static const char chica_v[8][6 + 1] = {
+static const char* chica_v[] = {
   "......",
   "......",
   "#....#",
@@ -708,7 +918,7 @@ static const char chica_v[8][6 + 1] = {
   "......"
 };
 
-static const char chica_w[8][6 + 1] = {
+static const char* chica_w[] = {
   "......",
   "......",
   "#....#",
@@ -719,7 +929,7 @@ static const char chica_w[8][6 + 1] = {
   "......"
 };
 
-static const char chica_x[8][6 + 1] = {
+static const char* chica_x[] = {
   "......",
   "......",
   "#...#.",
@@ -730,7 +940,7 @@ static const char chica_x[8][6 + 1] = {
   "......"
 };
 
-static const char chica_y[8][6 + 1] = {
+static const char* chica_y[] = {
   "......",
   "......",
   "#....#",
@@ -741,7 +951,7 @@ static const char chica_y[8][6 + 1] = {
   "......"
 };
 
-static const char chica_z[8][6 + 1] = {
+static const char* chica_z[] = {
   "......",
   "......",
   "######",
@@ -752,7 +962,7 @@ static const char chica_z[8][6 + 1] = {
   "......"
 };
 
-static const char chica_twopoints[8][6 + 1] = {
+static const char* chica_twopoints[] = {
   "......",
   "......",
   "..##..",
@@ -763,7 +973,7 @@ static const char chica_twopoints[8][6 + 1] = {
   "......"
 };
 
-static const char chica_guion[8][6 + 1] = {
+static const char* chica_guion[] = {
   "......",
   "......",
   "......",
@@ -775,7 +985,7 @@ static const char chica_guion[8][6 + 1] = {
 };
 
 
-static const char chica_0[8][6 + 1] = {
+static const char* chica_0[] = {
   ".####.",
   "#....#",
   "#....#",
@@ -786,7 +996,7 @@ static const char chica_0[8][6 + 1] = {
   "......"
 };
 
-static const char chica_1[8][6 + 1] = {
+static const char* chica_1[] = {
   "..##..",
   ".#.#..",
   "#..#..",
@@ -797,7 +1007,7 @@ static const char chica_1[8][6 + 1] = {
   "......"
 };
 
-static const char chica_2[8][6 + 1] = {
+static const char* chica_2[] = {
   ".####.",
   "#....#",
   ".....#",
@@ -808,7 +1018,7 @@ static const char chica_2[8][6 + 1] = {
   "......"
 };
 
-static const char chica_3[8][6 + 1] = {
+static const char* chica_3[] = {
   ".####.",
   "#....#",
   ".....#",
@@ -819,7 +1029,7 @@ static const char chica_3[8][6 + 1] = {
   "......"
 };
 
-static const char chica_4[8][6 + 1] = {
+static const char* chica_4[] = {
   "#....#",
   "#....#",
   "#....#",
@@ -830,7 +1040,7 @@ static const char chica_4[8][6 + 1] = {
   "......"
 };
 
-static const char chica_5[8][6 + 1] = {
+static const char* chica_5[] = {
   ".#####",
   "#.....",
   "#.....",
@@ -841,7 +1051,7 @@ static const char chica_5[8][6 + 1] = {
   "......"
 };
 
-static const char chica_6[8][6 + 1] = {
+static const char* chica_6[] = {
   ".#####",
   "#.....",
   "#.....",
@@ -852,7 +1062,7 @@ static const char chica_6[8][6 + 1] = {
   "......"
 };
 
-static const char chica_7[8][6 + 1] = {
+static const char* chica_7[] = {
   "#####.",
   ".....#",
   "....#.",
@@ -863,7 +1073,7 @@ static const char chica_7[8][6 + 1] = {
   "......"
 };
 
-static const char chica_8[8][6 + 1] = {
+static const char* chica_8[] = {
   ".####.",
   "#....#",
   "#....#",
@@ -874,7 +1084,7 @@ static const char chica_8[8][6 + 1] = {
   "......"
 };
 
-static const char chica_9[8][6 + 1] = {
+static const char* chica_9[] = {
   ".####.",
   "#....#",
   "#....#",
@@ -885,7 +1095,7 @@ static const char chica_9[8][6 + 1] = {
   "......"
 };
 
-static const char chica_BLANK[8][6 + 1] = {
+static const char* chica_BLANK[] = {
   "......",
   "......",
   "......",
@@ -896,81 +1106,95 @@ static const char chica_BLANK[8][6 + 1] = {
   "......"
 };
 
-static const char (*obtenerCaracterGrande(char c))[13]{
-  if (c == 'A') return grande_A;
-  if (c == 'E') return grande_E;
-  if (c == 'G') return grande_G;
-  if (c == 'I') return grande_I;
-  if (c == 'J') return grande_J;
-  if (c == 'M') return grande_M;
-  if (c == 'N') return grande_N;
-  if (c == 'O') return grande_O;
-  if (c == 'P') return grande_P;
-  if (c == 'R') return grande_R;
-  if (c == 'S') return grande_S;
-  if (c == 'T') return grande_T;
-  if (c == 'U') return grande_U;
-  if (c == 'V') return grande_V;
-  if (c == ':') return grande_TWOPOINTS;
-  if (c == '-') return grande_GUION;
-  if (c == '0') return grande_0;
-  if (c == '1') return grande_1;
-  if (c == '2') return grande_2;
-  if (c == '3') return grande_3;
-  if (c == '4') return grande_4;
-  if (c == '5') return grande_5;
-  if (c == '6') return grande_6;
-  if (c == '7') return grande_7;
-  if (c == '8') return grande_8;
-  if (c == '9') return grande_9;
-  if (c == '?') return grande_TROFEO;
-  if (c == '!') return grande_ESTRELLA;
-  if (c == ']') return grande_LINEAS;
-  if (c == '}') return grande_RECORD;
-  return grande_BLANK;
-}
+const Letra mapaGrande[CANT_LETRAS_GRANDES + 1] = {
+  {'A', 13, 12, grande_A},
+  {'B', 13, 12, grande_B},
+  {'C', 13, 12, grande_C},
+  {'D', 13, 12, grande_D},
+  {'E', 13, 12, grande_E},
+  {'F', 13, 12, grande_F},
+  {'G', 13, 12, grande_G},
+  {'H', 13, 12, grande_H},
+  {'I', 13, 12, grande_I},
+  {'J', 13, 12, grande_J},
+  {'K', 13, 12, grande_K},
+  {'L', 13, 12, grande_L},
+  {'M', 13, 12, grande_M},
+  {'N', 13, 12, grande_N},
+  {'O', 13, 12, grande_O},
+  {'P', 13, 12, grande_P},
+  {'Q', 13, 12, grande_Q},
+  {'R', 13, 12, grande_R},
+  {'S', 13, 12, grande_S},
+  {'T', 13, 12, grande_T},
+  {'U', 13, 12, grande_U},
+  {'V', 13, 12, grande_V},
+  {'W', 13, 12, grande_W},
+  {'X', 13, 12, grande_X},
+  {'Y', 13, 12, grande_Y},
+  {'Z', 13, 12, grande_Z},
+  {':', 13, 12, grande_TWOPOINTS},
+  {'-', 13, 12, grande_GUION},
+  {'0', 13, 12, grande_0},
+  {'1', 13, 12, grande_1},
+  {'2', 13, 12, grande_2},
+  {'3', 13, 12, grande_3},
+  {'4', 13, 12, grande_4},
+  {'5', 13, 12, grande_5},
+  {'6', 13, 12, grande_6},
+  {'7', 13, 12, grande_7},
+  {'8', 13, 12, grande_8},
+  {'9', 13, 12, grande_9},
+  {'?', 13, 12, grande_TROFEO},
+  {'!', 13, 12, grande_ESTRELLA},
+  {']', 13, 12, grande_LINEAS},
+  {'}', 13, 12, grande_RECORD},
+  {'<', 13, 12, grande_ARRIBA},
+  {'>', 13, 12, grande_ABAJO},
+  {' ', 13, 12, grande_BLANK}
+};
 
-static const char (*obtenerCaracterChica(char c))[7]{
-  if (c == 'a') return chica_a;
-  if (c == 'b') return chica_b;
-  if (c == 'c') return chica_c;
-  if (c == 'd') return chica_d;
-  if (c == 'e') return chica_e;
-  if (c == 'f') return chica_f;
-  if (c == 'g') return chica_g;
-  if (c == 'h') return chica_h;
-  if (c == 'i') return chica_i;
-  if (c == 'j') return chica_j;
-  if (c == 'k') return chica_k;
-  if (c == 'l') return chica_l;
-  if (c == 'm') return chica_m;
-  if (c == 'n') return chica_n;
-  if (c == 'o') return chica_o;
-  if (c == 'p') return chica_p;
-  if (c == 'q') return chica_q;
-  if (c == 'r') return chica_r;
-  if (c == 's') return chica_s;
-  if (c == 't') return chica_t;
-  if (c == 'u') return chica_u;
-  if (c == 'v') return chica_v;
-  if (c == 'w') return chica_w;
-  if (c == 'x') return chica_x;
-  if (c == 'y') return chica_y;
-  if (c == 'z') return chica_z;
-  if (c == ':') return chica_twopoints;
-  if (c == '-') return chica_guion;
-  if (c == '0') return chica_0;
-  if (c == '1') return chica_1;
-  if (c == '2') return chica_2;
-  if (c == '3') return chica_3;
-  if (c == '4') return chica_4;
-  if (c == '5') return chica_5;
-  if (c == '6') return chica_6;
-  if (c == '7') return chica_7;
-  if (c == '8') return chica_8;
-  if (c == '9') return chica_9;
-  return chica_BLANK;
-}
+const Letra mapaChica[CANT_LETRAS_CHICAS + 1] = {
+  {'a', 7, 8, chica_a},
+  {'b', 7, 8, chica_b},
+  {'c', 7, 8, chica_c},
+  {'d', 7, 8, chica_d},
+  {'e', 7, 8, chica_e},
+  {'f', 7, 8, chica_f},
+  {'g', 7, 8, chica_g},
+  {'h', 7, 8, chica_h},
+  {'i', 7, 8, chica_i},
+  {'j', 7, 8, chica_j},
+  {'k', 7, 8, chica_k},
+  {'l', 7, 8, chica_l},
+  {'m', 7, 8, chica_m},
+  {'n', 7, 8, chica_n},
+  {'o', 7, 8, chica_o},
+  {'p', 7, 8, chica_p},
+  {'q', 7, 8, chica_q},
+  {'r', 7, 8, chica_r},
+  {'s', 7, 8, chica_s},
+  {'t', 7, 8, chica_t},
+  {'u', 7, 8, chica_u},
+  {'v', 7, 8, chica_v},
+  {'w', 7, 8, chica_w},
+  {'x', 7, 8, chica_x},
+  {'y', 7, 8, chica_y},
+  {'z', 7, 8, chica_z},
+  {':', 7, 8, chica_twopoints},
+  {'-', 7, 8, chica_guion},
+  {'0', 7, 8, chica_0},
+  {'1', 7, 8, chica_1},
+  {'2', 7, 8, chica_2},
+  {'3', 7, 8, chica_3},
+  {'4', 7, 8, chica_4},
+  {'5', 7, 8, chica_5},
+  {'6', 7, 8, chica_6},
+  {'7', 7, 8, chica_7},
+  {'8', 7, 8, chica_8},
+  {'9', 7, 8, chica_9},
+  {' ', 7, 8, chica_BLANK}
+};
 
 static void dibujarBloque(int x, int y, uint8_t color, int scale)
 {
@@ -981,48 +1205,49 @@ static void dibujarBloque(int x, int y, uint8_t color, int scale)
   }
 }
 
-void fuenteDibujarChar(TipoFuente tipo, char c, int x, int y, uint8_t color, int scale){
-  if (scale < 1) scale = 1;
+static const Letra* buscarLetra(char c, TipoFuente tipo){
+  int cant = tipo == FUENTE_GRANDE ? CANT_LETRAS_GRANDES : CANT_LETRAS_CHICAS;
 
-  if (tipo == FUENTE_GRANDE){
-    const char (*f)[GRANDE_W + 1] = obtenerCaracterGrande(c);
-    for (int fila = 0; fila < GRANDE_H; fila++){
-      for (int col = 0; col < GRANDE_W; col++){
-        if (f[fila][col] != '#') continue;
-        int px = x + col * scale;
-        int py = y + fila * scale;
-        dibujarBloque(px, py, color, scale); 
-        if (fila == 0 || col == 0) dibujarBloque(px, py, PAL_REFLEJO, scale);
-      }
+  for (int i = 0; i <= cant; i++){
+    if (tipo == FUENTE_GRANDE && mapaGrande[i].c == c){
+      return &mapaGrande[i];
+    } else if (tipo == FUENTE_CHICA && mapaChica[i].c == c){
+      return &mapaChica[i];
     }
-  } else {
-    const char (*f)[CHICA_W + 1] = obtenerCaracterChica(c);
-    for (int fila = 0; fila < CHICA_H; fila++){
-      for (int col = 0; col < CHICA_W; col++){
-        if (f[fila][col] != '#') continue;
-        int px = x + col * scale;
-        int py = y + fila * scale;
-        dibujarBloque(px, py, color, scale); 
-      }
+  }
+  
+  return NULL;
+}
+
+void fuenteDibujarChar(TipoFuente tipo, char c, int x, int y, uint8_t color, int scale){
+  const Letra *letra = buscarLetra(c, tipo);
+  if (!letra) letra = buscarLetra(' ', tipo);
+  if (!letra) return;
+
+  for (int fila = 0; fila < letra->alto; fila++){
+    for (int col = 0; col < letra->ancho; col++){
+      if (letra->dibujo[fila][col] != '#') continue;
+      dibujarBloque(x + col * scale, y + fila * scale, color, scale);
+      if (letra->alto == GRANDE_H && (fila == 0 || col == 0)) dibujarBloque(x + col * scale, y + fila * scale, PAL_REFLEJO, scale);
     }
   }
 }
 
 void fuenteDibujarTexto(TipoFuente tipo, const char *s, int x, int y, uint8_t color, int scale, int spacing){
   if (!s) return;
+
   int cx = x;
   int cy = y;
-  int step = (tipo == FUENTE_GRANDE ? 12 : 6) * scale + spacing;
 
   const char *aux = s;
 
   while (*aux != '\0'){
     if (*aux == '\n'){
       cx = x;
-      cy += (tipo == FUENTE_GRANDE ? 12 : 8) * scale + spacing;
+      cy += (tipo == FUENTE_GRANDE ? GRANDE_H : CHICA_H) * scale + spacing;
     } else {
       fuenteDibujarChar(tipo, *aux, cx, cy, color, scale);
-      cx += step;
+      cx += (tipo == FUENTE_GRANDE ? GRANDE_W : CHICA_W) * scale + spacing;
     }
     aux++;
   }

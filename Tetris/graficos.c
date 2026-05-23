@@ -160,7 +160,7 @@ void graficosDibujarBorde(int x, int y, int w, int h, uint8_t color, int grosor)
   graficosDibujarRect(x + w - grosor, y, grosor, h, color); // borde der
 }
 
-void graficosDibujarJuego(const Pantalla* pant, const Tablero *t, const PiezaActual *p, int puntaje, int nivel, int lineasCompletas){
+void graficosDibujarJuego(const Pantalla* pant, const Tablero *t, const PiezaActual *p, int puntaje, int nivel, int lineasCompletas, const char user[4]){
   graficosComenzarFrame(15);
   int tableroW = t->columnas * pant->pixelesCelda + (t->columnas - 1) * pant->pxPadding;
   int tableroH = t->filasVisibles * pant->pixelesCelda + (t->filasVisibles - 1) * pant->pxPadding;
@@ -235,6 +235,10 @@ void graficosDibujarJuego(const Pantalla* pant, const Tablero *t, const PiezaAct
 
   graficosDibujarRect(panelIzqX, panelIzqY + gapTitulo + (gapEstadisticas * 4), panelIzqW, 1, 14);
 
+  fuenteDibujarChar(FUENTE_GRANDE, user[0], panelIzqX + (panelIzqW / 4) - ((12 * escalaCharTitulo) / 2), panelIzqY + gapTitulo + (gapEstadisticas * 4) + (gapEstadisticas / 2) - ((12 * escalaCharTitulo) / 2), 2, escalaCharTitulo);
+  fuenteDibujarChar(FUENTE_GRANDE, user[1], panelIzqX + (panelIzqW / 2) - ((12 * escalaCharTitulo) / 2), panelIzqY + gapTitulo + (gapEstadisticas * 4) + (gapEstadisticas / 2) - ((12 * escalaCharTitulo) / 2), 2, escalaCharTitulo);
+  fuenteDibujarChar(FUENTE_GRANDE, user[2], panelIzqX + (panelIzqW - (panelIzqW / 4)) - ((12 * escalaCharTitulo) / 2), panelIzqY + gapTitulo + (gapEstadisticas * 4) + (gapEstadisticas / 2) - ((12 * escalaCharTitulo) / 2), 2, escalaCharTitulo);
+
   graficosDibujarRect(panelDerX, panelDerY - 1, panelDerW, (panelDerH / 2), 10);
   graficosDibujarBorde(panelDerX, panelDerY - 1, panelDerW, (panelDerH / 2), 14, 1);
 
@@ -255,32 +259,6 @@ void graficosDibujarJuego(const Pantalla* pant, const Tablero *t, const PiezaAct
 
   graficosPresentarFrame();
 }
-
-// void graficosDibujarJuego(const Pantalla* pant, const Tablero *t, const PiezaActual *p, int puntaje){
-//   graficosComenzarFrame(15);
-//   graficosDibujarLayout(t, pant);
-//   graficosDibujarTablero(pant, t, p);
-
-//   int escalaCharTitulo;
-
-//   if (pant->anchoVentana == 320){
-//     escalaCharTitulo = 1;
-//   } else {
-//     escalaCharTitulo = 3;
-//   }
-
-//   fuenteDibujarChar(FUENTE_GRANDE, 'T', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2), 2, PAL_T, escalaCharTitulo);
-//   fuenteDibujarChar(FUENTE_GRANDE, 'E', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2) + 13 * escalaCharTitulo, 2, PAL_O, escalaCharTitulo);
-//   fuenteDibujarChar(FUENTE_GRANDE, 'T', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2) + 26 * escalaCharTitulo, 2, PAL_T, escalaCharTitulo);
-//   fuenteDibujarChar(FUENTE_GRANDE, 'R', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2) + 39 * escalaCharTitulo, 2, PAL_J, escalaCharTitulo);
-//   fuenteDibujarChar(FUENTE_GRANDE, 'I', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2) + 52 * escalaCharTitulo, 2, PAL_I, escalaCharTitulo);
-//   fuenteDibujarChar(FUENTE_GRANDE, 'S', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2) + 65 * escalaCharTitulo, 2, PAL_S, escalaCharTitulo);
-
-//   char scoreText[16];
-//   sprintf(scoreText, "puntos: %d", puntaje);
-//   fuenteDibujarTexto(FUENTE_CHICA, scoreText, 10, 8, PAL_REFLEJO, 1, 1);
-//   graficosPresentarFrame();
-// }
 
 void graficosDibujarMenu(const Pantalla* pant){
   graficosComenzarFrame(15);
@@ -366,6 +344,43 @@ void graficosDibujarGameOver(const Pantalla* pant){
 
   fuenteDibujarTexto(FUENTE_CHICA, "volver al menu", (pant->anchoVentana / 2) - ((6 * escalaTexto * strlen("volver al menu")) / 2), (pant->altoVentana - (pant->altoVentana / 2) - (botonH / 2)) + botonH + separacionBotones + 2, PAL_REFLEJO, escalaTexto, 1);
 
+
+  graficosPresentarFrame();
+}
+
+void graficosDibujarUser(const Pantalla* pant, const char user[4], int cursor){
+  graficosComenzarFrame(15);
+
+  int escalaChar, escalaTexto;
+
+  if (pant->anchoVentana == 320){
+    escalaChar = 1;
+    escalaTexto = 1;
+  } else {
+    escalaChar = 3;
+    escalaTexto = 2;
+  }
+
+  int charW = 13 * escalaChar;
+  int charH = 12 * escalaChar;
+  int spacing = 4 * escalaChar;
+
+  int totalW = 3 * charW + 2 * spacing;
+  int startX = (pant->anchoVentana / 2) - (totalW / 2);
+  int y = (pant->altoVentana / 2) - (charH / 2);
+
+  for (int i = 0; i < 3; i++){
+    int x = startX + i * (charW + spacing);
+    int color = cursor == i ? 16 : 11;
+    fuenteDibujarChar(FUENTE_GRANDE, user[i], x, y, color, escalaChar);
+  }
+
+  int bx = startX + cursor * (charW + spacing);
+  int by = y - 2;
+  fuenteDibujarChar(FUENTE_GRANDE, '<', bx, by - charH, PAL_REFLEJO, escalaChar);
+  fuenteDibujarChar(FUENTE_GRANDE, '>', bx, by + charH, PAL_REFLEJO, escalaChar);
+
+  fuenteDibujarTexto(FUENTE_CHICA, "enter para comenzar", (pant->anchoVentana / 2) - ((6 * escalaTexto * strlen("enter para comenzar")) / 2), pant->altoVentana - (pant->altoVentana / 6), PAL_REFLEJO, escalaTexto, 1);
 
   graficosPresentarFrame();
 }

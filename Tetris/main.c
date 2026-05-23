@@ -40,6 +40,11 @@ int main(int argc, char *argv[]){
     int res = 320;
     int escala = 3;
 
+    char user[4] = {'A', 'A', 'A', '\0'};
+    const char alfabeto[] = {"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
+    int cursor = 0;
+    int opcion = 0;
+
     for (int i = 1; i < argc - 1; i++){
         if (strcmp(argv[i], "--resolucion") == 0){
             res = atoi(argv[i + 1]);
@@ -88,6 +93,51 @@ int main(int argc, char *argv[]){
 
                     crearNuevaPieza(bolsa_actual, &indice, &p, t);
 
+                    estado = ESTADO_USER;
+                }
+
+                break;
+            
+            case ESTADO_USER:
+                graficosDibujarUser(&pant, user, cursor);
+
+                if (gbt_tecla_presionada(GBTK_IZQUIERDA)){
+                    if (cursor > 0){
+                        cursor--;
+                    } else {
+                        cursor = 2;
+                    }
+                    opcion = user[cursor] - 'A';
+                }
+
+                if (gbt_tecla_presionada(GBTK_DERECHA)){
+                    if (cursor < 2){
+                        cursor++;
+                    } else {
+                        cursor = 0;
+                    }
+                    opcion = user[cursor] - 'A';
+                }
+
+                if (gbt_tecla_presionada(GBTK_ABAJO)){
+                    if (opcion == 0){
+                        opcion = 25;
+                    } else {
+                        opcion--;
+                    }
+                    user[cursor] = alfabeto[opcion];
+                }
+
+                if (gbt_tecla_presionada(GBTK_ARRIBA)){
+                    if (opcion == 25){
+                        opcion = 0;
+                    } else {
+                        opcion++;
+                    }
+                    user[cursor] = alfabeto[opcion];
+                }
+
+                if (gbt_tecla_presionada(GBTK_ENTER)){
                     estado = ESTADO_CORRIENDO;
                 }
 
@@ -146,7 +196,7 @@ int main(int argc, char *argv[]){
                     nivel++;
                 }
 
-                graficosDibujarJuego(&pant, t, &p, puntaje, nivel, lineasCompletas);
+                graficosDibujarJuego(&pant, t, &p, puntaje, nivel, lineasCompletas, user);
 
                 if(!timeFreeze)
                 {

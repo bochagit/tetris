@@ -38,6 +38,7 @@ typedef struct {
 
 typedef enum {
   ESTADO_MENU,
+  ESTADO_USER,
   ESTADO_CORRIENDO,
   ESTADO_PAUSA,
   ESTADO_GAMEOVER,
