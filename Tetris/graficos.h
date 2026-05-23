@@ -4,7 +4,7 @@
 #include "GBT/gbt.h"
 #include "tablero.h"
 
-#define CANT_COLORES 17
+#define CANT_COLORES 18
 
 #define PAL_FONDO 0
 #define PAL_I 1
@@ -28,11 +28,11 @@ void graficosDibujarTablero(const Pantalla* pant, const Tablero* tablero, const 
 void graficosDibujarCelda(const Pantalla* pant, uint8_t color, uint16_t oX, uint16_t oY);
 void graficosDibujarRect(int x, int y, int w, int h, uint8_t color);
 void graficosDibujarBorde(int x, int y, int w, int h, uint8_t color, int grosor);
-void graficosDibujarLayout(const Tablero* t, const Pantalla* pant);
 void graficosDibujarMenu(const Pantalla* pant);
-void graficosDibujarJuego(const Pantalla* pant, const Tablero* t, const PiezaActual* p, int puntaje);
+void graficosDibujarJuego(const Pantalla* pant, const Tablero* t, const PiezaActual* p, int puntaje, int nivel, int lineasCompletas, const char user[4]);
 void graficosDibujarPausa(const Pantalla* pant);
 void graficosDibujarGameOver(const Pantalla* pant);
 void graficosConfigurarResolucion(Pantalla* pant, int res, int escala);
+void graficosDibujarUser(const Pantalla* pant, const char user[4], int cursor);
 
 #endif // GRAFICOS_H_INCLUDED

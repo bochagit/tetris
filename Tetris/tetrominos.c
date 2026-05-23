@@ -472,13 +472,14 @@ void actualizarPuntaje(int * puntaje,int lineas)
 
     }
 }
-int actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual* p, int * puntaje,int* lockDelay)
+int actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual* p, int * puntaje, int* lineasCompletas, int* lockDelay)
 {
     int lineas,gameOver=0;
 
     fijarPieza(tablero, p);
     lineas=evaluarFilas(tablero);
     actualizarPuntaje(puntaje,lineas);
+    *lineasCompletas += lineas;
     gameOver=crearNuevaPieza(bolsa,indiceBolsa,p,tablero);
     (*lockDelay)=0;
 

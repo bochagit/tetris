@@ -38,6 +38,7 @@ typedef struct {
 
 typedef enum {
   ESTADO_MENU,
+  ESTADO_USER,
   ESTADO_CORRIENDO,
   ESTADO_PAUSA,
   ESTADO_GAMEOVER,
@@ -62,7 +63,7 @@ void limpiaLinea(char* fila, int columnas);
 void actualizarPuntaje(int * puntaje,int lineas);
 int tetrominosObtieneUltimasFilas(int *ult);
 void compactarFilas(Tablero *tablero, const int *filas, int cant);
-int actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual* p, int * puntaje, int* lockDelay);
+int actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual* p, int * puntaje, int* lineasCompletas, int* lockDelay);
 void calcularGhost(PiezaActual *p,Tablero *t);
 
 #endif // TETRIS_H_INCLUDED
