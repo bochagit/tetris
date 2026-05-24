@@ -661,6 +661,21 @@ static const char* grande_ABAJO[] = {
   "............"
 };
 
+static const char* grande_ESC[] = {
+  "####........",
+  "#..#........",
+  "####........",
+  "#...####....",
+  "#####.......",
+  "....####....",
+  ".......#....",
+  "....########",
+  "........#...",
+  "........#...",
+  "........####",
+  "............"
+};
+
 static const char* grande_BLANK[] = {
   "............",
   "............",
@@ -1106,94 +1121,341 @@ static const char* chica_BLANK[] = {
   "......"
 };
 
+static const char* nomono_A[] = {
+  ".#..",
+  "#.#.",
+  "###.",
+  "#.#.",
+  "#.#.",
+};
+
+static const char* nomono_B[] = {
+  "###.",
+  "#..#",
+  "###.",
+  "#..#",
+  "###.",
+};
+
+static const char* nomono_C[] = {
+  "###.",
+  "#...",
+  "#...",
+  "#...",
+  "###.",
+};
+
+static const char* nomono_D[] = {
+  "###.",
+  "#..#",
+  "#..#",
+  "#..#",
+  "###.",
+};
+
+static const char* nomono_E[] = {
+  "###.",
+  "#...",
+  "##..",
+  "#...",
+  "###.",
+};
+
+static const char* nomono_F[] = {
+  "###.",
+  "#...",
+  "##..",
+  "#...",
+  "#...",
+};
+
+static const char* nomono_G[] = {
+  "###.",
+  "#...",
+  "###.",
+  "#.#.",
+  "###.",
+};
+
+static const char* nomono_H[] = {
+  "#..#",
+  "#..#",
+  "####",
+  "#..#",
+  "#..#",
+};
+
+static const char* nomono_I[] = {
+  "#...",
+  "#...",
+  "#...",
+  "#...",
+  "#...",
+};
+
+static const char* nomono_J[] = {
+  "..#.",
+  "..#.",
+  "..#.",
+  "#.#.",
+  ".#..",
+};
+
+static const char* nomono_K[] = {
+  "#..#",
+  "#.#.",
+  "##..",
+  "#.#.",
+  "#..#",
+};
+
+static const char* nomono_L[] = {
+  "#...",
+  "#...",
+  "#...",
+  "#...",
+  "##..",
+};
+
+static const char* nomono_M[] = {
+  "#..#",
+  "####",
+  "#..#",
+  "#..#",
+  "#..#",
+};
+
+static const char* nomono_N[] = {
+  "##.#",
+  "#.##",
+  "#..#",
+  "#..#",
+  "#..#",
+};
+
+static const char* nomono_O[] = {
+  ".##.",
+  "#..#",
+  "#..#",
+  "#..#",
+  ".##.",
+};
+
+static const char* nomono_P[] = {
+  "##..",
+  "#.#.",
+  "##..",
+  "#...",
+  "#...",
+};
+
+static const char* nomono_Q[] = {
+  ".##.",
+  "#..#",
+  "#..#",
+  ".##.",
+  "...#",
+};
+
+static const char* nomono_R[] = {
+  "###.",
+  "#..#",
+  "###.",
+  "#.#.",
+  "#..#",
+};
+
+static const char* nomono_S[] = {
+  "####",
+  "#...",
+  "####",
+  "...#",
+  "####",
+};
+
+static const char* nomono_T[] = {
+  "###.",
+  ".#..",
+  ".#..",
+  ".#..",
+  ".#..",
+};
+
+static const char* nomono_U[] = {
+  "#.#.",
+  "#.#.",
+  "#.#.",
+  "#.#.",
+  "###.",
+};
+
+static const char* nomono_V[] = {
+  "#.#.",
+  "#.#.",
+  "#.#.",
+  "#.#.",
+  ".#..",
+};
+
+static const char* nomono_W[] = {
+  "#..#",
+  "#..#",
+  "#..#",
+  "####",
+  "#..#",
+};
+
+static const char* nomono_X[] = {
+  "#..#",
+  ".##.",
+  ".##.",
+  "#..#",
+  "#..#",
+};
+
+static const char* nomono_Y[] = {
+  "#.#.",
+  ".#..",
+  ".#..",
+  ".#..",
+  ".#..",
+};
+
+static const char* nomono_Z[] = {
+  "####",
+  "...#",
+  ".##.",
+  "#...",
+  "####",
+};
+
+static const char* nomono_BLANK[] = {
+  "....",
+  "....",
+  "....",
+  "....",
+  "....",
+};
+
 const Letra mapaGrande[CANT_LETRAS_GRANDES + 1] = {
-  {'A', 13, 12, grande_A},
-  {'B', 13, 12, grande_B},
-  {'C', 13, 12, grande_C},
-  {'D', 13, 12, grande_D},
-  {'E', 13, 12, grande_E},
-  {'F', 13, 12, grande_F},
-  {'G', 13, 12, grande_G},
-  {'H', 13, 12, grande_H},
-  {'I', 13, 12, grande_I},
-  {'J', 13, 12, grande_J},
-  {'K', 13, 12, grande_K},
-  {'L', 13, 12, grande_L},
-  {'M', 13, 12, grande_M},
-  {'N', 13, 12, grande_N},
-  {'O', 13, 12, grande_O},
-  {'P', 13, 12, grande_P},
-  {'Q', 13, 12, grande_Q},
-  {'R', 13, 12, grande_R},
-  {'S', 13, 12, grande_S},
-  {'T', 13, 12, grande_T},
-  {'U', 13, 12, grande_U},
-  {'V', 13, 12, grande_V},
-  {'W', 13, 12, grande_W},
-  {'X', 13, 12, grande_X},
-  {'Y', 13, 12, grande_Y},
-  {'Z', 13, 12, grande_Z},
-  {':', 13, 12, grande_TWOPOINTS},
-  {'-', 13, 12, grande_GUION},
-  {'0', 13, 12, grande_0},
-  {'1', 13, 12, grande_1},
-  {'2', 13, 12, grande_2},
-  {'3', 13, 12, grande_3},
-  {'4', 13, 12, grande_4},
-  {'5', 13, 12, grande_5},
-  {'6', 13, 12, grande_6},
-  {'7', 13, 12, grande_7},
-  {'8', 13, 12, grande_8},
-  {'9', 13, 12, grande_9},
-  {'?', 13, 12, grande_TROFEO},
-  {'!', 13, 12, grande_ESTRELLA},
-  {']', 13, 12, grande_LINEAS},
-  {'}', 13, 12, grande_RECORD},
-  {'<', 13, 12, grande_ARRIBA},
-  {'>', 13, 12, grande_ABAJO},
-  {' ', 13, 12, grande_BLANK}
+  {'A', 13, 12, 12, grande_A},
+  {'B', 13, 12, 12, grande_B},
+  {'C', 13, 12, 12, grande_C},
+  {'D', 13, 12, 12, grande_D},
+  {'E', 13, 12, 12, grande_E},
+  {'F', 13, 12, 12, grande_F},
+  {'G', 13, 12, 12, grande_G},
+  {'H', 13, 12, 12, grande_H},
+  {'I', 13, 12, 12, grande_I},
+  {'J', 13, 12, 12, grande_J},
+  {'K', 13, 12, 12, grande_K},
+  {'L', 13, 12, 12, grande_L},
+  {'M', 13, 12, 12, grande_M},
+  {'N', 13, 12, 12, grande_N},
+  {'O', 13, 12, 12, grande_O},
+  {'P', 13, 12, 12, grande_P},
+  {'Q', 13, 12, 12, grande_Q},
+  {'R', 13, 12, 12, grande_R},
+  {'S', 13, 12, 12, grande_S},
+  {'T', 13, 12, 12, grande_T},
+  {'U', 13, 12, 12, grande_U},
+  {'V', 13, 12, 12, grande_V},
+  {'W', 13, 12, 12, grande_W},
+  {'X', 13, 12, 12, grande_X},
+  {'Y', 13, 12, 12, grande_Y},
+  {'Z', 13, 12, 12, grande_Z},
+  {':', 13, 12, 12, grande_TWOPOINTS},
+  {'-', 13, 12, 12, grande_GUION},
+  {'0', 13, 12, 12, grande_0},
+  {'1', 13, 12, 12, grande_1},
+  {'2', 13, 12, 12, grande_2},
+  {'3', 13, 12, 12, grande_3},
+  {'4', 13, 12, 12, grande_4},
+  {'5', 13, 12, 12, grande_5},
+  {'6', 13, 12, 12, grande_6},
+  {'7', 13, 12, 12, grande_7},
+  {'8', 13, 12, 12, grande_8},
+  {'9', 13, 12, 12, grande_9},
+  {'?', 13, 12, 12, grande_TROFEO},
+  {'!', 13, 12, 12, grande_ESTRELLA},
+  {']', 13, 12, 12, grande_LINEAS},
+  {'}', 13, 12, 12, grande_RECORD},
+  {'<', 13, 12, 12, grande_ARRIBA},
+  {'>', 13, 12, 12, grande_ABAJO},
+  {')', 13, 12, 12, grande_ESC},
+  {' ', 13, 12, 12, grande_BLANK}
 };
 
 const Letra mapaChica[CANT_LETRAS_CHICAS + 1] = {
-  {'a', 7, 8, chica_a},
-  {'b', 7, 8, chica_b},
-  {'c', 7, 8, chica_c},
-  {'d', 7, 8, chica_d},
-  {'e', 7, 8, chica_e},
-  {'f', 7, 8, chica_f},
-  {'g', 7, 8, chica_g},
-  {'h', 7, 8, chica_h},
-  {'i', 7, 8, chica_i},
-  {'j', 7, 8, chica_j},
-  {'k', 7, 8, chica_k},
-  {'l', 7, 8, chica_l},
-  {'m', 7, 8, chica_m},
-  {'n', 7, 8, chica_n},
-  {'o', 7, 8, chica_o},
-  {'p', 7, 8, chica_p},
-  {'q', 7, 8, chica_q},
-  {'r', 7, 8, chica_r},
-  {'s', 7, 8, chica_s},
-  {'t', 7, 8, chica_t},
-  {'u', 7, 8, chica_u},
-  {'v', 7, 8, chica_v},
-  {'w', 7, 8, chica_w},
-  {'x', 7, 8, chica_x},
-  {'y', 7, 8, chica_y},
-  {'z', 7, 8, chica_z},
-  {':', 7, 8, chica_twopoints},
-  {'-', 7, 8, chica_guion},
-  {'0', 7, 8, chica_0},
-  {'1', 7, 8, chica_1},
-  {'2', 7, 8, chica_2},
-  {'3', 7, 8, chica_3},
-  {'4', 7, 8, chica_4},
-  {'5', 7, 8, chica_5},
-  {'6', 7, 8, chica_6},
-  {'7', 7, 8, chica_7},
-  {'8', 7, 8, chica_8},
-  {'9', 7, 8, chica_9},
-  {' ', 7, 8, chica_BLANK}
+  {'a', 7, 8, 6, chica_a},
+  {'b', 7, 8, 6, chica_b},
+  {'c', 7, 8, 6, chica_c},
+  {'d', 7, 8, 6, chica_d},
+  {'e', 7, 8, 6, chica_e},
+  {'f', 7, 8, 6, chica_f},
+  {'g', 7, 8, 6, chica_g},
+  {'h', 7, 8, 6, chica_h},
+  {'i', 7, 8, 6, chica_i},
+  {'j', 7, 8, 6, chica_j},
+  {'k', 7, 8, 6, chica_k},
+  {'l', 7, 8, 6, chica_l},
+  {'m', 7, 8, 6, chica_m},
+  {'n', 7, 8, 6, chica_n},
+  {'o', 7, 8, 6, chica_o},
+  {'p', 7, 8, 6, chica_p},
+  {'q', 7, 8, 6, chica_q},
+  {'r', 7, 8, 6, chica_r},
+  {'s', 7, 8, 6, chica_s},
+  {'t', 7, 8, 6, chica_t},
+  {'u', 7, 8, 6, chica_u},
+  {'v', 7, 8, 6, chica_v},
+  {'w', 7, 8, 6, chica_w},
+  {'x', 7, 8, 6, chica_x},
+  {'y', 7, 8, 6, chica_y},
+  {'z', 7, 8, 6, chica_z},
+  {':', 7, 8, 6, chica_twopoints},
+  {'-', 7, 8, 6, chica_guion},
+  {'0', 7, 8, 6, chica_0},
+  {'1', 7, 8, 6, chica_1},
+  {'2', 7, 8, 6, chica_2},
+  {'3', 7, 8, 6, chica_3},
+  {'4', 7, 8, 6, chica_4},
+  {'5', 7, 8, 6, chica_5},
+  {'6', 7, 8, 6, chica_6},
+  {'7', 7, 8, 6, chica_7},
+  {'8', 7, 8, 6, chica_8},
+  {'9', 7, 8, 6, chica_9},
+  {' ', 7, 8, 6, chica_BLANK}
+};
+
+const Letra mapaNomono[CANT_LETRAS_NOMONO + 1] = {
+  {'A', 4, 5, 3, nomono_A},
+  {'B', 4, 5, 4, nomono_B},
+  {'C', 4, 5, 3, nomono_C},
+  {'D', 4, 5, 4, nomono_D},
+  {'E', 4, 5, 3, nomono_E},
+  {'F', 4, 5, 3, nomono_F},
+  {'G', 4, 5, 3, nomono_G},
+  {'H', 4, 5, 4, nomono_H},
+  {'I', 4, 5, 1, nomono_I},
+  {'J', 4, 5, 3, nomono_J},
+  {'K', 4, 5, 4, nomono_K},
+  {'L', 4, 5, 2, nomono_L},
+  {'M', 4, 5, 4, nomono_M},
+  {'N', 4, 5, 4, nomono_N},
+  {'O', 4, 5, 4, nomono_O},
+  {'P', 4, 5, 3, nomono_P},
+  {'Q', 4, 5, 4, nomono_Q},
+  {'R', 4, 5, 4, nomono_R},
+  {'S', 4, 5, 4, nomono_S},
+  {'T', 4, 5, 3, nomono_T},
+  {'U', 4, 5, 3, nomono_U},
+  {'V', 4, 5, 3, nomono_V},
+  {'W', 4, 5, 4, nomono_W},
+  {'X', 4, 5, 4, nomono_X},
+  {'Y', 4, 5, 3, nomono_Y},
+  {'Z', 4, 5, 4, nomono_Z},
+  {' ', 4, 5, 2, nomono_BLANK}
 };
 
 static void dibujarBloque(int x, int y, uint8_t color, int scale)
@@ -1206,16 +1468,28 @@ static void dibujarBloque(int x, int y, uint8_t color, int scale)
 }
 
 static const Letra* buscarLetra(char c, TipoFuente tipo){
-  int cant = tipo == FUENTE_GRANDE ? CANT_LETRAS_GRANDES : CANT_LETRAS_CHICAS;
+  const Letra *mapa = NULL;
+  int cant = 0;
 
-  for (int i = 0; i <= cant; i++){
-    if (tipo == FUENTE_GRANDE && mapaGrande[i].c == c){
-      return &mapaGrande[i];
-    } else if (tipo == FUENTE_CHICA && mapaChica[i].c == c){
-      return &mapaChica[i];
-    }
+  switch (tipo){
+    case FUENTE_GRANDE:
+      mapa = mapaGrande;
+      cant = CANT_LETRAS_GRANDES;
+      break;
+    case FUENTE_CHICA:
+      mapa = mapaChica;
+      cant = CANT_LETRAS_CHICAS;
+      break;
+    case FUENTE_NOMONO:
+      mapa = mapaNomono;
+      cant = CANT_LETRAS_NOMONO;
+      break;
   }
-  
+
+  for (int i = 0; i < cant; i++){
+    if (mapa[i].c == c) return &mapa[i];
+  }
+
   return NULL;
 }
 
@@ -1239,16 +1513,25 @@ void fuenteDibujarTexto(TipoFuente tipo, const char *s, int x, int y, uint8_t co
   int cx = x;
   int cy = y;
 
-  const char *aux = s;
-
-  while (*aux != '\0'){
-    if (*aux == '\n'){
+  while (*s != '\0'){
+    if (*s == '\n'){
       cx = x;
-      cy += (tipo == FUENTE_GRANDE ? GRANDE_H : CHICA_H) * scale + spacing;
+      if (tipo == FUENTE_GRANDE){
+        cy += GRANDE_H * scale + spacing;
+      } else if (tipo == FUENTE_CHICA){
+        cy += CHICA_H * scale + spacing;
+      } else {
+        cy += NOMONO_H * scale + spacing;
+      }
     } else {
-      fuenteDibujarChar(tipo, *aux, cx, cy, color, scale);
-      cx += (tipo == FUENTE_GRANDE ? GRANDE_W : CHICA_W) * scale + spacing;
+      const Letra *letra = buscarLetra(*s, tipo);
+      if (!letra) letra = buscarLetra(' ', tipo);
+      if (!letra) return;
+
+      fuenteDibujarChar(tipo, *s, cx, cy, color, scale);
+      cx += letra->avance * scale + spacing;
     }
-    aux++;
+
+    s++;
   }
 }

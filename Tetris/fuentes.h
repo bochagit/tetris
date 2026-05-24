@@ -9,18 +9,24 @@
 #define CHICA_W 6
 #define CHICA_H 8
 
-#define CANT_LETRAS_GRANDES 45
+#define NOMONO_W 4
+#define NOMONO_H 5
+
+#define CANT_LETRAS_GRANDES 46
 #define CANT_LETRAS_CHICAS 39
+#define CANT_LETRAS_NOMONO 27
 
 typedef enum {
   FUENTE_GRANDE,
-  FUENTE_CHICA
+  FUENTE_CHICA,
+  FUENTE_NOMONO,
 } TipoFuente;
 
 typedef struct {
   char c;
   int ancho;
   int alto;
+  int avance;
   const char** dibujo;
 } Letra;
 

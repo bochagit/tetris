@@ -203,6 +203,7 @@ void graficosDibujarJuego(const Pantalla* pant, const Tablero *t, const PiezaAct
 
   graficosDibujarRect(panelIzqX, panelIzqY + gapTitulo, panelIzqW, 1, 14);
 
+  // PANEL IZQ - PUNTAJE
   char scoreText[16];
   sprintf(scoreText, "%d", puntaje);
   fuenteDibujarChar(FUENTE_GRANDE, '?', panelIzqX + (panelIzqW / 10), panelIzqY + gapTitulo + (gapEstadisticas / 2) - ((12 * escalaFuente) / 2), 16, escalaFuente);
@@ -211,6 +212,7 @@ void graficosDibujarJuego(const Pantalla* pant, const Tablero *t, const PiezaAct
 
   graficosDibujarRect(panelIzqX, panelIzqY + gapTitulo + gapEstadisticas, panelIzqW, 1, 14);
 
+  // PANEL IZQ - NIVEL
   char nivelText[5];
   sprintf(nivelText, "%d", nivel);
   fuenteDibujarChar(FUENTE_GRANDE, '!', panelIzqX + (panelIzqW / 10), panelIzqY + gapTitulo + gapEstadisticas + (gapEstadisticas / 2) - ((12 * escalaFuente) / 2), PAL_I, escalaFuente);
@@ -219,6 +221,7 @@ void graficosDibujarJuego(const Pantalla* pant, const Tablero *t, const PiezaAct
 
   graficosDibujarRect(panelIzqX, panelIzqY + gapTitulo + (gapEstadisticas * 2), panelIzqW, 1, 14);
 
+  // PANEL IZQ - LINEAS COMPLETAS
   char lineasText[10];
   sprintf(lineasText, "%d", lineasCompletas);
   fuenteDibujarChar(FUENTE_GRANDE, ']', panelIzqX + (panelIzqW / 10), panelIzqY + gapTitulo + (gapEstadisticas * 2) + (gapEstadisticas / 2) - ((12 * escalaFuente) / 2), PAL_S, escalaFuente);
@@ -227,6 +230,7 @@ void graficosDibujarJuego(const Pantalla* pant, const Tablero *t, const PiezaAct
 
   graficosDibujarRect(panelIzqX, panelIzqY + gapTitulo + (gapEstadisticas * 3), panelIzqW, 1, 14);
 
+  // PANEL IZQ - RECORD
   char recordText[10];
   sprintf(recordText, "%d", 0);
   fuenteDibujarChar(FUENTE_GRANDE, '}', panelIzqX + (panelIzqW / 10), panelIzqY + gapTitulo + (gapEstadisticas * 3) + (gapEstadisticas / 2) - ((12 * escalaFuente) / 2), 16, escalaFuente);
@@ -235,15 +239,78 @@ void graficosDibujarJuego(const Pantalla* pant, const Tablero *t, const PiezaAct
 
   graficosDibujarRect(panelIzqX, panelIzqY + gapTitulo + (gapEstadisticas * 4), panelIzqW, 1, 14);
 
+  // PANEL IZQ - USUARIO
   fuenteDibujarChar(FUENTE_GRANDE, user[0], panelIzqX + (panelIzqW / 4) - ((12 * escalaCharTitulo) / 2), panelIzqY + gapTitulo + (gapEstadisticas * 4) + (gapEstadisticas / 2) - ((12 * escalaCharTitulo) / 2), 2, escalaCharTitulo);
   fuenteDibujarChar(FUENTE_GRANDE, user[1], panelIzqX + (panelIzqW / 2) - ((12 * escalaCharTitulo) / 2), panelIzqY + gapTitulo + (gapEstadisticas * 4) + (gapEstadisticas / 2) - ((12 * escalaCharTitulo) / 2), 2, escalaCharTitulo);
   fuenteDibujarChar(FUENTE_GRANDE, user[2], panelIzqX + (panelIzqW - (panelIzqW / 4)) - ((12 * escalaCharTitulo) / 2), panelIzqY + gapTitulo + (gapEstadisticas * 4) + (gapEstadisticas / 2) - ((12 * escalaCharTitulo) / 2), 2, escalaCharTitulo);
 
+  // PANEL DER ARRIBA - PROX PIEZA
   graficosDibujarRect(panelDerX, panelDerY - 1, panelDerW, (panelDerH / 2), 10);
   graficosDibujarBorde(panelDerX, panelDerY - 1, panelDerW, (panelDerH / 2), 14, 1);
 
+  // PANEL DER ABAJO - COMO JUGAR
   graficosDibujarRect(panelDerX, panelDerY + (panelDerH / 2) + 1, panelDerW, (panelDerH / 2), 10);
   graficosDibujarBorde(panelDerX, panelDerY + (panelDerH / 2) + 1, panelDerW, (panelDerH / 2), 14, 1);
+
+  int siguienteBorde = 0;
+  int bordeW, bordeH, spacingX, spacingY, escalaChar;
+
+  if (pant->anchoVentana == 320){
+    bordeW = 16;
+    bordeH = 16;
+    spacingX = 2;
+    spacingY = 1;
+    escalaChar = 1;
+  } else {
+    bordeW = 30;
+    bordeH = 30;
+    spacingX = 5;
+    spacingY = 10;
+    escalaChar = 2;
+  }
+
+  for (int i = 0; i < 4; i++){
+    graficosDibujarBorde(panelDerX + (spacingX * 2), (panelDerY + (panelDerH / 2) + 2) + siguienteBorde + spacingY, bordeW, bordeH, PAL_REFLEJO, 1);
+    siguienteBorde += bordeH + spacingY;
+  }
+
+  siguienteBorde = 0;
+  const char controles[8] = {"ASDFQEP)"};
+  const char *labels[] = {
+    "MOVER\nIZQ",
+    "ABAJO",
+    "MOVER\nDER",
+    "FREEZE",
+    "ROTAR\nIZQ",
+    "ROTAR\nDER",
+    "PAUSA",
+    "SALIR"
+  };
+
+  for (int i = 0; i < 4; i++){
+    fuenteDibujarChar(FUENTE_GRANDE, controles[i], panelDerX + (spacingX * 2) + ((bordeW - (12 * escalaChar)) / 2), (panelDerY + (panelDerH / 2) + 1) + siguienteBorde + spacingY + ((bordeH - (12 * escalaChar)) / 2), 11, escalaChar);
+    fuenteDibujarTexto(FUENTE_NOMONO, labels[i], panelDerX + bordeW + (spacingX * 2 + 2), (panelDerY + (panelDerH / 2) + 1) + siguienteBorde + spacingY + 2, PAL_REFLEJO, escalaChar, 1);
+    siguienteBorde += bordeH + spacingY;
+  }
+
+  siguienteBorde = 0;
+
+  for (int i = 0; i < 4; i++){
+    graficosDibujarBorde(panelDerX + (panelDerW / 2) + (spacingX * 2), (panelDerY + (panelDerH / 2) + 2) + siguienteBorde + spacingY, bordeW, bordeH, PAL_REFLEJO, 1);
+    siguienteBorde += bordeH + spacingY;
+  }
+
+  siguienteBorde = 0;
+
+  for (int i = 4; i < 8; i++){
+    fuenteDibujarChar(FUENTE_GRANDE, controles[i], panelDerX + (panelDerW / 2) + (spacingX * 2) + ((bordeW - (12 * escalaChar)) / 2), (panelDerY + (panelDerH / 2) + 1) + siguienteBorde + spacingY + ((bordeH - (12 * escalaChar)) / 2), 11, escalaChar);
+    fuenteDibujarTexto(FUENTE_NOMONO, labels[i], panelDerX + (panelDerW / 2) + bordeW + (spacingX * 2 + 2), (panelDerY + (panelDerH / 2) + 1) + siguienteBorde + spacingY + 2, PAL_REFLEJO, escalaChar, 1);
+    siguienteBorde += bordeH + spacingY;
+  }
+
+  graficosDibujarBorde(panelDerX + (spacingX * 2), (panelDerY + (panelDerH / 2) + 2) + siguienteBorde + spacingY, bordeW * 3, bordeH, PAL_REFLEJO, 1);
+  fuenteDibujarTexto(FUENTE_CHICA, "space", panelDerX + (spacingX) + (((bordeW * 3) - (6 * escalaChar * strlen("space"))) / 2), (panelDerY + (panelDerH / 2) + 1) + siguienteBorde + spacingY + (bordeH / 2), 11, escalaChar, 1);
+  fuenteDibujarTexto(FUENTE_NOMONO, "HARD\nDROP", panelDerX + (bordeW * 3) + (spacingX * 2 + 2), (panelDerY + (panelDerH / 2) + 1) + siguienteBorde + spacingY + 2, PAL_REFLEJO, escalaChar, 1);
 
   graficosDibujarRect(tableroX - 4, tableroY - 4, tableroW + 8, tableroH + 8, 12);
   graficosDibujarBorde(tableroX - 4, tableroY - 4, tableroW + 8, tableroH + 8, 14, 1);
