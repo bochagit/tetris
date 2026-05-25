@@ -10,6 +10,15 @@
 #include "matriz.h"
 #include <time.h>
 
+//typedef struct{
+//    Tablero *tablero;
+//    PiezaActual *p;
+//    char *bolsa;
+
+
+
+//}Partida;
+
 typedef struct {
   int anchoVentana;
   int altoVentana;
@@ -26,6 +35,7 @@ typedef struct {
   int filasTotales;
   int columnas;
   char** celdas;
+  int LineasCompletas;
 } Tablero;
 
 typedef struct {
@@ -57,13 +67,15 @@ char piezaOcupaCelda(const PiezaActual *p, int filaActual, int columnaActual);
 bool puedeMover(PiezaActual *p, int dx, int dy, Tablero* t);
 bool puedeRotar(PiezaActual *p, char temp[4][4], Tablero* t);
 int rotar(PiezaActual *p, int tecla,Tablero* t);
-int evaluarFilas(Tablero *tablero);
+int evaluarFilas(Tablero *tablero, char** filasCompletas);
 int analizaLinea(char* fila, int columnas);
-void limpiaLinea(char* fila, int columnas);
+void limpiaLinea(char* fila, int columnas,char relleno);
 void actualizarPuntaje(int * puntaje,int lineas);
 int tetrominosObtieneUltimasFilas(int *ult);
 void compactarFilas(Tablero *tablero, const int *filas, int cant);
 int actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual* p, int * puntaje, int* lineasCompletas, int* lockDelay);
 void calcularGhost(PiezaActual *p,Tablero *t);
+void pintarFilasCompletas(Tablero *tablero, char **filasCompletas,int cantidadCompletas);
+void filasCompletasEliminar(Tablero *tablero);
 
 #endif // TETRIS_H_INCLUDED

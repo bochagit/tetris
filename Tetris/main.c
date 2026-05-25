@@ -36,6 +36,8 @@ int main(int argc, char *argv[]){
     int contadorPiezas=0;
     int timeFreeze=0;
     int lockDelayMaximo=velocidadCaida/2;
+    int delayIzq=0;
+    int delayDer=0;
 
     int res = 320;
     int escala = 3;
@@ -63,6 +65,7 @@ int main(int argc, char *argv[]){
         fprintf(stderr, "Error creando tablero\n");
         return 1;
     }
+    t->LineasCompletas=0;
 
     if (graficosIniciar(&pant) != 0){
         tablero_destruir(t);
@@ -97,7 +100,7 @@ int main(int argc, char *argv[]){
                 }
 
                 break;
-            
+
             case ESTADO_USER:
                 graficosDibujarUser(&pant, user, cursor);
 
@@ -144,12 +147,16 @@ int main(int argc, char *argv[]){
                 break;
 
             case ESTADO_CORRIENDO:
-                if (gbt_tecla_sostenida(GBTK_a)){
+                if (gbt_tecla_sostenida(GBTK_a) && delayIzq==0){
                     if (puedeMover(&p, -1, 0, t)) p.columna--;
+
+                    delayIzq=2;
                 }
 
-                if (gbt_tecla_sostenida(GBTK_d)){
+                if (gbt_tecla_sostenida(GBTK_d) && delayDer==0){
                     if (puedeMover(&p, 1, 0, t)) p.columna++;
+
+                    delayDer=2;
                 }
 
                 if (gbt_tecla_sostenida(GBTK_s) && !timeFreeze){
@@ -197,11 +204,20 @@ int main(int argc, char *argv[]){
                 }
 
                 graficosDibujarJuego(&pant, t, &p, puntaje, nivel, lineasCompletas, user, bolsa_actual[indice]);
+                if(t->LineasCompletas==1 && gravedad>=5)
+                {
+                    filasCompletasEliminar(t);
+                    t->LineasCompletas=0;
+                }
 
                 if(!timeFreeze)
                 {
                     gravedad++;
                 }
+                if(delayDer>0)
+                    delayDer--;
+                if(delayIzq>0)
+                    delayIzq--;
                 gbt_esperar(50);
                 break;
 
