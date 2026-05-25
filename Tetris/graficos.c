@@ -160,7 +160,7 @@ void graficosDibujarBorde(int x, int y, int w, int h, uint8_t color, int grosor)
   graficosDibujarRect(x + w - grosor, y, grosor, h, color); // borde der
 }
 
-void graficosDibujarJuego(const Pantalla* pant, const Tablero *t, const PiezaActual *p, int puntaje, int nivel, int lineasCompletas, const char user[4]){
+void graficosDibujarJuego(const Pantalla* pant, const Tablero *t, const PiezaActual *p, int puntaje, int nivel, int lineasCompletas, const char user[4], char siguienteTipo){
   graficosComenzarFrame(15);
   int tableroW = t->columnas * pant->pixelesCelda + (t->columnas - 1) * pant->pxPadding;
   int tableroH = t->filasVisibles * pant->pixelesCelda + (t->filasVisibles - 1) * pant->pxPadding;
@@ -247,6 +247,20 @@ void graficosDibujarJuego(const Pantalla* pant, const Tablero *t, const PiezaAct
   // PANEL DER ARRIBA - PROX PIEZA
   graficosDibujarRect(panelDerX, panelDerY - 1, panelDerW, (panelDerH / 2), 10);
   graficosDibujarBorde(panelDerX, panelDerY - 1, panelDerW, (panelDerH / 2), 14, 1);
+
+  int escalaTexto = pant->anchoVentana == 320 ? 1 : 2;
+
+  fuenteDibujarTexto(FUENTE_CHICA, "siguiente\npieza:", panelDerX + 10, panelDerY + 10, PAL_REFLEJO, escalaTexto, 1);
+  graficosDibujarBorde(panelDerX + 5, panelDerY + (panelDerH / 5), panelDerW - 10, panelDerH / 4, 14, 1);
+
+  uint8_t colorPreview = obtenerColorCelda(siguienteTipo);
+  int previewBlock = pant->anchoVentana == 320 ? 12 : 24;
+  int boxX = panelDerX + 5;
+  int boxY = panelDerY + (panelDerH / 5);
+  int boxW = panelDerW - 10;
+  int boxH = panelDerH / 4;
+
+  graficosDibujarPreview(pant, siguienteTipo, boxX + (boxW / 2), boxY + (boxH / 2), previewBlock, 2, colorPreview);
 
   // PANEL DER ABAJO - COMO JUGAR
   graficosDibujarRect(panelDerX, panelDerY + (panelDerH / 2) + 1, panelDerW, (panelDerH / 2), 10);
@@ -450,4 +464,59 @@ void graficosDibujarUser(const Pantalla* pant, const char user[4], int cursor){
   fuenteDibujarTexto(FUENTE_CHICA, "enter para comenzar", (pant->anchoVentana / 2) - ((6 * escalaTexto * strlen("enter para comenzar")) / 2), pant->altoVentana - (pant->altoVentana / 6), PAL_REFLEJO, escalaTexto, 1);
 
   graficosPresentarFrame();
+}
+
+void graficosDibujarPreview(const Pantalla* pant, char tipo, int cx, int cy, int block, int pad, uint8_t color){
+  if (!tipo) return;
+
+  PiezaActual temp = {0};
+  temp.tetromino = crearMatriz(4, 4);
+  if (!temp.tetromino) return;
+
+  cargaMatriz(temp.tetromino, 4, 4, '.');
+  temp.tipo = tipo;
+  cargaPieza(&temp);
+
+  int minCol = 4, maxCol = -1;
+  int minFila = 4, maxFila = -1;
+
+  for (int i = 0; i < 4; i++){
+    for (int j = 0; j < 4; j++){
+      if (temp.tetromino[i][j] != tipo) continue;
+
+      if (j < minCol) minCol = j;
+      if (j > maxCol) maxCol = j;
+      if (i < minFila) minFila = i;
+      if (i > maxFila) maxFila = i;
+    }
+  }
+
+  if (maxCol < 0 || maxFila < 0){
+    destruyeMatriz(temp.tetromino, 4);
+    return;
+  }
+
+  int anchoReal = (maxCol - minCol + 1) * block + (maxCol - minCol) * pad;
+  int altoReal  = (maxFila - minFila + 1) * block + (maxFila - minFila) * pad;
+
+  int sx = cx - (anchoReal / 2);
+  int sy = cy - (altoReal / 2);
+
+  for (int i = minFila; i <= maxFila; i++){
+    for (int j = minCol; j <= maxCol; j++){
+      if (temp.tetromino[i][j] != tipo) continue;
+
+      int x = sx + (j - minCol) * (block + pad);
+      int y = sy + (i - minFila) * (block + pad);
+
+      graficosDibujarRect(x, y, block, block, color);
+
+      if (block > 2){
+        graficosDibujarRect(x, y, block - 1, 1, PAL_REFLEJO);
+        graficosDibujarRect(x, y, 1, block - 1, PAL_REFLEJO);
+      }
+    }
+  }
+
+  destruyeMatriz(temp.tetromino, 4);
 }

@@ -196,7 +196,7 @@ int main(int argc, char *argv[]){
                     nivel++;
                 }
 
-                graficosDibujarJuego(&pant, t, &p, puntaje, nivel, lineasCompletas, user);
+                graficosDibujarJuego(&pant, t, &p, puntaje, nivel, lineasCompletas, user, bolsa_actual[indice]);
 
                 if(!timeFreeze)
                 {

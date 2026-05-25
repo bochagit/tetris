@@ -29,10 +29,11 @@ void graficosDibujarCelda(const Pantalla* pant, uint8_t color, uint16_t oX, uint
 void graficosDibujarRect(int x, int y, int w, int h, uint8_t color);
 void graficosDibujarBorde(int x, int y, int w, int h, uint8_t color, int grosor);
 void graficosDibujarMenu(const Pantalla* pant);
-void graficosDibujarJuego(const Pantalla* pant, const Tablero* t, const PiezaActual* p, int puntaje, int nivel, int lineasCompletas, const char user[4]);
+void graficosDibujarJuego(const Pantalla* pant, const Tablero* t, const PiezaActual* p, int puntaje, int nivel, int lineasCompletas, const char user[4], char siguienteTipo);
 void graficosDibujarPausa(const Pantalla* pant);
 void graficosDibujarGameOver(const Pantalla* pant);
 void graficosConfigurarResolucion(Pantalla* pant, int res, int escala);
 void graficosDibujarUser(const Pantalla* pant, const char user[4], int cursor);
+void graficosDibujarPreview(const Pantalla* pant, char tipo, int cx, int cy, int block, int pad, uint8_t color);
 
 #endif // GRAFICOS_H_INCLUDED
