@@ -1,5 +1,20 @@
 #include "tetris.h"
 
+void inicializarBolsa(Bolsa* b){
+    char base[7] = {'I', 'J', 'L', 'O', 'S', 'T', 'Z'};
+
+    copiarBolsa(b->actual, base, 7);
+    copiarBolsa(b->aux, base, 7);
+    mezclarBolsa(b->actual, 7);
+    mezclarBolsa(b->aux, 7);
+    b->indice = 0;
+    b->siguienteTipo = siguientePieza(b);
+}
+
+void copiarBolsa(char* destino, const char* origen, int n){
+    for (int i = 0; i < n; i++) destino[i] = origen[i];
+}
+
 void mezclarBolsa(char* bolsa, int n)
 {
     char aux;
@@ -20,34 +35,36 @@ void mostrarBolsa(char* bolsa, int n)
     }
     printf("\n");
 }
-int crearNuevaPieza(char* bolsa, int* indiceBolsa, PiezaActual *p, Tablero * t)
+int crearNuevaPieza(Bolsa* b, PiezaActual *p, Tablero * t)
 {
-    p->tipo = siguientePieza(bolsa, indiceBolsa);
+    p->tipo = b->siguienteTipo;
+    b->siguienteTipo = siguientePieza(b);
+
     p->fila = 0;
     p->columna = (CLASICO_COLUMNAS / 2) - 2;
+
     if (p->tetromino) destruyeMatriz(p->tetromino, 4);
     p->tetromino = crearMatriz(4, 4);
     cargaMatriz(p->tetromino, 4, 4, '.');
     cargaPieza(p);
-    if(puedeMover(p,0,CLASICO_FILAS_OCULTAS - 2,t))
-        return 0;
-    else
-        return 1;
 
+    return puedeMover(p, 0, CLASICO_FILAS_OCULTAS - 2, t) ? 0 : 1;
 }
-char siguientePieza(char* bolsa, int* indiceBolsa)
+
+char siguientePieza(Bolsa* b)
 {
-    int pieza;
-    if(*indiceBolsa == 0)
-    {
-        mezclarBolsa(bolsa, 7);
+    char pieza = b->actual[b->indice];
+    b->indice++;
+
+    if (b->indice == 7){
+        char temp[7];
+
+        copiarBolsa(temp, b->actual, 7);
+        copiarBolsa(b->actual, b->aux, 7);
+        copiarBolsa(b->aux, temp, 7);
+        mezclarBolsa(b->aux, 7);
+        b->indice = 0;
     }
-
-    pieza = *(bolsa+(*indiceBolsa));
-    (*indiceBolsa)++;
-
-    if(*indiceBolsa == 7)
-        *indiceBolsa = 0;
 
     return pieza;
 }
@@ -455,7 +472,7 @@ void actualizarPuntaje(int * puntaje,int lineas)
 
     }
 }
-int actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual* p, int * puntaje, int* lineasCompletas, int* lockDelay)
+int actualizarJuego(Tablero *tablero, Bolsa* b,PiezaActual* p, int * puntaje, int* lineasCompletas, int* lockDelay)
 {
     int lineas,gameOver=0;
     char** filasCompletas=malloc(sizeof(char*)*4);
@@ -476,7 +493,7 @@ int actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual* 
     //    filasCompletasEliminar(tablero);
     //    tablero->LineasCompletas=0;
     //}
-    gameOver=crearNuevaPieza(bolsa,indiceBolsa,p,tablero);
+    gameOver=crearNuevaPieza(b,p,tablero);
     (*lockDelay)=0;
 
 

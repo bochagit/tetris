@@ -20,13 +20,14 @@ Entrega: Sí
 
 int main(int argc, char *argv[]){
     srand(time(NULL));
-    char bolsa_actual[]={'I','J','L','O','S','T','Z'};
+    Bolsa b;
     PiezaActual p;
     p.tetromino = NULL;
     EstadoJuego estado = ESTADO_MENU;
     Pantalla pant;
 
-    int indice=0;
+    inicializarBolsa(&b);
+
     int puntaje=0;
     int nivel = 1;
     int lineasCompletas = 0;
@@ -83,18 +84,19 @@ int main(int argc, char *argv[]){
 
                 if (gbt_tecla_presionada(GBTK_j)){
                     tablero_vaciar(t);
-                    indice=0;
                     puntaje=0;
                     gravedad=0;
                     nivel = 1;
                     lineasCompletas = 0;
+
+                    inicializarBolsa(&b);
 
                     if (p.tetromino){
                         destruyeMatriz(p.tetromino, 4);
                         p.tetromino = NULL;
                     }
 
-                    crearNuevaPieza(bolsa_actual, &indice, &p, t);
+                    crearNuevaPieza(&b, &p, t);
 
                     estado = ESTADO_USER;
                 }
@@ -190,7 +192,7 @@ int main(int argc, char *argv[]){
 
                 if(lockDelay >= lockDelayMaximo)
                 {
-                    if(actualizarJuego(t,bolsa_actual,&indice,&p,&puntaje,&lineasCompletas,&lockDelay)) estado = ESTADO_GAMEOVER;
+                    if(actualizarJuego(t, &b, &p, &puntaje, &lineasCompletas, &lockDelay)) estado = ESTADO_GAMEOVER;
                     gravedad=0;
                     contadorPiezas++;
 
@@ -203,7 +205,7 @@ int main(int argc, char *argv[]){
                     nivel++;
                 }
 
-                graficosDibujarJuego(&pant, t, &p, puntaje, nivel, lineasCompletas, user, bolsa_actual[indice]);
+                graficosDibujarJuego(&pant, t, &p, puntaje, nivel, lineasCompletas, user, b.siguienteTipo);
                 if(t->LineasCompletas==1 && gravedad>=5)
                 {
                     filasCompletasEliminar(t);
@@ -235,18 +237,19 @@ int main(int argc, char *argv[]){
 
                 if (gbt_tecla_presionada(GBTK_r)){
                     tablero_vaciar(t);
-                    indice=0;
                     puntaje=0;
                     gravedad=0;
                     nivel = 1;
                     lineasCompletas = 0;
+
+                    inicializarBolsa(&b);
 
                     if (p.tetromino){
                         destruyeMatriz(p.tetromino, 4);
                         p.tetromino = NULL;
                     }
 
-                    crearNuevaPieza(bolsa_actual, &indice, &p, t);
+                    crearNuevaPieza(&b, &p, t);
 
                     estado = ESTADO_CORRIENDO;
                 }

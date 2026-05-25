@@ -46,6 +46,13 @@ typedef struct {
   char** tetromino;
 } PiezaActual;
 
+typedef struct {
+  char actual[7];
+  char aux[7];
+  int indice;
+  char siguienteTipo;
+} Bolsa;
+
 typedef enum {
   ESTADO_MENU,
   ESTADO_USER,
@@ -57,8 +64,10 @@ typedef enum {
 
 void mezclarBolsa(char* bolsa, int n);
 void mostrarBolsa(char* bolsa, int n);
-int crearNuevaPieza(char* bolsa, int* indiceBolsa, PiezaActual *p, Tablero * t);
-char siguientePieza(char* bolsa, int* indiceBolsa);
+void copiarBolsa(char* destino, const char* origen, int n);
+void inicializarBolsa(Bolsa* b);
+int crearNuevaPieza(Bolsa* b, PiezaActual *p, Tablero * t);
+char siguientePieza(Bolsa* bolsa);
 void cargaPieza(PiezaActual *p);
 void aplicarGravedad(Tablero *tablero,PiezaActual* p, int* lockDelay,int *gravedad, int velocidadCaida);
 void fijarPieza(Tablero *tablero, PiezaActual *p);
@@ -73,7 +82,7 @@ void limpiaLinea(char* fila, int columnas,char relleno);
 void actualizarPuntaje(int * puntaje,int lineas);
 int tetrominosObtieneUltimasFilas(int *ult);
 void compactarFilas(Tablero *tablero, const int *filas, int cant);
-int actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual* p, int * puntaje, int* lineasCompletas, int* lockDelay);
+int actualizarJuego(Tablero *tablero,Bolsa* b,PiezaActual* p, int * puntaje, int* lineasCompletas, int* lockDelay);
 void calcularGhost(PiezaActual *p,Tablero *t);
 void pintarFilasCompletas(Tablero *tablero, char **filasCompletas,int cantidadCompletas);
 void filasCompletasEliminar(Tablero *tablero);
