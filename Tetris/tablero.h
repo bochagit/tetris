@@ -8,7 +8,7 @@
 #include <windows.h>
 #include <conio.h>
 
-Tablero *tablero_crear(void);
+Tablero *tablero_crear(int);
 void tablero_destruir(Tablero *tablero);
 bool tablero_vaciar(Tablero *tablero);
 void tablero_mostrar(const Tablero *tablero);

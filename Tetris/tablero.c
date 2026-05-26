@@ -1,13 +1,13 @@
 #include "tablero.h"
 
-Tablero *tablero_crear(void){
+Tablero *tablero_crear(int columnas){
   Tablero *t = malloc(sizeof(Tablero));
   if (!t) return NULL;
 
   t->filasVisibles = CLASICO_FILAS_VISIBLES;
   t->filasOcultas = CLASICO_FILAS_OCULTAS;
   t->filasTotales = t->filasOcultas + t->filasVisibles;
-  t->columnas = CLASICO_COLUMNAS;
+  t->columnas = columnas;
 
   t->celdas = crearMatriz(t->filasTotales, t->columnas);
   if (!t->celdas){
@@ -16,6 +16,7 @@ Tablero *tablero_crear(void){
   }
 
   cargaMatriz(t->celdas, t->filasTotales, t->columnas, CELDA_VACIA);
+  t->LineasCompletas=0;
 
   return t;
 }

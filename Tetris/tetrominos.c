@@ -35,7 +35,7 @@ void mostrarBolsa(char* bolsa, int n)
     }
     printf("\n");
 }
-int crearNuevaPieza(Bolsa* b, PiezaActual *p, Tablero * t)
+int crearNuevaPieza(Bolsa* b, PiezaActual *p, Tablero * t, int modo)
 {
     p->tipo = b->siguienteTipo;
     b->siguienteTipo = siguientePieza(b);
@@ -48,7 +48,7 @@ int crearNuevaPieza(Bolsa* b, PiezaActual *p, Tablero * t)
     cargaMatriz(p->tetromino, 4, 4, '.');
     cargaPieza(p);
 
-    return puedeMover(p, 0, CLASICO_FILAS_OCULTAS - 2, t) ? 0 : 1;
+    return puedeMover(p, 0, CLASICO_FILAS_OCULTAS - 2, t, modo) ? 0 : 1;
 }
 
 char siguientePieza(Bolsa* b)
@@ -227,9 +227,9 @@ void cargaPieza(PiezaActual *p)
     }
 }
 
-void aplicarGravedad(Tablero *tablero,PiezaActual* p, int* lockDelay,int *gravedad, int velocidadCaida)
+void aplicarGravedad(Tablero *tablero,PiezaActual* p, int* lockDelay,int *gravedad, int velocidadCaida,int modo)
 {
-    int puedeBajar=puedeMover(p, 0, 1, tablero);
+    int puedeBajar=puedeMover(p, 0, 1, tablero,modo);
     if((*gravedad)>=velocidadCaida && puedeBajar)
     {
         p->fila++;
@@ -245,8 +245,8 @@ void aplicarGravedad(Tablero *tablero,PiezaActual* p, int* lockDelay,int *graved
     return;
 }
 
-bool puedeMover(PiezaActual *p, int dx, int dy, Tablero* t){
-    int i, j, nuevaFila, nuevaCol;
+bool puedeMover(PiezaActual *p, int dx, int dy, Tablero* t,int modo){
+    int i, j, nuevaFila, nuevaCol,colReal;
 
     for(i = 0; i < 4; i++){
         for(j = 0; j < 4; j++){
@@ -258,19 +258,41 @@ bool puedeMover(PiezaActual *p, int dx, int dy, Tablero* t){
             // piso
             if(nuevaFila >= t->filasTotales) return false;
 
-            // bordes
-            if (nuevaCol < 0 || nuevaCol >= t->columnas) return false;
 
-            // colision con bloque fijo
-            if(t->celdas[nuevaFila][nuevaCol] != '.') return false;
+            if(modo==0)
+            {
+                // bordes
+                if (nuevaCol < 0 || nuevaCol >= t->columnas) return false;
+
+                // colision con bloque fijo
+                if(t->celdas[nuevaFila][nuevaCol] != '.') return false;
+            }
+
+
+            //if(t->celdas[nuevaFila][nuevaCol] != '.' && modo == 0) return false;
+
+            if(modo==1)
+            {
+                if(nuevaCol<0 || nuevaCol>(t->columnas-1))
+                {
+                    colReal = (nuevaCol + t->columnas) % t->columnas;
+                    if(t->celdas[nuevaFila][colReal] != '.')
+                    return false;
+                }
+                else if(t->celdas[nuevaFila][nuevaCol] != '.')
+                {
+                    return false;
+                }
+
+            }
         }
     }
 
     return true;
 }
-void fijarPieza(Tablero *tablero, PiezaActual *p)
+void fijarPieza(Tablero *tablero, PiezaActual *p, int modo)
 {
-    int i,j,Fila,Col;
+    int i,j,Fila,Col,colReal;
     char** aux=p->tetromino;
     char*auxFila;
     for(i = 0; i < 4; i++)
@@ -278,66 +300,32 @@ void fijarPieza(Tablero *tablero, PiezaActual *p)
         for(j = 0; j < 4; j++)
         {
             auxFila=(*aux)+j;
-            if(*auxFila==p->tipo)
+            if(modo==0 && *auxFila==p->tipo)
             {
                 Fila = (p->fila + i);
                 Col  = (p->columna + j);
                 tablero->celdas[Fila][Col]= p->tipo;
             }
+            else if(modo==1 && *auxFila==p->tipo)
+            {
+                Col  = (p->columna + j);
+                if(Col<0 || Col>(tablero->columnas-4))
+                {
+                    colReal = (p->columna + j + tablero->columnas) % tablero->columnas;
+                    Fila = (p->fila + i);
+                    tablero->celdas[Fila][colReal]= p->tipo;
+                }
+                else
+                {
+                    Fila = (p->fila + i);
+                    Col  = (p->columna + j);
+                    tablero->celdas[Fila][Col]= p->tipo;
+                }
+            }
         }
         aux++;
     }
 }
-void render(Tablero *tablero, PiezaActual *p)
-{
-    int ini = tablero->filasOcultas;
-    int fin = tablero->filasOcultas + tablero->filasVisibles;
-    int i,j;
-    for (i = ini; i < fin; i++)
-    {
-        for (j = 0; j < tablero->columnas; j++)
-        {
-            if(piezaOcupaCelda(p,i,j)==p->tipo)
-            {
-                putchar('X');
-                putchar(' ');
-            }
-            else
-            {
-                putchar(tablero->celdas[i][j]);
-                putchar(' ');
-            }
-        }
-        printf("%d", (i - (tablero->filasOcultas - 1))); // debug
-        putchar('\n');
-    }
-
-
-}
-char piezaOcupaCelda(const PiezaActual *p, int filaActual, int columnaActual)
-{
-    int filaRelativa;
-    int columnaRelativa;
-    char** aux;
-    char* auxFila;
-
-    // Verificar si la celda esta dentro del area 4x4 de la pieza
-    if(filaActual < p->fila || filaActual >= p->fila + 4)
-        return 0;
-
-    if(columnaActual < p->columna || columnaActual >= p->columna + 4)
-        return 0;
-
-    // Convertir coordenadas del tablero a coordenadas relativas
-    filaRelativa = filaActual - p->fila;
-    columnaRelativa = columnaActual - p->columna;
-
-    // Verificar si la pieza tiene bloque en esa posici�n
-    aux=(p->tetromino)+filaRelativa;
-    auxFila=*(aux)+columnaRelativa;
-    return (*auxFila);
-}
-
 bool puedeRotar(PiezaActual* p, char temp[4][4], Tablero* t){
     int i, j, nuevaFila, nuevaCol;
 
@@ -472,14 +460,14 @@ void actualizarPuntaje(int * puntaje,int lineas)
 
     }
 }
-int actualizarJuego(Tablero *tablero, Bolsa* b,PiezaActual* p, int * puntaje, int* lineasCompletas, int* lockDelay)
+int actualizarJuego(Tablero *tablero, Bolsa* b,PiezaActual* p, int * puntaje, int* lineasCompletas, int* lockDelay, int modo)
 {
     int lineas,gameOver=0;
     char** filasCompletas=malloc(sizeof(char*)*4);
     if(!filasCompletas)
         return -1;
 
-    fijarPieza(tablero, p);
+    fijarPieza(tablero, p,modo);
     lineas=evaluarFilas(tablero,filasCompletas);
     if(lineas>0 && tablero->LineasCompletas==0)
     {
@@ -488,21 +476,18 @@ int actualizarJuego(Tablero *tablero, Bolsa* b,PiezaActual* p, int * puntaje, in
         tablero->LineasCompletas=1;
         *lineasCompletas += lineas;
     }
-    //else if(lineas>0 && tablero->LineasCompletas==1)
-    //{
-    //    filasCompletasEliminar(tablero);
-    //    tablero->LineasCompletas=0;
-    //}
-    gameOver=crearNuevaPieza(b,p,tablero);
+
+    gameOver=crearNuevaPieza(b,p,tablero, modo);
+
     (*lockDelay)=0;
 
 
     return gameOver;
 }
-void calcularGhost(PiezaActual *p,Tablero *t)
+void calcularGhost(PiezaActual *p,Tablero *t,int modo)
 {
     int dy=0;
-    while(puedeMover(p,0,dy,t))
+    while(puedeMover(p,0,dy,t,modo))
     {
         dy++;
     }
@@ -552,4 +537,30 @@ void filasCompletasEliminar(Tablero *tablero)
         escritura--;
     }
 
+}
+char piezaOcupaCelda(const PiezaActual *p,int filaTablero,int colTablero,int columnas)
+{
+    int i, j;
+    int filaReal;
+    int colReal;
+
+    for(i=0;i<4;i++)
+    {
+        for(j=0;j<4;j++)
+        {
+            if(p->tetromino[i][j] !=p->tipo)
+                continue;
+
+            filaReal = p->fila+i;
+
+            colReal =(p->columna+j+columnas) % columnas;
+
+            if(filaReal==filaTablero && colReal==colTablero)
+            {
+                return p->tipo;
+            }
+        }
+    }
+
+    return '.';
 }

@@ -124,11 +124,11 @@ void graficosDibujarTablero(const Pantalla* pant, const Tablero *tablero, const 
         {
             color = obtenerColorCelda('#');
         }
-        else if(pieza && piezaOcupaCelda(pieza, fila, col) == pieza->tipo)
+        else if(pieza && piezaOcupaCelda(pieza, fila, col,tablero->columnas) == pieza->tipo)
         {
             color = obtenerColorCelda(pieza->tipo);
         }
-        else if (pieza && piezaOcupaCelda(pieza, fila-diferencia, col) == pieza->tipo)
+        else if (pieza && piezaOcupaCelda(pieza, fila-diferencia, col,tablero->columnas) == pieza->tipo)
         {
             color = obtenerColorCelda('G');}
         else
@@ -369,12 +369,26 @@ void graficosDibujarMenu(const Pantalla* pant){
   fuenteDibujarChar(FUENTE_GRANDE, 'I', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2) + 52 * escalaCharTitulo, 20, PAL_I, escalaCharTitulo);
   fuenteDibujarChar(FUENTE_GRANDE, 'S', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2) + 65 * escalaCharTitulo, 20, PAL_S, escalaCharTitulo);
 
-  graficosDibujarRect(((pant->anchoVentana / 2) - (botonW / 2)), pant->altoVentana - (pant->altoVentana / 3) - 10, botonW, botonH, 12);
-  graficosDibujarRect(((pant->anchoVentana / 2) - (botonW / 2)) + 2, (pant->altoVentana - (pant->altoVentana / 3)) - 8, botonW, botonH, 0);
-  graficosDibujarBorde(((pant->anchoVentana / 2) - (botonW / 2)) + 2, (pant->altoVentana - (pant->altoVentana / 3)) - 8, botonW, botonH, 14, 1);
-  fuenteDibujarChar(FUENTE_GRANDE, 'J', ((pant->anchoVentana / 2) - ((12 * escalaChar) / 2)), ((pant->altoVentana - (pant->altoVentana / 3)) - 8) + ((botonH - (12 * escalaChar)) / 2), PAL_REFLEJO, escalaChar);
+    graficosDibujarRect(((pant->anchoVentana / 4) - (botonW / 2)), pant->altoVentana - (pant->altoVentana / 3) - 10, botonW, botonH, 12);
+    graficosDibujarRect(((pant->anchoVentana / 4) - (botonW / 2)) + 2, (pant->altoVentana - (pant->altoVentana / 3)) - 8, botonW, botonH, 0);
+    graficosDibujarBorde(((pant->anchoVentana / 4) - (botonW / 2)) + 2, (pant->altoVentana - (pant->altoVentana / 3)) - 8, botonW, botonH, 14, 1);
+    fuenteDibujarChar(FUENTE_GRANDE, 'N', ((pant->anchoVentana / 4) - ((12 * escalaChar) / 2)), ((pant->altoVentana - (pant->altoVentana / 3)) - 8) + ((botonH - (12 * escalaChar)) / 2), PAL_REFLEJO, escalaChar);
 
-  fuenteDibujarTexto(FUENTE_CHICA, "jugar", (pant->anchoVentana / 2) - ((6 * escalaTexto * strlen("jugar")) / 2), (pant->altoVentana - (pant->altoVentana / 3) - (botonH / 2)) - 10, PAL_REFLEJO, escalaTexto, 1);
+    fuenteDibujarTexto(FUENTE_CHICA, "normal", (pant->anchoVentana / 4) - ((6 * escalaTexto * strlen("normal")) / 2), (pant->altoVentana - (pant->altoVentana / 3) - (botonH / 2)) - 10, PAL_REFLEJO, escalaTexto, 1);
+
+    graficosDibujarRect(((pant->anchoVentana / 2) - (botonW / 2)), pant->altoVentana - (pant->altoVentana / 3) - 10, botonW, botonH, 12);
+    graficosDibujarRect(((pant->anchoVentana / 2) - (botonW / 2)) + 2, (pant->altoVentana - (pant->altoVentana / 3)) - 8, botonW, botonH, 0);
+    graficosDibujarBorde(((pant->anchoVentana / 2) - (botonW / 2)) + 2, (pant->altoVentana - (pant->altoVentana / 3)) - 8, botonW, botonH, 14, 1);
+    fuenteDibujarChar(FUENTE_GRANDE, 'D', ((pant->anchoVentana / 2) - ((12 * escalaChar) / 2)), ((pant->altoVentana - (pant->altoVentana / 3)) - 8) + ((botonH - (12 * escalaChar)) / 2), PAL_REFLEJO, escalaChar);
+
+    fuenteDibujarTexto(FUENTE_CHICA, "dificil", (pant->anchoVentana / 2) - ((6 * escalaTexto * strlen("dificil")) / 2), (pant->altoVentana - (pant->altoVentana / 3) - (botonH / 2)) - 10, PAL_REFLEJO, escalaTexto, 1);
+
+    graficosDibujarRect(((3 * pant->anchoVentana / 4) - (botonW)), pant->altoVentana - (pant->altoVentana / 3) - 10, botonW, botonH, 12);
+    graficosDibujarRect(((3 * pant->anchoVentana / 4) - (botonW)) + 2, (pant->altoVentana - (pant->altoVentana / 3)) - 8, botonW, botonH, 0);
+    graficosDibujarBorde(((3 * pant->anchoVentana / 4) - (botonW)) + 2, (pant->altoVentana - (pant->altoVentana / 3)) - 8, botonW, botonH, 14, 1);
+    fuenteDibujarChar(FUENTE_GRANDE, 'F', ((3 * pant->anchoVentana / 4) - (botonW/2) - ((12 * escalaChar) / 2)), ((pant->altoVentana - (pant->altoVentana / 3)) - 8) + ((botonH - (12 * escalaChar)) / 2), PAL_REFLEJO, escalaChar);
+
+    fuenteDibujarTexto(FUENTE_CHICA, "facil", (3 * pant->anchoVentana / 4) - ((12 * escalaTexto * strlen("facil")) / 2), (pant->altoVentana - (pant->altoVentana / 3) - (botonH / 2)) - 10, PAL_REFLEJO, escalaTexto, 1);
 
   graficosPresentarFrame();
 }

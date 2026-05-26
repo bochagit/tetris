@@ -25,6 +25,7 @@ int main(int argc, char *argv[]){
     p.tetromino = NULL;
     EstadoJuego estado = ESTADO_MENU;
     Pantalla pant;
+    Tablero *t;
 
     inicializarBolsa(&b);
 
@@ -39,6 +40,7 @@ int main(int argc, char *argv[]){
     int lockDelayMaximo=velocidadCaida/2;
     int delayIzq=0;
     int delayDer=0;
+    int modo=0;
 
     int res = 320;
     int escala = 3;
@@ -61,15 +63,8 @@ int main(int argc, char *argv[]){
 
     graficosConfigurarResolucion(&pant, res, escala);
 
-    Tablero *t = tablero_crear();
-    if (!t){
-        fprintf(stderr, "Error creando tablero\n");
-        return 1;
-    }
-    t->LineasCompletas=0;
 
     if (graficosIniciar(&pant) != 0){
-        tablero_destruir(t);
         return 1;
     }
 
@@ -83,6 +78,9 @@ int main(int argc, char *argv[]){
                 graficosDibujarMenu(&pant);
 
                 if (gbt_tecla_presionada(GBTK_j)){
+                    t=tablero_crear(CLASICO_COLUMNAS);
+                    if(!t)
+                       return -1;
                     tablero_vaciar(t);
                     puntaje=0;
                     gravedad=0;
@@ -96,7 +94,47 @@ int main(int argc, char *argv[]){
                         p.tetromino = NULL;
                     }
 
-                    crearNuevaPieza(&b, &p, t);
+                    crearNuevaPieza(&b, &p, t,modo);
+
+                    estado = ESTADO_USER;
+                }
+                if (gbt_tecla_presionada(GBTK_d)){
+                    t=tablero_crear(DELUXE_COLUMNAS_DIFICIL);
+                    if(!t)
+                       return -1;
+                    tablero_vaciar(t);
+                    puntaje=0;
+                    gravedad=0;
+                    nivel = 1;
+                    lineasCompletas = 0;
+                    modo=1;
+
+                    if (p.tetromino){
+                        destruyeMatriz(p.tetromino, 4);
+                        p.tetromino = NULL;
+                    }
+
+                    crearNuevaPieza(&b, &p, t,modo);
+
+                    estado = ESTADO_USER;
+                }
+                if (gbt_tecla_presionada(GBTK_f)){
+                    t=tablero_crear(DELUXE_COLUMNAS_FACIL);
+                    if(!t)
+                       return -1;
+                    tablero_vaciar(t);
+                    puntaje=0;
+                    gravedad=0;
+                    nivel = 1;
+                    lineasCompletas = 0;
+                    modo=1;
+
+                    if (p.tetromino){
+                        destruyeMatriz(p.tetromino, 4);
+                        p.tetromino = NULL;
+                    }
+
+                    crearNuevaPieza(&b, &p, t,modo);
 
                     estado = ESTADO_USER;
                 }
@@ -150,19 +188,19 @@ int main(int argc, char *argv[]){
 
             case ESTADO_CORRIENDO:
                 if (gbt_tecla_sostenida(GBTK_a) && delayIzq==0){
-                    if (puedeMover(&p, -1, 0, t)) p.columna--;
+                    if (puedeMover(&p, -1, 0, t,modo)) p.columna--;
 
                     delayIzq=2;
                 }
 
                 if (gbt_tecla_sostenida(GBTK_d) && delayDer==0){
-                    if (puedeMover(&p, 1, 0, t)) p.columna++;
+                    if (puedeMover(&p, 1, 0, t,modo)) p.columna++;
 
                     delayDer=2;
                 }
 
                 if (gbt_tecla_sostenida(GBTK_s) && !timeFreeze){
-                    if (puedeMover(&p, 0, 1, t)){
+                    if (puedeMover(&p, 0, 1, t,modo)){
                         p.fila++;
                         puntaje++;
                     }
@@ -180,19 +218,19 @@ int main(int argc, char *argv[]){
 
                 if (gbt_tecla_presionada(GBTK_f)) timeFreeze = !timeFreeze;
 
-                calcularGhost(&p,t);
+                calcularGhost(&p,t,modo);
 
                 if(gbt_tecla_presionada(GBTK_ESPACIO)) p.fila=p.GhostFila-1;
 
 
                 if(!timeFreeze)
                 {
-                    aplicarGravedad(t,&p,&lockDelay,&gravedad, velocidadCaida);
+                    aplicarGravedad(t,&p,&lockDelay,&gravedad, velocidadCaida,modo);
                 }
 
                 if(lockDelay >= lockDelayMaximo)
                 {
-                    if(actualizarJuego(t, &b, &p, &puntaje, &lineasCompletas, &lockDelay)) estado = ESTADO_GAMEOVER;
+                    if(actualizarJuego(t,&b,&p,&puntaje,&lineasCompletas,&lockDelay, modo)) estado = ESTADO_GAMEOVER;
                     gravedad=0;
                     contadorPiezas++;
 
@@ -249,7 +287,7 @@ int main(int argc, char *argv[]){
                         p.tetromino = NULL;
                     }
 
-                    crearNuevaPieza(&b, &p, t);
+                    crearNuevaPieza(&b, &p, t, modo);
 
                     estado = ESTADO_CORRIENDO;
                 }
