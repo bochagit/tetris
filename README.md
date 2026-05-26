@@ -48,20 +48,20 @@ Desarrollar un videojuego equivalente al juego TETRIS utilizando la biblioteca G
 
 - [x] Pantalla de presentación.
 - [ ] Documentación en el formato de nuestra preferencia explicando todo lo necesario para que un usuario pueda compilar, ejecutar y jugar.
-- [ ] Resoluciones lógicas: CGA: 320x200 y VGA: 640x480.
+- [x] Resoluciones lógicas: CGA: 320x200 y VGA: 640x480.
 - Sistema de puntuación
    - [x] Puntos por limpiar una fila, con bonificación por filas extras eliminadas al mismo tiempo.
    - [x] Puntos por casilleros bajados manualmente.
    - [x] Puntos visibles en la interfaz gráfica.
 - Establecer al menos una dificultad en la cual se alteren los parametros mencionados a continuación.
-   - [ ] Velocidad de la caída del tetrominó, la cual debe aumentar un 3% por cada 10 fichas caídas
-   - [ ] Velocidad de fijación del tetrominó
+   - [x] Velocidad de la caída del tetrominó, la cual debe aumentar un 3% por cada 10 fichas caídas
+   - [x] Velocidad de fijación del tetrominó
    - [ ] A mayor velocidad, mayor los puntos obtenidos por el jugador.
 - [x] Selección del tetrominó de forma aleatoria por algoritmo sin tendencias hacia ciertos tipos.
-- [ ] Solicitar nombre del jugador a través de interfaz gráfica.
+- [x] Solicitar nombre del jugador a través de interfaz gráfica.
 - [ ] Mostrar estadísticas del juego por nombre del jugador.
 - [x] Crear al menos dos sets de fuentes con diferentes tamaños.
-- [ ] Ejecución con argumentos a main para iniciar con diferentes factores de escala y una resolución logica específica.
+- [x] Ejecución con argumentos a main para iniciar con diferentes factores de escala y una resolución logica específica.
 - [x] Implementar todos los tetrominós originales.
 - [x] Rotación de piezas tanto a izquierda como a derecha.
 - [ ] Menú gráfico para guardar configuraciones perdurables entre sesiones.
@@ -69,16 +69,16 @@ Desarrollar un videojuego equivalente al juego TETRIS utilizando la biblioteca G
    - [ ] Paleta de colores a utilizar.
    - [ ] Resolución lógica a utilizar.
    - [ ] Velocidad de caída de tetrominós.
-- [ ] Pausa, pantalla de salida y volver a jugar al perder.
+- [x] Pausa, pantalla de salida y volver a jugar al perder.
 
 ### Características opcionales (necesarias para promocionar)
 
-- [ ] Seleccionar modo de juego a "Clásica" o "DX (Deluxe)".
-- [ ] Realizar una fuente que no sea monoespaciada.
+- [x] Seleccionar modo de juego a "Clásica" o "DX (Deluxe)".
+- [x] Realizar una fuente que no sea monoespaciada.
 - [x] Resolver el tablero mediante un array de punteros a filas, y utilizarlo al momento de limpiar lineas realizando un intercambio de punteros.
 - [x] Realizar nuestra implementación de todas las primitivas de TDA Vector que necesitemos usar.
 - [ ] Guardar el estado actual de la partída para retormarla luego (archivo binario).
-- [ ] Habilitar algun tipo de cheat.
+- [x] Habilitar algun tipo de cheat.
 
 ---
 ## Modalidad de juego: Tetris DX (Deluxe)
