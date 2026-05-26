@@ -4,6 +4,8 @@
 #define CLASICO_FILAS_VISIBLES 20
 #define CLASICO_FILAS_OCULTAS 4
 #define CLASICO_COLUMNAS 10
+#define DELUXE_COLUMNAS_DIFICIL 8
+#define DELUXE_COLUMNAS_FACIL 16
 #define CELDA_VACIA '.'
 #include <stdlib.h>
 #include <stdio.h>
@@ -57,14 +59,12 @@ typedef enum {
 
 void mezclarBolsa(char* bolsa, int n);
 void mostrarBolsa(char* bolsa, int n);
-int crearNuevaPieza(char* bolsa, int* indiceBolsa, PiezaActual *p, Tablero * t);
+int crearNuevaPieza(char* bolsa, int* indiceBolsa, PiezaActual *p, Tablero * t, int modo);
 char siguientePieza(char* bolsa, int* indiceBolsa);
 void cargaPieza(PiezaActual *p);
-void aplicarGravedad(Tablero *tablero,PiezaActual* p, int* lockDelay,int *gravedad, int velocidadCaida);
-void fijarPieza(Tablero *tablero, PiezaActual *p);
-void render(Tablero *tablero, PiezaActual *p);
-char piezaOcupaCelda(const PiezaActual *p, int filaActual, int columnaActual);
-bool puedeMover(PiezaActual *p, int dx, int dy, Tablero* t);
+void aplicarGravedad(Tablero *tablero,PiezaActual* p, int* lockDelay,int *gravedad, int velocidadCaida,int modo);
+void fijarPieza(Tablero *tablero, PiezaActual *p,int modo);
+bool puedeMover(PiezaActual *p, int dx, int dy, Tablero* t,int modo);
 bool puedeRotar(PiezaActual *p, char temp[4][4], Tablero* t);
 int rotar(PiezaActual *p, int tecla,Tablero* t);
 int evaluarFilas(Tablero *tablero, char** filasCompletas);
@@ -73,9 +73,10 @@ void limpiaLinea(char* fila, int columnas,char relleno);
 void actualizarPuntaje(int * puntaje,int lineas);
 int tetrominosObtieneUltimasFilas(int *ult);
 void compactarFilas(Tablero *tablero, const int *filas, int cant);
-int actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual* p, int * puntaje, int* lineasCompletas, int* lockDelay);
-void calcularGhost(PiezaActual *p,Tablero *t);
+int actualizarJuego(Tablero *tablero,char* bolsa, int* indiceBolsa,PiezaActual* p, int * puntaje, int* lineasCompletas, int* lockDelay,int modo);
+void calcularGhost(PiezaActual *p,Tablero *t,int modo);
 void pintarFilasCompletas(Tablero *tablero, char **filasCompletas,int cantidadCompletas);
 void filasCompletasEliminar(Tablero *tablero);
+char piezaOcupaCelda(const PiezaActual *p,int filaTablero,int colTablero,int columnas);
 
 #endif // TETRIS_H_INCLUDED
