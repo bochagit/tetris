@@ -216,7 +216,7 @@ int main(int argc, char *argv[]){
                 if (gbt_tecla_sostenida(GBTK_s) && !timeFreeze){
                     if (puedeMover(&p, 0, 1, t,modo)){
                         p.fila++;
-                        puntaje++;
+                        actualizarPuntaje(&puntaje,0,nivel);
                     }
                 }
 
@@ -248,7 +248,7 @@ int main(int argc, char *argv[]){
 
                 if(lockDelay >= lockDelayMaximo)
                 {
-                    if(actualizarJuego(t,&b,&p,&puntaje,&lineasCompletas,&lockDelay, modo)) estado = ESTADO_GAMEOVER;
+                    if(actualizarJuego(t,&b,&p,&puntaje,&lineasCompletas,&lockDelay, modo,nivel)) estado = ESTADO_GAMEOVER;
                     gravedad=0;
                     contadorPiezas++;
 

@@ -589,32 +589,36 @@ void limpiaLinea(char* fila, int columnas, char relleno)
         *(fila + i) = relleno;
     }
 }
-void actualizarPuntaje(int * puntaje,int lineas)
+void actualizarPuntaje(int * puntaje,int lineas, int nivel)
 {
+    int aux;
     switch(lineas)
     {
     case 1:
-        *puntaje+=100;
+        aux=100;
         break;
 
     case 2:
-        *puntaje+=300;
+        aux=300;
         break;
 
     case 3:
-        *puntaje+=500;
+        aux=500;
         break;
 
     case 4:
-        *puntaje+=700;
+        aux=700;
         break;
 
     default:
+        aux=1;
         break;
 
     }
+    aux*=nivel;
+    *puntaje+=aux;
 }
-int actualizarJuego(Tablero *tablero, Bolsa* b,PiezaActual* p, int * puntaje, int* lineasCompletas, int* lockDelay, int modo)
+int actualizarJuego(Tablero *tablero, Bolsa* b,PiezaActual* p, int * puntaje, int* lineasCompletas, int* lockDelay, int modo, int nivel)
 {
     int lineas,gameOver=0;
     char** filasCompletas=malloc(sizeof(char*)*4);
@@ -626,7 +630,7 @@ int actualizarJuego(Tablero *tablero, Bolsa* b,PiezaActual* p, int * puntaje, in
     if(lineas>0 && tablero->LineasCompletas==0)
     {
         pintarFilasCompletas(tablero,filasCompletas,lineas);
-        actualizarPuntaje(puntaje,lineas);
+        actualizarPuntaje(puntaje,lineas,nivel);
         tablero->LineasCompletas=1;
         *lineasCompletas += lineas;
     }
