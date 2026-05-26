@@ -77,7 +77,7 @@ int main(int argc, char *argv[]){
             case ESTADO_MENU:
                 graficosDibujarMenu(&pant);
 
-                if (gbt_tecla_presionada(GBTK_j)){
+                if (gbt_tecla_presionada(GBTK_n)){
                     t=tablero_crear(CLASICO_COLUMNAS);
                     if(!t)
                        return -1;
