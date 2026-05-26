@@ -14,6 +14,10 @@
 #define PAL_S 5
 #define PAL_T 6
 #define PAL_Z 7
+#define PAL_X 2
+#define PAL_C 3
+#define PAL_P 5
+#define PAL_V 1
 #define PAL_GHOST 9
 
 #define PAL_REFLEJO 13

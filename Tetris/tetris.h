@@ -49,10 +49,11 @@ typedef struct {
 } PiezaActual;
 
 typedef struct {
-  char actual[7];
-  char aux[7];
+  char* actual;
+  char* aux;
   int indice;
   char siguienteTipo;
+  size_t tam;
 } Bolsa;
 
 typedef enum {
@@ -67,15 +68,16 @@ typedef enum {
 void mezclarBolsa(char* bolsa, int n);
 void mostrarBolsa(char* bolsa, int n);
 void copiarBolsa(char* destino, const char* origen, int n);
-void inicializarBolsa(Bolsa* b);
+void cargarBolsa(char *bolsa, int modo);
+void inicializarBolsa(Bolsa* b,int modo);
 int crearNuevaPieza(Bolsa* b, PiezaActual *p, Tablero * t, int modo);
-char siguientePieza(Bolsa* bolsa);
+char siguientePieza(Bolsa* bolsa,int modo);
 void cargaPieza(PiezaActual *p);
 void aplicarGravedad(Tablero *tablero,PiezaActual* p, int* lockDelay,int *gravedad, int velocidadCaida,int modo);
 void fijarPieza(Tablero *tablero, PiezaActual *p,int modo);
 bool puedeMover(PiezaActual *p, int dx, int dy, Tablero* t,int modo);
-bool puedeRotar(PiezaActual *p, char temp[4][4], Tablero* t);
-int rotar(PiezaActual *p, int tecla,Tablero* t);
+bool puedeRotar(PiezaActual *p, char temp[4][4], Tablero* t, int modo);
+int rotar(PiezaActual *p, int tecla,Tablero* t, int modo);
 int evaluarFilas(Tablero *tablero, char** filasCompletas);
 int analizaLinea(char* fila, int columnas);
 void limpiaLinea(char* fila, int columnas,char relleno);

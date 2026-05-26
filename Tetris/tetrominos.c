@@ -1,14 +1,46 @@
 #include "tetris.h"
 
-void inicializarBolsa(Bolsa* b){
-    char base[7] = {'I', 'J', 'L', 'O', 'S', 'T', 'Z'};
+void inicializarBolsa(Bolsa* b,int modo){
 
-    copiarBolsa(b->actual, base, 7);
-    copiarBolsa(b->aux, base, 7);
-    mezclarBolsa(b->actual, 7);
-    mezclarBolsa(b->aux, 7);
+    char* base;
+
+    base=malloc(b->tam);
+    cargarBolsa(base,modo);
+
+    mezclarBolsa(base, b->tam);
+    copiarBolsa(b->actual, base, b->tam );
+    mezclarBolsa(base, b->tam);
+    copiarBolsa(b->aux, base, b->tam);
     b->indice = 0;
-    b->siguienteTipo = siguientePieza(b);
+    b->siguienteTipo = siguientePieza(b,modo);
+    free(base);
+}
+void cargarBolsa(char *bolsa, int modo)
+{
+    if(modo == 0)
+    {
+        bolsa[0] = 'I';
+        bolsa[1] = 'J';
+        bolsa[2] = 'L';
+        bolsa[3] = 'O';
+        bolsa[4] = 'S';
+        bolsa[5] = 'T';
+        bolsa[6] = 'Z';
+    }
+    else
+    {
+        bolsa[0] = 'I';
+        bolsa[1] = 'J';
+        bolsa[2] = 'L';
+        bolsa[3] = 'O';
+        bolsa[4] = 'S';
+        bolsa[5] = 'T';
+        bolsa[6] = 'Z';
+        bolsa[7] = 'X';
+        bolsa[8] = 'C';
+        bolsa[9] = 'P';
+        bolsa[10] = 'V';
+    }
 }
 
 void copiarBolsa(char* destino, const char* origen, int n){
@@ -38,7 +70,7 @@ void mostrarBolsa(char* bolsa, int n)
 int crearNuevaPieza(Bolsa* b, PiezaActual *p, Tablero * t, int modo)
 {
     p->tipo = b->siguienteTipo;
-    b->siguienteTipo = siguientePieza(b);
+    b->siguienteTipo = siguientePieza(b,modo);
 
     p->fila = 0;
     p->columna = (CLASICO_COLUMNAS / 2) - 2;
@@ -51,19 +83,36 @@ int crearNuevaPieza(Bolsa* b, PiezaActual *p, Tablero * t, int modo)
     return puedeMover(p, 0, CLASICO_FILAS_OCULTAS - 2, t, modo) ? 0 : 1;
 }
 
-char siguientePieza(Bolsa* b)
+char siguientePieza(Bolsa* b,int modo)
 {
     char pieza = b->actual[b->indice];
     b->indice++;
 
-    if (b->indice == 7){
-        char temp[7];
 
-        copiarBolsa(temp, b->actual, 7);
-        copiarBolsa(b->actual, b->aux, 7);
-        copiarBolsa(b->aux, temp, 7);
-        mezclarBolsa(b->aux, 7);
-        b->indice = 0;
+    if(modo==0)
+    {
+        if (b->indice == 7)
+        {
+            char temp[7];
+
+            copiarBolsa(temp, b->actual, 7);
+            copiarBolsa(b->actual, b->aux, 7);
+            copiarBolsa(b->aux, temp, 7);
+            mezclarBolsa(b->aux, 7);
+            b->indice = 0;
+        }
+    }
+    else
+    {
+        if(b->indice == 7)
+        {
+            char base[11]= {'I', 'J', 'L', 'O', 'S', 'T', 'Z','X','C','P','V'};
+            copiarBolsa(b->actual, b->aux, b->tam);
+            mezclarBolsa(base, b->tam);
+            copiarBolsa(b->aux, base, b->tam);
+            b->indice = 0;
+        }
+
     }
 
     return pieza;
@@ -122,6 +171,34 @@ void cargaPieza(PiezaActual *p)
         {1,1,0,0},
         {0,1,1,0},
         {0,0,0,0},
+        {0,0,0,0}
+    };
+    int pieza_X[4][4] =
+    {
+        {0,0,0,0},
+        {0,1,0,0},
+        {0,0,0,0},
+        {0,0,0,0}
+    };
+    int pieza_C[4][4] =
+    {
+        {0,1,1,0},
+        {0,1,0,0},
+        {0,1,1,0},
+        {0,0,0,0}
+    };
+    int pieza_P[4][4] =
+    {
+        {0,1,1,0},
+        {0,1,1,0},
+        {0,1,0,0},
+        {0,0,0,0}
+    };
+    int pieza_V[4][4] =
+    {
+        {0,1,0,0},
+        {0,1,0,0},
+        {0,1,1,1},
         {0,0,0,0}
     };
     switch(p->tipo)
@@ -219,6 +296,62 @@ void cargaPieza(PiezaActual *p)
                 {
                     auxFila=(*aux)+j;
                     *(auxFila)='Z';
+                }
+            }
+            aux++;
+        }
+        break;
+    case 'X':
+        for(i=0; i<4; i++)
+        {
+            for(j=0; j<4; j++)
+            {
+                if(pieza_X[i][j]==1)
+                {
+                    auxFila=(*aux)+j;
+                    *(auxFila)='X';
+                }
+            }
+            aux++;
+        }
+        break;
+    case 'C':
+        for(i=0; i<4; i++)
+        {
+            for(j=0; j<4; j++)
+            {
+                if(pieza_C[i][j]==1)
+                {
+                    auxFila=(*aux)+j;
+                    *(auxFila)='C';
+                }
+            }
+            aux++;
+        }
+        break;
+    case 'P':
+        for(i=0; i<4; i++)
+        {
+            for(j=0; j<4; j++)
+            {
+                if(pieza_P[i][j]==1)
+                {
+                    auxFila=(*aux)+j;
+                    *(auxFila)='P';
+                }
+            }
+            aux++;
+        }
+        break;
+    case 'V':
+        for(i=0; i<4; i++)
+        {
+            for(j=0; j<4; j++)
+            {
+                if(pieza_V[i][j]==1)
+                {
+                    auxFila=(*aux)+j;
+                    *(auxFila)='V';
                 }
             }
             aux++;
@@ -326,8 +459,8 @@ void fijarPieza(Tablero *tablero, PiezaActual *p, int modo)
         aux++;
     }
 }
-bool puedeRotar(PiezaActual* p, char temp[4][4], Tablero* t){
-    int i, j, nuevaFila, nuevaCol;
+bool puedeRotar(PiezaActual* p, char temp[4][4], Tablero* t,int modo){
+    int i, j, nuevaFila, nuevaCol, colReal;
 
     for(i = 0; i < 4; i++){
         for(j = 0; j < 4; j++){
@@ -339,18 +472,39 @@ bool puedeRotar(PiezaActual* p, char temp[4][4], Tablero* t){
             // piso
             if(nuevaFila >= t->filasTotales) return false;
 
-            // bordes
-            if(nuevaCol < 0 || nuevaCol >= t->columnas) return false;
+            if(modo==0)
+            {
+                // bordes
+                if (nuevaCol < 0 || nuevaCol >= t->columnas) return false;
 
-            // colisión con bloque fijo
-            if(t->celdas[nuevaFila][nuevaCol] != '.') return false;
+                // colision con bloque fijo
+                if(t->celdas[nuevaFila][nuevaCol] != '.') return false;
+            }
+
+
+            //if(t->celdas[nuevaFila][nuevaCol] != '.' && modo == 0) return false;
+
+            if(modo==1)
+            {
+                if(nuevaCol<0 || nuevaCol>(t->columnas-1))
+                {
+                    colReal = (nuevaCol + t->columnas) % t->columnas;
+                    if(t->celdas[nuevaFila][colReal] != '.')
+                    return false;
+                }
+                else if(t->celdas[nuevaFila][nuevaCol] != '.')
+                {
+                    return false;
+                }
+
+            }
         }
     }
 
     return true;
 }
 
-int rotar(PiezaActual *p, int dir, Tablero* t)
+int rotar(PiezaActual *p, int dir, Tablero* t,int modo)
 {
     int i, j;
     char temp[4][4];
@@ -381,7 +535,7 @@ int rotar(PiezaActual *p, int dir, Tablero* t)
         }
     }
 
-    if (!puedeRotar(p, temp, t)) return 0;
+    if (!puedeRotar(p, temp, t,modo)) return 0;
 
     for (i = 0; i < 4; i++){
         for (j = 0; j < 4; j++){

@@ -83,6 +83,10 @@ static uint8_t obtenerColorCelda(char celda){
     case 'T': return PAL_T;
     case 'Z': return PAL_Z;
     case 'G': return PAL_GHOST;
+    case 'X': return PAL_X;
+    case 'C': return PAL_C;
+    case 'P': return PAL_P;
+    case 'V': return PAL_V;
     default: return PAL_FONDO;
   }
 };

@@ -27,7 +27,6 @@ int main(int argc, char *argv[]){
     Pantalla pant;
     Tablero *t;
 
-    inicializarBolsa(&b);
 
     int puntaje=0;
     int nivel = 1;
@@ -86,8 +85,11 @@ int main(int argc, char *argv[]){
                     gravedad=0;
                     nivel = 1;
                     lineasCompletas = 0;
+                    b.tam=7;
+                    b.actual=malloc(b.tam);
+                    b.aux=malloc(b.tam);
 
-                    inicializarBolsa(&b);
+                    inicializarBolsa(&b,modo);
 
                     if (p.tetromino){
                         destruyeMatriz(p.tetromino, 4);
@@ -108,6 +110,11 @@ int main(int argc, char *argv[]){
                     nivel = 1;
                     lineasCompletas = 0;
                     modo=1;
+                    b.tam=11;
+                    b.actual=malloc(b.tam);
+                    b.aux=malloc(b.tam);
+
+                    inicializarBolsa(&b,modo);
 
                     if (p.tetromino){
                         destruyeMatriz(p.tetromino, 4);
@@ -128,6 +135,11 @@ int main(int argc, char *argv[]){
                     nivel = 1;
                     lineasCompletas = 0;
                     modo=1;
+                    b.tam=11;
+                    b.actual=malloc(b.tam);
+                    b.aux=malloc(b.tam);
+
+                    inicializarBolsa(&b,modo);
 
                     if (p.tetromino){
                         destruyeMatriz(p.tetromino, 4);
@@ -189,12 +201,14 @@ int main(int argc, char *argv[]){
             case ESTADO_CORRIENDO:
                 if (gbt_tecla_sostenida(GBTK_a) && delayIzq==0){
                     if (puedeMover(&p, -1, 0, t,modo)) p.columna--;
+                    if(p.columna<-3)p.columna=t->columnas-4;
 
                     delayIzq=2;
                 }
 
                 if (gbt_tecla_sostenida(GBTK_d) && delayDer==0){
                     if (puedeMover(&p, 1, 0, t,modo)) p.columna++;
+                    if(p.columna>(t->columnas-1))p.columna=0;
 
                     delayDer=2;
                 }
@@ -207,11 +221,11 @@ int main(int argc, char *argv[]){
                 }
 
                 if (gbt_tecla_presionada(GBTK_q)){
-                    rotar(&p, 0, t); // Rotar izq
+                    rotar(&p, 0, t,modo); // Rotar izq
                 }
 
                 if (gbt_tecla_presionada(GBTK_e)){
-                    rotar(&p, 1, t); // Rotar der
+                    rotar(&p, 1, t,modo); // Rotar der
                 }
 
                 if (gbt_tecla_presionada(GBTK_p)) estado = ESTADO_PAUSA;
@@ -220,7 +234,11 @@ int main(int argc, char *argv[]){
 
                 calcularGhost(&p,t,modo);
 
-                if(gbt_tecla_presionada(GBTK_ESPACIO)) p.fila=p.GhostFila-1;
+                if(gbt_tecla_presionada(GBTK_ESPACIO))
+                {
+                    puntaje+=(p.GhostFila-p.fila);
+                    p.fila=p.GhostFila-1;
+                }
 
 
                 if(!timeFreeze)
@@ -280,7 +298,7 @@ int main(int argc, char *argv[]){
                     nivel = 1;
                     lineasCompletas = 0;
 
-                    inicializarBolsa(&b);
+                    inicializarBolsa(&b, modo);
 
                     if (p.tetromino){
                         destruyeMatriz(p.tetromino, 4);
