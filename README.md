@@ -66,9 +66,9 @@ Desarrollar un videojuego equivalente al juego TETRIS utilizando la biblioteca G
 - [x] Rotación de piezas tanto a izquierda como a derecha.
 - [ ] Menú gráfico para guardar configuraciones perdurables entre sesiones.
 - Configuraciones del menu
-   - [ ] Paleta de colores a utilizar.
+   - [x] Paleta de colores a utilizar.
    - [ ] Resolución lógica a utilizar.
-   - [ ] Velocidad de caída de tetrominós.
+   - [x] Velocidad de caída de tetrominós.
 - [x] Pausa, pantalla de salida y volver a jugar al perder.
 
 ### Características opcionales (necesarias para promocionar)
