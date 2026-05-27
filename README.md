@@ -56,7 +56,7 @@ Desarrollar un videojuego equivalente al juego TETRIS utilizando la biblioteca G
 - Establecer al menos una dificultad en la cual se alteren los parametros mencionados a continuación.
    - [x] Velocidad de la caída del tetrominó, la cual debe aumentar un 3% por cada 10 fichas caídas
    - [x] Velocidad de fijación del tetrominó
-   - [ ] A mayor velocidad, mayor los puntos obtenidos por el jugador.
+   - [x] A mayor velocidad, mayor los puntos obtenidos por el jugador.
 - [x] Selección del tetrominó de forma aleatoria por algoritmo sin tendencias hacia ciertos tipos.
 - [x] Solicitar nombre del jugador a través de interfaz gráfica.
 - [ ] Mostrar estadísticas del juego por nombre del jugador.
