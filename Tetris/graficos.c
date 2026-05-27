@@ -330,46 +330,7 @@ void graficosDibujarPausa(const Pantalla* pant){
 
   graficosPresentarFrame();
 }
-/*
-void graficosDibujarGameOver(const Pantalla* pant){
-  graficosComenzarFrame(0);
 
-  int escalaTexto, escalaChar, botonW, botonH, separacionBotones;
-
-  if (pant->anchoVentana == 320){
-    escalaTexto = 1;
-    escalaChar = 1;
-    botonW = 25;
-    botonH = 25;
-    separacionBotones = 10;
-  } else {
-    escalaTexto = 2;
-    escalaChar = 3;
-    botonW = 50;
-    botonH = 50;
-    separacionBotones = 30;
-  }
-
-  fuenteDibujarTexto(FUENTE_GRANDE, "- GAME OVER -", (pant->anchoVentana / 2) - ((13 * escalaTexto * strlen("- GAME OVER -") / 2)), pant->altoVentana / 4, 8, escalaTexto, 1);
-
-  graficosDibujarRect(((pant->anchoVentana / 2) - (botonW / 2)), pant->altoVentana - (pant->altoVentana / 2) - 10, botonW, botonH, 12);
-  graficosDibujarRect(((pant->anchoVentana / 2) - (botonW / 2)) + 2, (pant->altoVentana - (pant->altoVentana / 2)) - 8, botonW, botonH, 0);
-  graficosDibujarBorde(((pant->anchoVentana / 2) - (botonW / 2)) + 2, (pant->altoVentana - (pant->altoVentana / 2)) - 8, botonW, botonH, 14, 1);
-  fuenteDibujarChar(FUENTE_GRANDE, 'R', ((pant->anchoVentana / 2) - ((13 * escalaChar) / 2)), ((pant->altoVentana - (pant->altoVentana / 2)) - 8) + ((botonH - (12 * escalaChar)) / 2), PAL_REFLEJO, escalaChar);
-
-  fuenteDibujarTexto(FUENTE_CHICA, "volver a jugar", (pant->anchoVentana / 2) - ((6 * escalaTexto * strlen("volver a jugar")) / 2), (pant->altoVentana - (pant->altoVentana / 2) - (botonH / 2)) - 10, PAL_REFLEJO, escalaTexto, 1);
-
-  graficosDibujarRect(((pant->anchoVentana / 2) - (botonW / 2)), pant->altoVentana - (pant->altoVentana / 2) + botonH + separacionBotones, botonW, botonH, 12);
-  graficosDibujarRect(((pant->anchoVentana / 2) - (botonW / 2)) + 2, (pant->altoVentana - (pant->altoVentana / 2)) + botonH + separacionBotones + 2, botonW, botonH, 0);
-  graficosDibujarBorde(((pant->anchoVentana / 2) - (botonW / 2)) + 2, (pant->altoVentana - (pant->altoVentana / 2)) + botonH + separacionBotones + 2, botonW, botonH, 14, 1);
-  fuenteDibujarChar(FUENTE_GRANDE, 'M', ((pant->anchoVentana / 2) - ((13 * escalaChar) / 2)), ((pant->altoVentana - (pant->altoVentana / 2))) + ((botonH - (12 * escalaChar)) / 2) + botonH + separacionBotones + 2, PAL_REFLEJO, escalaChar);
-
-  fuenteDibujarTexto(FUENTE_CHICA, "volver al menu", (pant->anchoVentana / 2) - ((6 * escalaTexto * strlen("volver al menu")) / 2), (pant->altoVentana - (pant->altoVentana / 2) - (botonH / 2)) + botonH + separacionBotones + 2, PAL_REFLEJO, escalaTexto, 1);
-
-
-  graficosPresentarFrame();
-}
-*/
 void graficosDibujarGameOver(const Pantalla* pant,Leaderboard *lb,int puntaje)
 {
     graficosComenzarFrame(0);
