@@ -24,8 +24,8 @@ void graficosCerrar(void);
 void graficosComenzarFrame(uint8_t color);
 void graficosPresentarFrame(void);
 
-void graficosDibujarTablero(const Pantalla* pant, const Tablero* tablero, const PiezaActual* pieza);
-void graficosDibujarCelda(const Pantalla* pant, uint8_t color, uint16_t oX, uint16_t oY);
+void graficosDibujarTablero(const Pantalla* pant, const Tablero* tablero, const PiezaActual* pieza, int origenX, int origenY);
+void graficosDibujarCelda(const Pantalla* pant, int origenX, int origenY, uint8_t color, uint16_t oX, uint16_t oY);
 void graficosDibujarRect(int x, int y, int w, int h, uint8_t color);
 void graficosDibujarBorde(int x, int y, int w, int h, uint8_t color, int grosor);
 void graficosDibujarMenu(const Pantalla* pant);
@@ -35,5 +35,8 @@ void graficosDibujarGameOver(const Pantalla* pant);
 void graficosConfigurarResolucion(Pantalla* pant, int res, int escala);
 void graficosDibujarUser(const Pantalla* pant, const char user[4], int cursor);
 void graficosDibujarPreview(const Pantalla* pant, char tipo, int cx, int cy, int block, int pad, uint8_t color);
+void graficosDibujarPanelIzq(int panelIzqX, int panelIzqY, int panelIzqW, int panelIzqH, int escalaFuente, int escalaCharTitulo, int gapEstadisticas, int gapTitulo, int puntaje, int nivel, int lineasCompletas, const char user[]);
+void graficosDibujarPanelDerecho(int panelDerX, int panelDerY, int panelDerW, int panelDerH, char siguienteTipo, const Pantalla* pant);
+void graficosDibujarPanelIzqGrande(int panelDerX, int panelDerY, int panelDerW, int panelDerH, char siguienteTipo, const Pantalla* pant, int puntaje, int nivel, int filasCompletas);
 
 #endif // GRAFICOS_H_INCLUDED

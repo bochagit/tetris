@@ -536,7 +536,7 @@ void filasCompletasEliminar(Tablero *tablero)
         aux++;
         escritura--;
     }
-
+    free(filasCompletas);
 }
 char piezaOcupaCelda(const PiezaActual *p,int filaTablero,int colTablero,int columnas)
 {
