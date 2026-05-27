@@ -26,6 +26,8 @@ int main(int argc, char *argv[]){
     EstadoJuego estado = ESTADO_MENU;
     Pantalla pant;
     Tablero *t;
+    Leaderboard lb;
+    Registro nuevo;
 
 
     int puntaje=0;
@@ -40,6 +42,7 @@ int main(int argc, char *argv[]){
     int delayIzq=0;
     int delayDer=0;
     int modo=0;
+    int scoreGuardado=0;
 
     int res = 320;
     int escala = 3;
@@ -85,6 +88,7 @@ int main(int argc, char *argv[]){
                     gravedad=0;
                     nivel = 1;
                     lineasCompletas = 0;
+                    scoreGuardado=0;
                     b.tam=7;
                     b.actual=malloc(b.tam);
                     b.aux=malloc(b.tam);
@@ -110,6 +114,7 @@ int main(int argc, char *argv[]){
                     nivel = 1;
                     lineasCompletas = 0;
                     modo=1;
+                    scoreGuardado=0;
                     b.tam=11;
                     b.actual=malloc(b.tam);
                     b.aux=malloc(b.tam);
@@ -135,6 +140,7 @@ int main(int argc, char *argv[]){
                     nivel = 1;
                     lineasCompletas = 0;
                     modo=1;
+                    scoreGuardado=0;
                     b.tam=11;
                     b.actual=malloc(b.tam);
                     b.aux=malloc(b.tam);
@@ -279,7 +285,8 @@ int main(int argc, char *argv[]){
                 gbt_esperar(50);
                 break;
 
-            case ESTADO_PAUSA:
+        case ESTADO_PAUSA:
+
                 graficosDibujarPausa(&pant);
 
                 if (gbt_tecla_presionada(GBTK_p))
@@ -288,8 +295,19 @@ int main(int argc, char *argv[]){
                 gbt_esperar(50);
                 break;
 
-            case ESTADO_GAMEOVER:
-                graficosDibujarGameOver(&pant);
+        case ESTADO_GAMEOVER:
+            if(!scoreGuardado)
+            {
+                strcpy(nuevo.nombre, user);
+                nuevo.puntaje = puntaje;
+
+                cargarLeaderboard(&lb);
+                insertarOrdenado(&lb, nuevo);
+                guardarLeaderboard(&lb);
+
+                scoreGuardado=1;
+            }
+                graficosDibujarGameOver(&pant,&lb,puntaje);
 
                 if (gbt_tecla_presionada(GBTK_r)){
                     tablero_vaciar(t);
@@ -297,6 +315,7 @@ int main(int argc, char *argv[]){
                     gravedad=0;
                     nivel = 1;
                     lineasCompletas = 0;
+                    scoreGuardado=0;
 
                     inicializarBolsa(&b, modo);
 

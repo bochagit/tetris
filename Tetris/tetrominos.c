@@ -767,3 +767,58 @@ char piezaOcupaCelda(const PiezaActual *p,int filaTablero,int colTablero,int col
 
     return '.';
 }
+int cargarLeaderboard(Leaderboard *lb)
+{
+    FILE *pf;
+
+    pf = fopen("leaderboard.dat", "rb");
+
+    if(!pf)
+    {
+        lb->cantidad = 0;
+        return 0;
+    }
+
+    fread(&(lb->cantidad), sizeof(int), 1, pf);
+
+    fread(lb->vec,sizeof(Registro),lb->cantidad,pf);
+
+    fclose(pf);
+
+    return 1;
+}
+void insertarOrdenado(Leaderboard *lb, Registro nuevo)
+{
+    int i;
+
+    if(lb->cantidad >= MAX_TOPS)
+        lb->cantidad = MAX_TOPS - 1;
+
+    i = lb->cantidad - 1;
+
+    while(i >= 0 && nuevo.puntaje > lb->vec[i].puntaje)
+    {
+        lb->vec[i + 1] = lb->vec[i];
+        i--;
+    }
+
+    lb->vec[i + 1] = nuevo;
+
+    lb->cantidad++;
+}
+int guardarLeaderboard(Leaderboard *lb)
+{
+    FILE *pf;
+
+    pf = fopen("leaderboard.dat", "wb");
+    if(!pf)
+        return 0;
+
+    fwrite(&(lb->cantidad),sizeof(int),1,pf);
+
+    fwrite(lb->vec,sizeof(Registro),lb->cantidad,pf);
+
+    fclose(pf);
+
+    return 1;
+}
