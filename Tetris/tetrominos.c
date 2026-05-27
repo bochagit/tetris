@@ -459,15 +459,23 @@ void fijarPieza(Tablero *tablero, PiezaActual *p, int modo)
         aux++;
     }
 }
-bool puedeRotar(PiezaActual* p, char temp[4][4], Tablero* t,int modo){
+bool puedeRotar(PiezaActual* p, char temp[4][4], Tablero* t,int modo,int wallkick){
     int i, j, nuevaFila, nuevaCol, colReal;
 
     for(i = 0; i < 4; i++){
         for(j = 0; j < 4; j++){
             if(temp[i][j] != p->tipo) continue;
 
-            nuevaFila = p->fila + i;
-            nuevaCol = p->columna + j;
+            if(wallkick==0)
+            {
+                nuevaFila = p->fila + i;
+                nuevaCol = p->columna + j;
+            }
+            else
+            {
+                nuevaFila = p->fila + i;
+                nuevaCol = p->columna + j + wallkick;
+            }
 
             // piso
             if(nuevaFila >= t->filasTotales) return false;
@@ -475,7 +483,11 @@ bool puedeRotar(PiezaActual* p, char temp[4][4], Tablero* t,int modo){
             if(modo==0)
             {
                 // bordes
-                if (nuevaCol < 0 || nuevaCol >= t->columnas) return false;
+                if (nuevaCol < 0 || nuevaCol >= t->columnas)
+                {
+
+                    return false;
+                }
 
                 // colision con bloque fijo
                 if(t->celdas[nuevaFila][nuevaCol] != '.') return false;
@@ -506,7 +518,7 @@ bool puedeRotar(PiezaActual* p, char temp[4][4], Tablero* t,int modo){
 
 int rotar(PiezaActual *p, int dir, Tablero* t,int modo)
 {
-    int i, j;
+    int i, j,aux=0;
     char temp[4][4];
 
     if(!p || !p->tetromino || p->tipo=='O') return 0;
@@ -535,7 +547,40 @@ int rotar(PiezaActual *p, int dir, Tablero* t,int modo)
         }
     }
 
-    if (!puedeRotar(p, temp, t,modo)) return 0;
+    if(modo==0 && !puedeRotar(p, temp, t,modo,0))
+    {
+        if(dir==0)
+        {
+            do
+            {
+                aux++;
+            }
+            while(aux < 4 && !puedeRotar(p,temp,t,modo,aux));
+
+            if(aux==4)
+                return 0;
+
+            p->columna+=aux;
+
+        }
+        if(dir==1)
+        {
+            do
+            {
+                aux--;
+            }
+            while(aux > -4 &&!puedeRotar(p,temp,t,modo,aux));
+
+            if(aux==-4)
+                return 0;
+
+            p->columna+=aux;
+        }
+
+    }
+    else if(modo==1 && !puedeRotar(p, temp, t,modo,0))
+        return 0;
+
 
     for (i = 0; i < 4; i++){
         for (j = 0; j < 4; j++){

@@ -76,7 +76,7 @@ void cargaPieza(PiezaActual *p);
 void aplicarGravedad(Tablero *tablero,PiezaActual* p, int* lockDelay,int *gravedad, int velocidadCaida,int modo);
 void fijarPieza(Tablero *tablero, PiezaActual *p,int modo);
 bool puedeMover(PiezaActual *p, int dx, int dy, Tablero* t,int modo);
-bool puedeRotar(PiezaActual *p, char temp[4][4], Tablero* t, int modo);
+bool puedeRotar(PiezaActual *p, char temp[4][4], Tablero* t, int modo,int wallkick);
 int rotar(PiezaActual *p, int tecla,Tablero* t, int modo);
 int evaluarFilas(Tablero *tablero, char** filasCompletas);
 int analizaLinea(char* fila, int columnas);
