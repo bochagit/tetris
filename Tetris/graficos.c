@@ -91,9 +91,9 @@ static uint8_t obtenerColorCelda(char celda){
   }
 };
 
-void graficosDibujarCelda(const Pantalla* pant, uint8_t color, uint16_t oX, uint16_t oY){
-  uint16_t offsetX = pant->tableroOffsetX + (oX * (pant->pixelesCelda + pant->pxPadding));
-  uint16_t offsetY = pant->tableroOffsetY + (oY * (pant->pixelesCelda + pant->pxPadding));
+void graficosDibujarCelda(const Pantalla* pant, int origenX, int origenY, uint8_t color, uint16_t oX, uint16_t oY){
+  uint16_t offsetX = origenX + (oX * (pant->pixelesCelda + pant->pxPadding));
+  uint16_t offsetY = origenY + (oY * (pant->pixelesCelda + pant->pxPadding));
 
   for (uint16_t y = 0; y < pant->pixelesCelda; y++){
     for (uint16_t x = 0; x < pant->pixelesCelda; x++){
@@ -112,7 +112,7 @@ void graficosDibujarCelda(const Pantalla* pant, uint8_t color, uint16_t oX, uint
   }
 }
 
-void graficosDibujarTablero(const Pantalla* pant, const Tablero *tablero, const PiezaActual *pieza){
+void graficosDibujarTablero(const Pantalla* pant, const Tablero *tablero, const PiezaActual *pieza, int origenX, int origenY){
   if (!tablero || !tablero->celdas) return;
 
   int filaInicio = tablero->filasOcultas;
@@ -140,11 +140,7 @@ void graficosDibujarTablero(const Pantalla* pant, const Tablero *tablero, const 
             color = obtenerColorCelda(tablero->celdas[fila][col]);
         }
 
-
-      int oX = col;
-      int oY = fila - filaInicio;
-
-      graficosDibujarCelda(pant, color, (uint16_t)oX, (uint16_t)oY);
+      graficosDibujarCelda(pant, origenX, origenY, color, col, fila - filaInicio);
     }
   }
 }
@@ -173,7 +169,7 @@ void graficosDibujarJuego(const Pantalla* pant, const Tablero *t, const PiezaAct
   int top = pant->anchoVentana == 320 ? 15 : 45;
   int gap = 10;
 
-  int tableroX = pant->tableroOffsetX;
+  int tableroX = t->columnas < 12 ? pant->tableroOffsetX : pant->anchoVentana - (t->columnas * pant->pixelesCelda) - ((t->columnas - 1) * pant->pxPadding) - margin;
   int tableroY = pant->tableroOffsetY;
 
   int panelIzqX = margin;
@@ -200,147 +196,34 @@ void graficosDibujarJuego(const Pantalla* pant, const Tablero *t, const PiezaAct
     escalaCharTitulo = 3;
   };
 
-  graficosDibujarRect(panelIzqX, panelIzqY, panelIzqW, panelIzqH, 10);
-  graficosDibujarBorde(panelIzqX, panelIzqY, panelIzqW, panelIzqH, 14, 1);
-
-  fuenteDibujarTexto(FUENTE_CHICA, "estadisticas", panelIzqX + ((panelIzqW - (7 * escalaFuente * strlen("estadisticas"))) / 2), panelIzqY + 5, PAL_REFLEJO, escalaFuente, 1);
-
-  graficosDibujarRect(panelIzqX, panelIzqY + gapTitulo, panelIzqW, 1, 14);
-
-  // PANEL IZQ - PUNTAJE
-  char scoreText[16];
-  sprintf(scoreText, "%d", puntaje);
-  fuenteDibujarChar(FUENTE_GRANDE, '?', panelIzqX + (panelIzqW / 10), panelIzqY + gapTitulo + (gapEstadisticas / 2) - ((12 * escalaFuente) / 2), 16, escalaFuente);
-  fuenteDibujarTexto(FUENTE_CHICA, "puntos:", panelIzqX + (panelIzqW / 3), panelIzqY + gapTitulo + (gapEstadisticas / 4) - ((8 * escalaFuente) / 2), PAL_REFLEJO, escalaFuente, 1);
-  fuenteDibujarTexto(FUENTE_CHICA, scoreText, panelIzqX + (panelIzqW / 2), panelIzqY + gapTitulo + (gapEstadisticas / 2), 16, escalaFuente, 1);
-
-  graficosDibujarRect(panelIzqX, panelIzqY + gapTitulo + gapEstadisticas, panelIzqW, 1, 14);
-
-  // PANEL IZQ - NIVEL
-  char nivelText[5];
-  sprintf(nivelText, "%d", nivel);
-  fuenteDibujarChar(FUENTE_GRANDE, '!', panelIzqX + (panelIzqW / 10), panelIzqY + gapTitulo + gapEstadisticas + (gapEstadisticas / 2) - ((12 * escalaFuente) / 2), PAL_I, escalaFuente);
-  fuenteDibujarTexto(FUENTE_CHICA, "nivel:", panelIzqX + (panelIzqW / 3), panelIzqY + gapTitulo + gapEstadisticas + (gapEstadisticas / 4) - ((8 * escalaFuente) / 2), PAL_REFLEJO, escalaFuente, 1);
-  fuenteDibujarTexto(FUENTE_CHICA, nivelText, panelIzqX + (panelIzqW / 2), panelIzqY + gapTitulo + gapEstadisticas + (gapEstadisticas / 2), PAL_I, escalaFuente, 1);
-
-  graficosDibujarRect(panelIzqX, panelIzqY + gapTitulo + (gapEstadisticas * 2), panelIzqW, 1, 14);
-
-  // PANEL IZQ - LINEAS COMPLETAS
-  char lineasText[10];
-  sprintf(lineasText, "%d", lineasCompletas);
-  fuenteDibujarChar(FUENTE_GRANDE, ']', panelIzqX + (panelIzqW / 10), panelIzqY + gapTitulo + (gapEstadisticas * 2) + (gapEstadisticas / 2) - ((12 * escalaFuente) / 2), PAL_S, escalaFuente);
-  fuenteDibujarTexto(FUENTE_CHICA, "lineas:", panelIzqX + (panelIzqW / 3), panelIzqY + gapTitulo + (gapEstadisticas * 2) + (gapEstadisticas / 4) - ((8 * escalaFuente) / 2), PAL_REFLEJO, escalaFuente, 1);
-  fuenteDibujarTexto(FUENTE_CHICA, lineasText, panelIzqX + (panelIzqW / 2), panelIzqY + gapTitulo + (gapEstadisticas * 2) + (gapEstadisticas / 2), PAL_S, escalaFuente, 1);
-
-  graficosDibujarRect(panelIzqX, panelIzqY + gapTitulo + (gapEstadisticas * 3), panelIzqW, 1, 14);
-
-  // PANEL IZQ - RECORD
-  char recordText[10];
-  sprintf(recordText, "%d", 0);
-  fuenteDibujarChar(FUENTE_GRANDE, '}', panelIzqX + (panelIzqW / 10), panelIzqY + gapTitulo + (gapEstadisticas * 3) + (gapEstadisticas / 2) - ((12 * escalaFuente) / 2), 16, escalaFuente);
-  fuenteDibujarTexto(FUENTE_CHICA, "record:", panelIzqX + (panelIzqW / 3), panelIzqY + gapTitulo + (gapEstadisticas * 3) + (gapEstadisticas / 4) - ((8 * escalaFuente) / 2), PAL_REFLEJO, escalaFuente, 1);
-  fuenteDibujarTexto(FUENTE_CHICA, recordText, panelIzqX + (panelIzqW / 2), panelIzqY + gapTitulo + (gapEstadisticas * 3) + (gapEstadisticas / 2), 16, escalaFuente, 1);
-
-  graficosDibujarRect(panelIzqX, panelIzqY + gapTitulo + (gapEstadisticas * 4), panelIzqW, 1, 14);
-
-  // PANEL IZQ - USUARIO
-  fuenteDibujarChar(FUENTE_GRANDE, user[0], panelIzqX + (panelIzqW / 4) - ((12 * escalaCharTitulo) / 2), panelIzqY + gapTitulo + (gapEstadisticas * 4) + (gapEstadisticas / 2) - ((12 * escalaCharTitulo) / 2), 2, escalaCharTitulo);
-  fuenteDibujarChar(FUENTE_GRANDE, user[1], panelIzqX + (panelIzqW / 2) - ((12 * escalaCharTitulo) / 2), panelIzqY + gapTitulo + (gapEstadisticas * 4) + (gapEstadisticas / 2) - ((12 * escalaCharTitulo) / 2), 2, escalaCharTitulo);
-  fuenteDibujarChar(FUENTE_GRANDE, user[2], panelIzqX + (panelIzqW - (panelIzqW / 4)) - ((12 * escalaCharTitulo) / 2), panelIzqY + gapTitulo + (gapEstadisticas * 4) + (gapEstadisticas / 2) - ((12 * escalaCharTitulo) / 2), 2, escalaCharTitulo);
-
-  // PANEL DER ARRIBA - PROX PIEZA
-  graficosDibujarRect(panelDerX, panelDerY - 1, panelDerW, (panelDerH / 2), 10);
-  graficosDibujarBorde(panelDerX, panelDerY - 1, panelDerW, (panelDerH / 2), 14, 1);
-
-  int escalaTexto = pant->anchoVentana == 320 ? 1 : 2;
-
-  fuenteDibujarTexto(FUENTE_CHICA, "siguiente\npieza:", panelDerX + 10, panelDerY + 10, PAL_REFLEJO, escalaTexto, 1);
-  graficosDibujarBorde(panelDerX + 5, panelDerY + (panelDerH / 5), panelDerW - 10, panelDerH / 4, 14, 1);
-
-  uint8_t colorPreview = obtenerColorCelda(siguienteTipo);
-  int previewBlock = pant->anchoVentana == 320 ? 12 : 24;
-  int boxX = panelDerX + 5;
-  int boxY = panelDerY + (panelDerH / 5);
-  int boxW = panelDerW - 10;
-  int boxH = panelDerH / 4;
-
-  graficosDibujarPreview(pant, siguienteTipo, boxX + (boxW / 2), boxY + (boxH / 2), previewBlock, 2, colorPreview);
-
-  // PANEL DER ABAJO - COMO JUGAR
-  graficosDibujarRect(panelDerX, panelDerY + (panelDerH / 2) + 1, panelDerW, (panelDerH / 2), 10);
-  graficosDibujarBorde(panelDerX, panelDerY + (panelDerH / 2) + 1, panelDerW, (panelDerH / 2), 14, 1);
-
-  int siguienteBorde = 0;
-  int bordeW, bordeH, spacingX, spacingY, escalaChar;
-
-  if (pant->anchoVentana == 320){
-    bordeW = 16;
-    bordeH = 16;
-    spacingX = 2;
-    spacingY = 1;
-    escalaChar = 1;
+  if (t->columnas < 12){
+    graficosDibujarPanelIzq(panelIzqX, panelIzqY, panelIzqW, panelIzqH, escalaFuente, escalaCharTitulo, gapEstadisticas, gapTitulo, puntaje, nivel, lineasCompletas, user);
+    graficosDibujarPanelDerecho(panelDerX, panelDerY, panelDerW, panelDerH, siguienteTipo, pant);
   } else {
-    bordeW = 30;
-    bordeH = 30;
-    spacingX = 5;
-    spacingY = 10;
-    escalaChar = 2;
+    graficosDibujarPanelIzqGrande(panelIzqX, panelIzqY, panelIzqW, panelIzqH, siguienteTipo, pant, puntaje, nivel, lineasCompletas);
   }
-
-  for (int i = 0; i < 4; i++){
-    graficosDibujarBorde(panelDerX + (spacingX * 2), (panelDerY + (panelDerH / 2) + 2) + siguienteBorde + spacingY, bordeW, bordeH, PAL_REFLEJO, 1);
-    siguienteBorde += bordeH + spacingY;
-  }
-
-  siguienteBorde = 0;
-  const char controles[8] = {"ASDFQEP)"};
-  const char *labels[] = {
-    "MOVER\nIZQ",
-    "ABAJO",
-    "MOVER\nDER",
-    "FREEZE",
-    "ROTAR\nIZQ",
-    "ROTAR\nDER",
-    "PAUSA",
-    "SALIR"
-  };
-
-  for (int i = 0; i < 4; i++){
-    fuenteDibujarChar(FUENTE_GRANDE, controles[i], panelDerX + (spacingX * 2) + ((bordeW - (12 * escalaChar)) / 2), (panelDerY + (panelDerH / 2) + 1) + siguienteBorde + spacingY + ((bordeH - (12 * escalaChar)) / 2), 11, escalaChar);
-    fuenteDibujarTexto(FUENTE_NOMONO, labels[i], panelDerX + bordeW + (spacingX * 2 + 2), (panelDerY + (panelDerH / 2) + 1) + siguienteBorde + spacingY + 2, PAL_REFLEJO, escalaChar, 1);
-    siguienteBorde += bordeH + spacingY;
-  }
-
-  siguienteBorde = 0;
-
-  for (int i = 0; i < 4; i++){
-    graficosDibujarBorde(panelDerX + (panelDerW / 2) + (spacingX * 2), (panelDerY + (panelDerH / 2) + 2) + siguienteBorde + spacingY, bordeW, bordeH, PAL_REFLEJO, 1);
-    siguienteBorde += bordeH + spacingY;
-  }
-
-  siguienteBorde = 0;
-
-  for (int i = 4; i < 8; i++){
-    fuenteDibujarChar(FUENTE_GRANDE, controles[i], panelDerX + (panelDerW / 2) + (spacingX * 2) + ((bordeW - (12 * escalaChar)) / 2), (panelDerY + (panelDerH / 2) + 1) + siguienteBorde + spacingY + ((bordeH - (12 * escalaChar)) / 2), 11, escalaChar);
-    fuenteDibujarTexto(FUENTE_NOMONO, labels[i], panelDerX + (panelDerW / 2) + bordeW + (spacingX * 2 + 2), (panelDerY + (panelDerH / 2) + 1) + siguienteBorde + spacingY + 2, PAL_REFLEJO, escalaChar, 1);
-    siguienteBorde += bordeH + spacingY;
-  }
-
-  graficosDibujarBorde(panelDerX + (spacingX * 2), (panelDerY + (panelDerH / 2) + 2) + siguienteBorde + spacingY, bordeW * 3, bordeH, PAL_REFLEJO, 1);
-  fuenteDibujarTexto(FUENTE_CHICA, "space", panelDerX + (spacingX) + (((bordeW * 3) - (6 * escalaChar * strlen("space"))) / 2), (panelDerY + (panelDerH / 2) + 1) + siguienteBorde + spacingY + (bordeH / 2), 11, escalaChar, 1);
-  fuenteDibujarTexto(FUENTE_NOMONO, "HARD\nDROP", panelDerX + (bordeW * 3) + (spacingX * 2 + 2), (panelDerY + (panelDerH / 2) + 1) + siguienteBorde + spacingY + 2, PAL_REFLEJO, escalaChar, 1);
 
   graficosDibujarRect(tableroX - 4, tableroY - 4, tableroW + 8, tableroH + 8, 12);
   graficosDibujarBorde(tableroX - 4, tableroY - 4, tableroW + 8, tableroH + 8, 14, 1);
 
-  graficosDibujarTablero(pant, t, p);
+  graficosDibujarTablero(pant, t, p, tableroX, tableroY);
 
-  fuenteDibujarChar(FUENTE_GRANDE, 'T', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2), 2, PAL_T, escalaCharTitulo);
-  fuenteDibujarChar(FUENTE_GRANDE, 'E', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2) + 13 * escalaCharTitulo, 2, PAL_O, escalaCharTitulo);
-  fuenteDibujarChar(FUENTE_GRANDE, 'T', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2) + 26 * escalaCharTitulo, 2, PAL_T, escalaCharTitulo);
-  fuenteDibujarChar(FUENTE_GRANDE, 'R', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2) + 39 * escalaCharTitulo, 2, PAL_J, escalaCharTitulo);
-  fuenteDibujarChar(FUENTE_GRANDE, 'I', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2) + 52 * escalaCharTitulo, 2, PAL_I, escalaCharTitulo);
-  fuenteDibujarChar(FUENTE_GRANDE, 'S', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2) + 65 * escalaCharTitulo, 2, PAL_S, escalaCharTitulo);
+  // fuenteDibujarChar(FUENTE_GRANDE, 'T', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2), 2, PAL_T, escalaCharTitulo);
+  // fuenteDibujarChar(FUENTE_GRANDE, 'E', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2) + 13 * escalaCharTitulo, 2, PAL_O, escalaCharTitulo);
+  // fuenteDibujarChar(FUENTE_GRANDE, 'T', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2) + 26 * escalaCharTitulo, 2, PAL_T, escalaCharTitulo);
+  // fuenteDibujarChar(FUENTE_GRANDE, 'R', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2) + 39 * escalaCharTitulo, 2, PAL_J, escalaCharTitulo);
+  // fuenteDibujarChar(FUENTE_GRANDE, 'I', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2) + 52 * escalaCharTitulo, 2, PAL_I, escalaCharTitulo);
+  // fuenteDibujarChar(FUENTE_GRANDE, 'S', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2) + 65 * escalaCharTitulo, 2, PAL_S, escalaCharTitulo);
+
+  const char *titulo = "TETRIS";
+  int charW = 13 * escalaCharTitulo;
+  int totalW = charW * strlen(titulo);
+  int startX = tableroX + (tableroW / 2) - (totalW / 2);
+  int colores[6] = { PAL_T, PAL_O, PAL_T, PAL_J, PAL_I, PAL_S };
+
+  for (int i = 0; i < (int)strlen(titulo); i++) {
+    fuenteDibujarChar(FUENTE_GRANDE, titulo[i], startX + i * charW, 2, colores[i], escalaCharTitulo);
+  }
 
   graficosPresentarFrame();
 }
@@ -378,7 +261,7 @@ void graficosDibujarMenu(const Pantalla* pant){
     graficosDibujarBorde(((pant->anchoVentana / 4) - (botonW / 2)) + 2, (pant->altoVentana - (pant->altoVentana / 3)) - 8, botonW, botonH, 14, 1);
     fuenteDibujarChar(FUENTE_GRANDE, 'N', ((pant->anchoVentana / 4) - ((12 * escalaChar) / 2)), ((pant->altoVentana - (pant->altoVentana / 3)) - 8) + ((botonH - (12 * escalaChar)) / 2), PAL_REFLEJO, escalaChar);
 
-    fuenteDibujarTexto(FUENTE_CHICA, "normal", (pant->anchoVentana / 4) - ((6 * escalaTexto * strlen("normal")) / 2), (pant->altoVentana - (pant->altoVentana / 3) - (botonH / 2)) - 10, PAL_REFLEJO, escalaTexto, 1);
+    fuenteDibujarTexto(FUENTE_CHICA, "clasico", (pant->anchoVentana / 4) - ((6 * escalaTexto * strlen("clasico")) / 2), (pant->altoVentana - (pant->altoVentana / 3) - (botonH / 2)) - 10, PAL_REFLEJO, escalaTexto, 1);
 
     graficosDibujarRect(((pant->anchoVentana / 2) - (botonW / 2)), pant->altoVentana - (pant->altoVentana / 3) - 10, botonW, botonH, 12);
     graficosDibujarRect(((pant->anchoVentana / 2) - (botonW / 2)) + 2, (pant->altoVentana - (pant->altoVentana / 3)) - 8, botonW, botonH, 0);
@@ -537,4 +420,206 @@ void graficosDibujarPreview(const Pantalla* pant, char tipo, int cx, int cy, int
   }
 
   destruyeMatriz(temp.tetromino, 4);
+}
+
+void graficosDibujarPanelIzq(int panelIzqX, int panelIzqY, int panelIzqW, int panelIzqH, int escalaFuente, int escalaCharTitulo, int gapEstadisticas, int gapTitulo, int puntaje, int nivel, int lineasCompletas, const char user[]){
+  graficosDibujarRect(panelIzqX, panelIzqY, panelIzqW, panelIzqH, 10);
+  graficosDibujarBorde(panelIzqX, panelIzqY, panelIzqW, panelIzqH, 14, 1);
+
+  fuenteDibujarTexto(FUENTE_CHICA, "estadisticas", panelIzqX + ((panelIzqW - (7 * escalaFuente * strlen("estadisticas"))) / 2), panelIzqY + 5, PAL_REFLEJO, escalaFuente, 1);
+
+  graficosDibujarRect(panelIzqX, panelIzqY + gapTitulo, panelIzqW, 1, 14);
+
+  // PANEL IZQ - PUNTAJE
+  char scoreText[16];
+  sprintf(scoreText, "%d", puntaje);
+  fuenteDibujarChar(FUENTE_GRANDE, '?', panelIzqX + (panelIzqW / 10), panelIzqY + gapTitulo + (gapEstadisticas / 2) - ((12 * escalaFuente) / 2), 16, escalaFuente);
+  fuenteDibujarTexto(FUENTE_CHICA, "puntos:", panelIzqX + (panelIzqW / 3), panelIzqY + gapTitulo + (gapEstadisticas / 4) - ((8 * escalaFuente) / 2), PAL_REFLEJO, escalaFuente, 1);
+  fuenteDibujarTexto(FUENTE_CHICA, scoreText, panelIzqX + (panelIzqW / 2), panelIzqY + gapTitulo + (gapEstadisticas / 2), 16, escalaFuente, 1);
+
+  graficosDibujarRect(panelIzqX, panelIzqY + gapTitulo + gapEstadisticas, panelIzqW, 1, 14);
+
+  // PANEL IZQ - NIVEL
+  char nivelText[5];
+  sprintf(nivelText, "%d", nivel);
+  fuenteDibujarChar(FUENTE_GRANDE, '!', panelIzqX + (panelIzqW / 10), panelIzqY + gapTitulo + gapEstadisticas + (gapEstadisticas / 2) - ((12 * escalaFuente) / 2), PAL_I, escalaFuente);
+  fuenteDibujarTexto(FUENTE_CHICA, "nivel:", panelIzqX + (panelIzqW / 3), panelIzqY + gapTitulo + gapEstadisticas + (gapEstadisticas / 4) - ((8 * escalaFuente) / 2), PAL_REFLEJO, escalaFuente, 1);
+  fuenteDibujarTexto(FUENTE_CHICA, nivelText, panelIzqX + (panelIzqW / 2), panelIzqY + gapTitulo + gapEstadisticas + (gapEstadisticas / 2), PAL_I, escalaFuente, 1);
+
+  graficosDibujarRect(panelIzqX, panelIzqY + gapTitulo + (gapEstadisticas * 2), panelIzqW, 1, 14);
+
+  // PANEL IZQ - LINEAS COMPLETAS
+  char lineasText[10];
+  sprintf(lineasText, "%d", lineasCompletas);
+  fuenteDibujarChar(FUENTE_GRANDE, ']', panelIzqX + (panelIzqW / 10), panelIzqY + gapTitulo + (gapEstadisticas * 2) + (gapEstadisticas / 2) - ((12 * escalaFuente) / 2), PAL_S, escalaFuente);
+  fuenteDibujarTexto(FUENTE_CHICA, "lineas:", panelIzqX + (panelIzqW / 3), panelIzqY + gapTitulo + (gapEstadisticas * 2) + (gapEstadisticas / 4) - ((8 * escalaFuente) / 2), PAL_REFLEJO, escalaFuente, 1);
+  fuenteDibujarTexto(FUENTE_CHICA, lineasText, panelIzqX + (panelIzqW / 2), panelIzqY + gapTitulo + (gapEstadisticas * 2) + (gapEstadisticas / 2), PAL_S, escalaFuente, 1);
+
+  graficosDibujarRect(panelIzqX, panelIzqY + gapTitulo + (gapEstadisticas * 3), panelIzqW, 1, 14);
+
+  // PANEL IZQ - RECORD
+  char recordText[16];
+  sprintf(recordText, "%d", 0);
+  fuenteDibujarChar(FUENTE_GRANDE, '}', panelIzqX + (panelIzqW / 10), panelIzqY + gapTitulo + (gapEstadisticas * 3) + (gapEstadisticas / 2) - ((12 * escalaFuente) / 2), 16, escalaFuente);
+  fuenteDibujarTexto(FUENTE_CHICA, "record:", panelIzqX + (panelIzqW / 3), panelIzqY + gapTitulo + (gapEstadisticas * 3) + (gapEstadisticas / 4) - ((8 * escalaFuente) / 2), PAL_REFLEJO, escalaFuente, 1);
+  fuenteDibujarTexto(FUENTE_CHICA, recordText, panelIzqX + (panelIzqW / 2), panelIzqY + gapTitulo + (gapEstadisticas * 3) + (gapEstadisticas / 2), 16, escalaFuente, 1);
+
+  graficosDibujarRect(panelIzqX, panelIzqY + gapTitulo + (gapEstadisticas * 4), panelIzqW, 1, 14);
+
+  // PANEL IZQ - USUARIO
+  fuenteDibujarChar(FUENTE_GRANDE, user[0], panelIzqX + (panelIzqW / 4) - ((12 * escalaCharTitulo) / 2), panelIzqY + gapTitulo + (gapEstadisticas * 4) + (gapEstadisticas / 2) - ((12 * escalaCharTitulo) / 2), 2, escalaCharTitulo);
+  fuenteDibujarChar(FUENTE_GRANDE, user[1], panelIzqX + (panelIzqW / 2) - ((12 * escalaCharTitulo) / 2), panelIzqY + gapTitulo + (gapEstadisticas * 4) + (gapEstadisticas / 2) - ((12 * escalaCharTitulo) / 2), 2, escalaCharTitulo);
+  fuenteDibujarChar(FUENTE_GRANDE, user[2], panelIzqX + (panelIzqW - (panelIzqW / 4)) - ((12 * escalaCharTitulo) / 2), panelIzqY + gapTitulo + (gapEstadisticas * 4) + (gapEstadisticas / 2) - ((12 * escalaCharTitulo) / 2), 2, escalaCharTitulo);
+}
+
+void graficosDibujarPanelDerecho(int panelDerX, int panelDerY, int panelDerW, int panelDerH, char siguienteTipo, const Pantalla* pant){
+  // PANEL DER ARRIBA - PROX PIEZA
+    graficosDibujarRect(panelDerX, panelDerY - 1, panelDerW, (panelDerH / 2), 10);
+    graficosDibujarBorde(panelDerX, panelDerY - 1, panelDerW, (panelDerH / 2), 14, 1);
+
+    int escalaTexto = pant->anchoVentana == 320 ? 1 : 2;
+
+    fuenteDibujarTexto(FUENTE_CHICA, "siguiente\npieza:", panelDerX + 10, panelDerY + 10, PAL_REFLEJO, escalaTexto, 1);
+    graficosDibujarBorde(panelDerX + 5, panelDerY + (panelDerH / 5), panelDerW - 10, panelDerH / 4, 14, 1);
+
+    uint8_t colorPreview = obtenerColorCelda(siguienteTipo);
+    int previewBlock = pant->anchoVentana == 320 ? 12 : 24;
+    int boxX = panelDerX + 5;
+    int boxY = panelDerY + (panelDerH / 5);
+    int boxW = panelDerW - 10;
+    int boxH = panelDerH / 4;
+
+    graficosDibujarPreview(pant, siguienteTipo, boxX + (boxW / 2), boxY + (boxH / 2), previewBlock, 2, colorPreview);
+
+    // PANEL DER ABAJO - COMO JUGAR
+    graficosDibujarRect(panelDerX, panelDerY + (panelDerH / 2) + 1, panelDerW, (panelDerH / 2), 10);
+    graficosDibujarBorde(panelDerX, panelDerY + (panelDerH / 2) + 1, panelDerW, (panelDerH / 2), 14, 1);
+
+    int siguienteBorde = 0;
+    int bordeW, bordeH, spacingX, spacingY, escalaChar;
+
+    if (pant->anchoVentana == 320){
+      bordeW = 16;
+      bordeH = 16;
+      spacingX = 2;
+      spacingY = 1;
+      escalaChar = 1;
+    } else {
+      bordeW = 30;
+      bordeH = 30;
+      spacingX = 5;
+      spacingY = 10;
+      escalaChar = 2;
+    }
+
+    for (int i = 0; i < 4; i++){
+      graficosDibujarBorde(panelDerX + (spacingX * 2), (panelDerY + (panelDerH / 2) + 2) + siguienteBorde + spacingY, bordeW, bordeH, PAL_REFLEJO, 1);
+      siguienteBorde += bordeH + spacingY;
+    }
+
+    siguienteBorde = 0;
+    const char controles[8] = {"ASDFQEP)"};
+    const char *labels[] = {
+      "MOVER\nIZQ",
+      "ABAJO",
+      "MOVER\nDER",
+      "FREEZE",
+      "ROTAR\nIZQ",
+      "ROTAR\nDER",
+      "PAUSA",
+      "SALIR"
+    };
+
+    for (int i = 0; i < 4; i++){
+      fuenteDibujarChar(FUENTE_GRANDE, controles[i], panelDerX + (spacingX * 2) + ((bordeW - (12 * escalaChar)) / 2), (panelDerY + (panelDerH / 2) + 1) + siguienteBorde + spacingY + ((bordeH - (12 * escalaChar)) / 2), 11, escalaChar);
+      fuenteDibujarTexto(FUENTE_NOMONO, labels[i], panelDerX + bordeW + (spacingX * 2 + 2), (panelDerY + (panelDerH / 2) + 1) + siguienteBorde + spacingY + 2, PAL_REFLEJO, escalaChar, 1);
+      siguienteBorde += bordeH + spacingY;
+    }
+
+    siguienteBorde = 0;
+
+    for (int i = 0; i < 4; i++){
+      graficosDibujarBorde(panelDerX + (panelDerW / 2) + (spacingX * 2), (panelDerY + (panelDerH / 2) + 2) + siguienteBorde + spacingY, bordeW, bordeH, PAL_REFLEJO, 1);
+      siguienteBorde += bordeH + spacingY;
+    }
+
+    siguienteBorde = 0;
+
+    for (int i = 4; i < 8; i++){
+      fuenteDibujarChar(FUENTE_GRANDE, controles[i], panelDerX + (panelDerW / 2) + (spacingX * 2) + ((bordeW - (12 * escalaChar)) / 2), (panelDerY + (panelDerH / 2) + 1) + siguienteBorde + spacingY + ((bordeH - (12 * escalaChar)) / 2), 11, escalaChar);
+      fuenteDibujarTexto(FUENTE_NOMONO, labels[i], panelDerX + (panelDerW / 2) + bordeW + (spacingX * 2 + 2), (panelDerY + (panelDerH / 2) + 1) + siguienteBorde + spacingY + 2, PAL_REFLEJO, escalaChar, 1);
+      siguienteBorde += bordeH + spacingY;
+    }
+
+    graficosDibujarBorde(panelDerX + (spacingX * 2), (panelDerY + (panelDerH / 2) + 2) + siguienteBorde + spacingY, bordeW * 3, bordeH, PAL_REFLEJO, 1);
+    fuenteDibujarTexto(FUENTE_CHICA, "space", panelDerX + (spacingX) + (((bordeW * 3) - (6 * escalaChar * strlen("space"))) / 2), (panelDerY + (panelDerH / 2) + 1) + siguienteBorde + spacingY + (bordeH / 2), 11, escalaChar, 1);
+    fuenteDibujarTexto(FUENTE_NOMONO, "HARD\nDROP", panelDerX + (bordeW * 3) + (spacingX * 2 + 2), (panelDerY + (panelDerH / 2) + 1) + siguienteBorde + spacingY + 2, PAL_REFLEJO, escalaChar, 1);
+}
+
+void graficosDibujarPanelIzqGrande(int panelGrandeX, int panelGrandeY, int panelGrandeW, int panelGrandeH, char siguienteTipo, const Pantalla* pant, int puntaje, int nivel, int filasCompletas){
+  graficosDibujarRect(panelGrandeX, panelGrandeY - 1, panelGrandeW, (panelGrandeH / 2), 10);
+  graficosDibujarBorde(panelGrandeX, panelGrandeY - 1, panelGrandeW, (panelGrandeH / 2), 14, 1);
+
+  int escalaTexto = pant->anchoVentana == 320 ? 1 : 2;
+
+  fuenteDibujarTexto(FUENTE_CHICA, "siguiente pieza:", panelGrandeX + 10, panelGrandeY + 10, PAL_REFLEJO, escalaTexto, 1);
+  graficosDibujarBorde(panelGrandeX + 5, panelGrandeY + (panelGrandeH / 5), panelGrandeW - 10, panelGrandeH / 4, 14, 1);
+
+  uint8_t colorPreview = obtenerColorCelda(siguienteTipo);
+  int previewBlock = pant->anchoVentana == 320 ? 12 : 24;
+  int boxX = panelGrandeX + 5;
+  int boxY = panelGrandeY + (panelGrandeH / 5);
+  int boxW = panelGrandeW - 10;
+  int boxH = panelGrandeH / 4;
+
+  graficosDibujarPreview(pant, siguienteTipo, boxX + (boxW / 2), boxY + (boxH / 2), previewBlock, 2, colorPreview);
+
+  graficosDibujarRect(panelGrandeX, panelGrandeY + (panelGrandeH / 2) + 1, panelGrandeW, (panelGrandeH / 2), 10);
+  graficosDibujarBorde(panelGrandeX, panelGrandeY + (panelGrandeH / 2) + 1, panelGrandeW, (panelGrandeH / 2), 14, 1);
+
+  int abajoY = panelGrandeY + (panelGrandeH / 2) + 1;
+  int abajoH = panelGrandeH / 2;
+  int celdaW = panelGrandeW / 2;
+  int celdaH = abajoH / 2;
+  int pad = 6;
+
+  const char* valor;
+
+  char scoreText[16];
+  sprintf(scoreText, "%d", puntaje);
+
+  char nivelText[5];
+  sprintf(nivelText, "%d", nivel);
+
+  char lineasText[10];
+  sprintf(lineasText, "%d", filasCompletas);
+  
+  char recordText[16];
+  sprintf(recordText, "%d", 0);
+
+  const char *labels[4] = { "PUNTOS", "NIVEL", "LINEAS", "RECORD" };
+
+  for (int i = 0; i < 4; i++){
+    int col = i % 2;
+    int fila = i / 2;
+    int cx = panelGrandeX + col * celdaW;
+    int cy = abajoY + fila * celdaH;
+
+    switch (i){
+      case 0: valor = scoreText; break;
+      case 1: valor = nivelText; break;
+      case 2: valor = lineasText; break;
+      default: valor = recordText; break;
+    }
+
+    graficosDibujarRect(cx + 2, cy + 2, celdaW - 4, celdaH - 4, 10);
+    graficosDibujarBorde(cx + 2, cy + 2, celdaW - 4, celdaH - 4, 14, 1);
+
+    fuenteDibujarTexto(FUENTE_NOMONO, labels[i], cx + pad + 2, cy + 6, PAL_REFLEJO, escalaTexto, 1);
+
+    fuenteDibujarTexto(FUENTE_CHICA, valor, cx + (celdaW / 2) - (6 * 4), cy + (celdaH / 2), 16, escalaTexto, 1);
+  }
+
+  graficosDibujarRect(panelGrandeX + (panelGrandeW / 2), abajoY + 2, 1, abajoH - 4, 14);
+  graficosDibujarRect(panelGrandeX + 2, abajoY + (abajoH / 2), panelGrandeW - 4, 1, 14);
 }

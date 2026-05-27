@@ -25,7 +25,7 @@ int main(int argc, char *argv[]){
     p.tetromino = NULL;
     EstadoJuego estado = ESTADO_MENU;
     Pantalla pant;
-    Tablero *t;
+    Tablero *t = NULL;
 
 
     int puntaje=0;
