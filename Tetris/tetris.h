@@ -101,6 +101,7 @@ char piezaOcupaCelda(const PiezaActual *p,int filaTablero,int colTablero,int col
 int cargarLeaderboard(Leaderboard *lb);
 void insertarOrdenado(Leaderboard *lb, Registro nuevo);
 int guardarLeaderboard(Leaderboard *lb);
+int iniciarPartida(Bolsa *b, PiezaActual *p, Tablero **t, Pantalla *pant, int *puntaje, int *nivel, int *lineasCompletas, int *gravedad, int *lockDelay, int *velocidadCaida, int *contadorPiezas, int *animandoLinea, int *framesAnimacion, int *timeFreeze, int *lockDelayMaximo, int *delayIzq, int *delayDer, int *modo, int *columnas, int modoSel, int velSel, int paletaSel);
 
 
 #endif // TETRIS_H_INCLUDED

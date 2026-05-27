@@ -37,6 +37,8 @@ int main(int argc, char *argv[]){
     int lockDelay=0;
     int velocidadCaida=20;
     int contadorPiezas=0;
+    int animandoLinea = 0;
+    int framesAnimacion = 0;
     int timeFreeze=0;
     int lockDelayMaximo=velocidadCaida/2;
     int delayIzq=0;
@@ -94,27 +96,8 @@ int main(int argc, char *argv[]){
 
                 if (gbt_tecla_presionada(GBTK_ENTER)){
                     if (opcionMenu == 0){
-                        t=tablero_crear(CLASICO_COLUMNAS);
-                        if(!t) return -1;
+                        if (iniciarPartida(&b, &p, &t, &pant, &puntaje, &nivel, &lineasCompletas, &gravedad, &lockDelay, &velocidadCaida, &contadorPiezas, &animandoLinea, &framesAnimacion, &timeFreeze, &lockDelayMaximo, &delayIzq, &delayDer, &modo, &columnas, 0, 0, 0) != 0) return -1;
 
-                        tablero_vaciar(t);
-                        puntaje=0;
-                        gravedad=0;
-                        nivel = 1;
-                        lineasCompletas = 0;
-                        scoreGuardado=0;
-                        b.tam=7;
-                        b.actual=malloc(b.tam);
-                        b.aux=malloc(b.tam);
-
-                        inicializarBolsa(&b,modo);
-
-                        if (p.tetromino){
-                            destruyeMatriz(p.tetromino, 4);
-                            p.tetromino = NULL;
-                        }
-
-                        crearNuevaPieza(&b, &p, t,modo);
                         estado = ESTADO_CORRIENDO;
                     } else {
                         configPaso = 0;
@@ -123,63 +106,6 @@ int main(int argc, char *argv[]){
                         estado = ESTADO_CONFIG;
                     }
                 }
-
-                // if (gbt_tecla_presionada(GBTK_d)){
-                //     t=tablero_crear(DELUXE_COLUMNAS_DIFICIL);
-                //     if(!t)
-                //        return -1;
-                //     tablero_vaciar(t);
-                //     puntaje=0;
-                //     gravedad=0;
-                //     nivel = 1;
-                //     lineasCompletas = 0;
-                //     modo=1;
-                //     b.tam=11;
-                //     b.actual=malloc(b.tam);
-                //     b.aux=malloc(b.tam);
-
-                //     graficosSetModo(paletaSel);
-
-                //     inicializarBolsa(&b,modo);
-
-                //     if (p.tetromino){
-                //         destruyeMatriz(p.tetromino, 4);
-                //         p.tetromino = NULL;
-                //     }
-
-                //     crearNuevaPieza(&b, &p, t,modo);
-
-                //     estado = ESTADO_USER;
-                // }
-
-                // if (gbt_tecla_presionada(GBTK_f)){
-                //     t=tablero_crear(DELUXE_COLUMNAS_FACIL);
-                //     if(!t)
-                //        return -1;
-                //     tablero_vaciar(t);
-                //     puntaje=0;
-                //     gravedad=0;
-                //     nivel = 1;
-                //     lineasCompletas = 0;
-                //     modo=1;
-                //     b.tam=11;
-                //     b.actual=malloc(b.tam);
-                //     b.aux=malloc(b.tam);
-
-                //     graficosSetModo(paletaSel);
-
-                //     inicializarBolsa(&b,modo);
-
-                //     if (p.tetromino){
-                //         destruyeMatriz(p.tetromino, 4);
-                //         p.tetromino = NULL;
-                //     }
-
-                //     crearNuevaPieza(&b, &p, t,modo);
-
-                //     estado = ESTADO_USER;
-                // }
-
                 break;
 
             case ESTADO_CONFIG:
@@ -235,66 +161,8 @@ int main(int argc, char *argv[]){
                     if (configPaso < 3){
                         configPaso++;
                     } else {
-                        if (modoSel == 0){
-                            modo = 0;
-                            columnas = CLASICO_COLUMNAS;
-                            b.tam = 7;
-                        } else if (modoSel == 1){
-                            modo = 1;
-                            columnas = DELUXE_COLUMNAS_FACIL;
-                            b.tam = 11;
-                        } else {
-                            modo = 1;
-                            columnas = DELUXE_COLUMNAS_DIFICIL;
-                            b.tam = 11;
-                        }
+                        if (iniciarPartida(&b, &p, &t, &pant, &puntaje, &nivel, &lineasCompletas, &gravedad, &lockDelay, &velocidadCaida, &contadorPiezas, &animandoLinea, &framesAnimacion, &timeFreeze, &lockDelayMaximo, &delayIzq, &delayDer, &modo, &columnas, modoSel, velSel, paletaSel) != 0) return -1;
 
-                        // Logica velocidad
-
-                        graficosSetModo(paletaSel);
-
-                        if (t){
-                            tablero_destruir(t);
-                            t = NULL;
-                        }
-                        
-                        if (b.actual){
-                            free(b.actual);
-                            b.actual = NULL;
-                        }
-
-                        if (b.aux){
-                            free(b.aux);
-                            b.aux = NULL;
-                        }
-
-                        t = tablero_crear(columnas);
-                        if (!t) return -1;
-
-                        tablero_vaciar(t);
-
-                        puntaje = 0;
-                        gravedad = 0;
-                        nivel = 1;
-                        lineasCompletas = 0;
-                        contadorPiezas = 0;
-                        timeFreeze = 0;
-                        delayIzq = 0;
-                        delayDer = 0;
-                        lockDelay = 0;
-
-                        b.actual = malloc(b.tam);
-                        b.aux = malloc(b.tam);
-                        if (!b.actual || !b.aux) return - 1;
-
-                        inicializarBolsa(&b, modo);
-
-                        if (p.tetromino){
-                            destruyeMatriz(p.tetromino, 4);
-                            p.tetromino = NULL;
-                        }
-
-                        crearNuevaPieza(&b, &p, t, modo);
                         estado = ESTADO_CORRIENDO;
                     }
                 }
@@ -302,6 +170,29 @@ int main(int argc, char *argv[]){
                 break;
 
             case ESTADO_CORRIENDO:
+                if (animandoLinea){
+                    graficosDibujarJuego(&pant, t, &p, puntaje, nivel, lineasCompletas, user, b.siguienteTipo, modo);
+
+                    framesAnimacion++;
+                    
+                    if (framesAnimacion >= 5){
+                        filasCompletasEliminar(t);
+                        t->LineasCompletas = 0;
+                        animandoLinea = 0;
+                        framesAnimacion = 0;
+
+                        if (p.tetromino) {
+                            destruyeMatriz(p.tetromino, 4);
+                            p.tetromino = NULL;
+                        }
+
+                        crearNuevaPieza(&b, &p, t, modo);
+                    }
+
+                    gbt_esperar(50);
+                    break;
+                }
+
                 if (gbt_tecla_sostenida(GBTK_a) && delayIzq==0){
                     if (puedeMover(&p, -1, 0, t,modo)) p.columna--;
                     if(p.columna<-3)p.columna=t->columnas-4;
@@ -349,12 +240,23 @@ int main(int argc, char *argv[]){
                     aplicarGravedad(t,&p,&lockDelay,&gravedad, velocidadCaida,modo);
                 }
 
-                if(lockDelay >= lockDelayMaximo)
-                {
-                    if(actualizarJuego(t,&b,&p,&puntaje,&lineasCompletas,&lockDelay, modo,nivel)) estado = ESTADO_GAMEOVER;
-                    gravedad=0;
-                    contadorPiezas++;
+                if (lockDelay >= lockDelayMaximo) {
+                    int gameOver = actualizarJuego(t, &b, &p, &puntaje, &lineasCompletas, &lockDelay, modo, nivel);
 
+                    if (gameOver) {
+                        estado = ESTADO_GAMEOVER;
+                    } else if (t->LineasCompletas == 1) {
+                        animandoLinea = 1;
+                        framesAnimacion = 0;
+                        contadorPiezas = 0;
+                        gravedad = 0;
+                        lockDelay = 0;
+                        delayIzq = 0;
+                        delayDer = 0;
+                    } else {
+                        gravedad = 0;
+                        contadorPiezas++;
+                    }
                 }
                 if(contadorPiezas==10)
                 {
@@ -365,11 +267,6 @@ int main(int argc, char *argv[]){
                 }
 
                 graficosDibujarJuego(&pant, t, &p, puntaje, nivel, lineasCompletas, user, b.siguienteTipo, modo);
-                if(t->LineasCompletas==1 && gravedad>=5)
-                {
-                    filasCompletasEliminar(t);
-                    t->LineasCompletas=0;
-                }
 
                 if(!timeFreeze)
                 {
@@ -379,6 +276,7 @@ int main(int argc, char *argv[]){
                     delayDer--;
                 if(delayIzq>0)
                     delayIzq--;
+
                 gbt_esperar(50);
                 break;
 
@@ -407,21 +305,7 @@ int main(int argc, char *argv[]){
                 graficosDibujarGameOver(&pant,&lb,puntaje);
 
                 if (gbt_tecla_presionada(GBTK_r)){
-                    tablero_vaciar(t);
-                    puntaje=0;
-                    gravedad=0;
-                    nivel = 1;
-                    lineasCompletas = 0;
-                    scoreGuardado=0;
-
-                    inicializarBolsa(&b, modo);
-
-                    if (p.tetromino){
-                        destruyeMatriz(p.tetromino, 4);
-                        p.tetromino = NULL;
-                    }
-
-                    crearNuevaPieza(&b, &p, t, modo);
+                    if (iniciarPartida(&b, &p, &t, &pant, &puntaje, &nivel, &lineasCompletas, &gravedad, &lockDelay, &velocidadCaida, &contadorPiezas, &animandoLinea, &framesAnimacion, &timeFreeze, &lockDelayMaximo, &delayIzq, &delayDer, &modo, &columnas, modoSel, velSel, paletaSel) != 0) return -1;
 
                     estado = ESTADO_CORRIENDO;
                 }
