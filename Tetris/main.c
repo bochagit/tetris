@@ -20,7 +20,7 @@ Entrega: Sí
 
 int main(int argc, char *argv[]){
     srand(time(NULL));
-    Bolsa b;
+    Bolsa b = {0};
     PiezaActual p;
     p.tetromino = NULL;
     EstadoJuego estado = ESTADO_MENU;
@@ -40,6 +40,7 @@ int main(int argc, char *argv[]){
     int delayIzq=0;
     int delayDer=0;
     int modo=0;
+    int columnas = 0;
 
     int res = 320;
     int escala = 3;
@@ -48,6 +49,13 @@ int main(int argc, char *argv[]){
     const char alfabeto[] = {"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
     int cursor = 0;
     int opcion = 0;
+
+    int opcionMenu = 0;
+
+    int configPaso = 0;
+    int modoSel = 0;
+    int velSel = 0;
+    int paletaSel = 0;
 
     for (int i = 1; i < argc - 1; i++){
         if (strcmp(argv[i], "--resolucion") == 0){
@@ -63,7 +71,7 @@ int main(int argc, char *argv[]){
     graficosConfigurarResolucion(&pant, res, escala);
 
 
-    if (graficosIniciar(&pant) != 0){
+    if (graficosIniciar(&pant, modo) != 0){
         return 1;
     }
 
@@ -74,126 +82,217 @@ int main(int argc, char *argv[]){
 
         switch (estado){
             case ESTADO_MENU:
-                graficosDibujarMenu(&pant);
+                graficosSetModo(paletaSel);
+                graficosDibujarMenu(&pant, modo, opcionMenu);
 
-                if (gbt_tecla_presionada(GBTK_n)){
-                    t=tablero_crear(CLASICO_COLUMNAS);
-                    if(!t)
-                       return -1;
-                    tablero_vaciar(t);
-                    puntaje=0;
-                    gravedad=0;
-                    nivel = 1;
-                    lineasCompletas = 0;
-                    b.tam=7;
-                    b.actual=malloc(b.tam);
-                    b.aux=malloc(b.tam);
-
-                    inicializarBolsa(&b,modo);
-
-                    if (p.tetromino){
-                        destruyeMatriz(p.tetromino, 4);
-                        p.tetromino = NULL;
-                    }
-
-                    crearNuevaPieza(&b, &p, t,modo);
-
-                    estado = ESTADO_USER;
-                }
-                if (gbt_tecla_presionada(GBTK_d)){
-                    t=tablero_crear(DELUXE_COLUMNAS_DIFICIL);
-                    if(!t)
-                       return -1;
-                    tablero_vaciar(t);
-                    puntaje=0;
-                    gravedad=0;
-                    nivel = 1;
-                    lineasCompletas = 0;
-                    modo=1;
-                    b.tam=11;
-                    b.actual=malloc(b.tam);
-                    b.aux=malloc(b.tam);
-
-                    inicializarBolsa(&b,modo);
-
-                    if (p.tetromino){
-                        destruyeMatriz(p.tetromino, 4);
-                        p.tetromino = NULL;
-                    }
-
-                    crearNuevaPieza(&b, &p, t,modo);
-
-                    estado = ESTADO_USER;
-                }
-                if (gbt_tecla_presionada(GBTK_f)){
-                    t=tablero_crear(DELUXE_COLUMNAS_FACIL);
-                    if(!t)
-                       return -1;
-                    tablero_vaciar(t);
-                    puntaje=0;
-                    gravedad=0;
-                    nivel = 1;
-                    lineasCompletas = 0;
-                    modo=1;
-                    b.tam=11;
-                    b.actual=malloc(b.tam);
-                    b.aux=malloc(b.tam);
-
-                    inicializarBolsa(&b,modo);
-
-                    if (p.tetromino){
-                        destruyeMatriz(p.tetromino, 4);
-                        p.tetromino = NULL;
-                    }
-
-                    crearNuevaPieza(&b, &p, t,modo);
-
-                    estado = ESTADO_USER;
-                }
-
-                break;
-
-            case ESTADO_USER:
-                graficosDibujarUser(&pant, user, cursor);
-
-                if (gbt_tecla_presionada(GBTK_IZQUIERDA)){
-                    if (cursor > 0){
-                        cursor--;
-                    } else {
-                        cursor = 2;
-                    }
-                    opcion = user[cursor] - 'A';
-                }
-
-                if (gbt_tecla_presionada(GBTK_DERECHA)){
-                    if (cursor < 2){
-                        cursor++;
-                    } else {
-                        cursor = 0;
-                    }
-                    opcion = user[cursor] - 'A';
-                }
-
-                if (gbt_tecla_presionada(GBTK_ABAJO)){
-                    if (opcion == 0){
-                        opcion = 25;
-                    } else {
-                        opcion--;
-                    }
-                    user[cursor] = alfabeto[opcion];
-                }
-
-                if (gbt_tecla_presionada(GBTK_ARRIBA)){
-                    if (opcion == 25){
-                        opcion = 0;
-                    } else {
-                        opcion++;
-                    }
-                    user[cursor] = alfabeto[opcion];
+                if (gbt_tecla_presionada(GBTK_ARRIBA) || gbt_tecla_presionada(GBTK_ABAJO)){
+                    opcionMenu = 1 - opcionMenu;
                 }
 
                 if (gbt_tecla_presionada(GBTK_ENTER)){
-                    estado = ESTADO_CORRIENDO;
+                    if (opcionMenu == 0){
+                        t=tablero_crear(CLASICO_COLUMNAS);
+                        if(!t) return -1;
+
+                        tablero_vaciar(t);
+                        puntaje=0;
+                        gravedad=0;
+                        nivel = 1;
+                        lineasCompletas = 0;
+                        b.tam=7;
+                        b.actual=malloc(b.tam);
+                        b.aux=malloc(b.tam);
+
+                        inicializarBolsa(&b,modo);
+
+                        if (p.tetromino){
+                            destruyeMatriz(p.tetromino, 4);
+                            p.tetromino = NULL;
+                        }
+
+                        crearNuevaPieza(&b, &p, t,modo);
+                        estado = ESTADO_CORRIENDO;
+                    } else {
+                        configPaso = 0;
+                        cursor = 0;
+                        opcion = user[cursor] - 'A';
+                        estado = ESTADO_CONFIG;
+                    }
+                }
+
+                // if (gbt_tecla_presionada(GBTK_d)){
+                //     t=tablero_crear(DELUXE_COLUMNAS_DIFICIL);
+                //     if(!t)
+                //        return -1;
+                //     tablero_vaciar(t);
+                //     puntaje=0;
+                //     gravedad=0;
+                //     nivel = 1;
+                //     lineasCompletas = 0;
+                //     modo=1;
+                //     b.tam=11;
+                //     b.actual=malloc(b.tam);
+                //     b.aux=malloc(b.tam);
+
+                //     graficosSetModo(paletaSel);
+
+                //     inicializarBolsa(&b,modo);
+
+                //     if (p.tetromino){
+                //         destruyeMatriz(p.tetromino, 4);
+                //         p.tetromino = NULL;
+                //     }
+
+                //     crearNuevaPieza(&b, &p, t,modo);
+
+                //     estado = ESTADO_USER;
+                // }
+
+                // if (gbt_tecla_presionada(GBTK_f)){
+                //     t=tablero_crear(DELUXE_COLUMNAS_FACIL);
+                //     if(!t)
+                //        return -1;
+                //     tablero_vaciar(t);
+                //     puntaje=0;
+                //     gravedad=0;
+                //     nivel = 1;
+                //     lineasCompletas = 0;
+                //     modo=1;
+                //     b.tam=11;
+                //     b.actual=malloc(b.tam);
+                //     b.aux=malloc(b.tam);
+
+                //     graficosSetModo(paletaSel);
+
+                //     inicializarBolsa(&b,modo);
+
+                //     if (p.tetromino){
+                //         destruyeMatriz(p.tetromino, 4);
+                //         p.tetromino = NULL;
+                //     }
+
+                //     crearNuevaPieza(&b, &p, t,modo);
+
+                //     estado = ESTADO_USER;
+                // }
+
+                break;
+
+            case ESTADO_CONFIG:
+                graficosDibujarConfig(&pant, user, cursor, configPaso, modoSel, velSel, paletaSel);
+
+                if (configPaso == 0){
+                    if (gbt_tecla_presionada(GBTK_IZQUIERDA)){
+                        if (cursor > 0){
+                            cursor--;
+                        } else {
+                            cursor = 2;
+                        }
+                        opcion = user[cursor] - 'A';
+                    }
+
+                    if (gbt_tecla_presionada(GBTK_DERECHA)){
+                        if (cursor < 2){
+                            cursor++;
+                        } else {
+                            cursor = 0;
+                        }
+                        opcion = user[cursor] - 'A';
+                    }
+
+                    if (gbt_tecla_presionada(GBTK_ABAJO)){
+                        if (opcion == 0){
+                            opcion = 25;
+                        } else {
+                            opcion--;
+                        }
+                        user[cursor] = alfabeto[opcion];
+                    }
+
+                    if (gbt_tecla_presionada(GBTK_ARRIBA)){
+                        if (opcion == 25){
+                            opcion = 0;
+                        } else {
+                            opcion++;
+                        }
+                        user[cursor] = alfabeto[opcion];
+                    }
+                } else if (configPaso == 1){
+                    if (gbt_tecla_presionada(GBTK_IZQUIERDA)) modoSel = modoSel == 0 ? 2 : modoSel - 1;
+                    if (gbt_tecla_presionada(GBTK_DERECHA)) modoSel = modoSel == 2 ? 0 : modoSel + 1;
+                } else if (configPaso == 2){
+                    if (gbt_tecla_presionada(GBTK_IZQUIERDA)) velSel = velSel == 0 ? 2 : velSel - 1;
+                    if (gbt_tecla_presionada(GBTK_DERECHA)) velSel = velSel == 2 ? 0 : velSel + 1;
+                } else if (configPaso == 3){
+                    if (gbt_tecla_presionada(GBTK_IZQUIERDA) || gbt_tecla_presionada(GBTK_DERECHA)) paletaSel = 1 - paletaSel;
+                }
+
+                if (gbt_tecla_presionada(GBTK_ENTER)){
+                    if (configPaso < 3){
+                        configPaso++;
+                    } else {
+                        if (modoSel == 0){
+                            modo = 0;
+                            columnas = CLASICO_COLUMNAS;
+                            b.tam = 7;
+                        } else if (modoSel == 1){
+                            modo = 1;
+                            columnas = DELUXE_COLUMNAS_FACIL;
+                            b.tam = 11;
+                        } else {
+                            modo = 1;
+                            columnas = DELUXE_COLUMNAS_DIFICIL;
+                            b.tam = 11;
+                        }
+
+                        // Logica velocidad
+
+                        graficosSetModo(paletaSel);
+
+                        if (t){
+                            tablero_destruir(t);
+                            t = NULL;
+                        }
+                        
+                        if (b.actual){
+                            free(b.actual);
+                            b.actual = NULL;
+                        }
+
+                        if (b.aux){
+                            free(b.aux);
+                            b.aux = NULL;
+                        }
+
+                        t = tablero_crear(columnas);
+                        if (!t) return -1;
+
+                        tablero_vaciar(t);
+
+                        puntaje = 0;
+                        gravedad = 0;
+                        nivel = 1;
+                        lineasCompletas = 0;
+                        contadorPiezas = 0;
+                        timeFreeze = 0;
+                        delayIzq = 0;
+                        delayDer = 0;
+                        lockDelay = 0;
+
+                        b.actual = malloc(b.tam);
+                        b.aux = malloc(b.tam);
+                        if (!b.actual || !b.aux) return - 1;
+
+                        inicializarBolsa(&b, modo);
+
+                        if (p.tetromino){
+                            destruyeMatriz(p.tetromino, 4);
+                            p.tetromino = NULL;
+                        }
+
+                        crearNuevaPieza(&b, &p, t, modo);
+                        estado = ESTADO_CORRIENDO;
+                    }
                 }
 
                 break;
@@ -261,7 +360,7 @@ int main(int argc, char *argv[]){
                     nivel++;
                 }
 
-                graficosDibujarJuego(&pant, t, &p, puntaje, nivel, lineasCompletas, user, b.siguienteTipo);
+                graficosDibujarJuego(&pant, t, &p, puntaje, nivel, lineasCompletas, user, b.siguienteTipo, modo);
                 if(t->LineasCompletas==1 && gravedad>=5)
                 {
                     filasCompletasEliminar(t);
