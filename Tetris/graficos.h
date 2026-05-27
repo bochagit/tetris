@@ -35,7 +35,7 @@ void graficosDibujarBorde(int x, int y, int w, int h, uint8_t color, int grosor)
 void graficosDibujarMenu(const Pantalla* pant, int modo, int opcionMenu);
 void graficosDibujarJuego(const Pantalla* pant, const Tablero* t, const PiezaActual* p, int puntaje, int nivel, int lineasCompletas, const char user[4], char siguienteTipo, int modo);
 void graficosDibujarPausa(const Pantalla* pant);
-void graficosDibujarGameOver(const Pantalla* pant);
+void graficosDibujarGameOver(const Pantalla* pant,Leaderboard *lb,int puntaje);
 void graficosConfigurarResolucion(Pantalla* pant, int res, int escala);
 void graficosDibujarConfig(const Pantalla* pant, const char user[4], int cursor, int configPaso, int modoSel, int velSel, int paletaSel);
 void graficosDibujarPreview(const Pantalla* pant, char tipo, int cx, int cy, int block, int pad, uint8_t color);

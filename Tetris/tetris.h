@@ -7,6 +7,7 @@
 #define DELUXE_COLUMNAS_DIFICIL 8
 #define DELUXE_COLUMNAS_FACIL 16
 #define CELDA_VACIA '.'
+#define MAX_TOPS 10
 #include <stdlib.h>
 #include <stdio.h>
 #include "matriz.h"
@@ -64,6 +65,16 @@ typedef enum {
   ESTADO_GAMEOVER,
 } EstadoJuego;
 
+typedef struct{
+    char nombre[4];
+    int puntaje;
+} Registro;
+
+typedef struct{
+    Registro vec[MAX_TOPS];
+    int cantidad;
+} Leaderboard;
+
 
 void mezclarBolsa(char* bolsa, int n);
 void mostrarBolsa(char* bolsa, int n);
@@ -87,5 +98,9 @@ void calcularGhost(PiezaActual *p,Tablero *t, int modo);
 void pintarFilasCompletas(Tablero *tablero, char **filasCompletas,int cantidadCompletas);
 void filasCompletasEliminar(Tablero *tablero);
 char piezaOcupaCelda(const PiezaActual *p,int filaTablero,int colTablero,int columnas);
+int cargarLeaderboard(Leaderboard *lb);
+void insertarOrdenado(Leaderboard *lb, Registro nuevo);
+int guardarLeaderboard(Leaderboard *lb);
+
 
 #endif // TETRIS_H_INCLUDED

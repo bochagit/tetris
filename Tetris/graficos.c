@@ -330,7 +330,7 @@ void graficosDibujarPausa(const Pantalla* pant){
 
   graficosPresentarFrame();
 }
-
+/*
 void graficosDibujarGameOver(const Pantalla* pant){
   graficosComenzarFrame(0);
 
@@ -368,6 +368,58 @@ void graficosDibujarGameOver(const Pantalla* pant){
 
 
   graficosPresentarFrame();
+}
+*/
+void graficosDibujarGameOver(const Pantalla* pant,Leaderboard *lb,int puntaje)
+{
+    graficosComenzarFrame(0);
+
+    int escalaTexto, escalaChar;
+    int botonW, botonH;
+
+    if (pant->anchoVentana == 320)
+    {
+        escalaTexto = 1;
+        escalaChar = 1;
+        botonW = 25;
+        botonH = 25;
+    }
+    else
+    {
+        escalaTexto = 2;
+        escalaChar = 3;
+        botonW = 50;
+        botonH = 50;
+    }
+
+
+    fuenteDibujarTexto(FUENTE_GRANDE,"- GAME OVER -",(pant->anchoVentana / 2)- ((13 * escalaTexto * strlen("- GAME OVER -")) / 2),20,8,escalaTexto,1);
+
+
+    int botonY = pant->altoVentana - botonH - 20;
+
+    int menuX = 40;
+
+    graficosDibujarRect(menuX, botonY, botonW, botonH, 12);
+    graficosDibujarRect(menuX + 2, botonY + 2, botonW, botonH, 0);
+    graficosDibujarBorde(menuX + 2, botonY + 2, botonW, botonH, 14, 1);
+
+    fuenteDibujarChar(FUENTE_GRANDE,'M',menuX + ((botonW - (12 * escalaChar)) / 2),botonY + ((botonH - (12 * escalaChar)) / 2),PAL_REFLEJO,escalaChar);
+
+    fuenteDibujarTexto(FUENTE_CHICA,"MENU",menuX - 5,botonY - 18,PAL_REFLEJO,escalaTexto,1);
+
+
+    int retryX = pant->anchoVentana - botonW - 40;
+
+    graficosDibujarRect(retryX, botonY, botonW, botonH, 12);
+    graficosDibujarRect(retryX + 2, botonY + 2, botonW, botonH, 0);
+    graficosDibujarBorde(retryX + 2, botonY + 2, botonW, botonH, 14, 1);
+
+    fuenteDibujarChar(FUENTE_GRANDE,'R',retryX + ((botonW - (12 * escalaChar)) / 2),botonY + ((botonH - (12 * escalaChar)) / 2),PAL_REFLEJO,escalaChar);
+
+    fuenteDibujarTexto(FUENTE_CHICA,"RETRY",retryX - 2,botonY - 18,PAL_REFLEJO,escalaTexto,1);
+
+    graficosPresentarFrame();
 }
 
 void graficosDibujarConfig(const Pantalla* pant, const char user[4], int cursor, int configPaso, int modoSel, int velSel, int paletaSel){
