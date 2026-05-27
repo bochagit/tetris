@@ -455,7 +455,7 @@ void graficosDibujarConfig(const Pantalla* pant, const char user[4], int cursor,
   graficosPresentarFrame();
 }
 
-void graficosDibujarPreview(const Pantalla* pant, char tipo, int cx, int cy, int block, int pad, uint8_t color){
+void graficosDibujarPreview(char tipo, int cx, int cy, int block, int pad, uint8_t color){
   if (!tipo) return;
 
   PiezaActual temp = {0};
@@ -577,7 +577,7 @@ void graficosDibujarPanelDerecho(int panelDerX, int panelDerY, int panelDerW, in
     int boxW = panelDerW - 10;
     int boxH = panelDerH / 4;
 
-    graficosDibujarPreview(pant, siguienteTipo, boxX + (boxW / 2), boxY + (boxH / 2), previewBlock, 2, colorPreview);
+    graficosDibujarPreview(siguienteTipo, boxX + (boxW / 2), boxY + (boxH / 2), previewBlock, 2, colorPreview);
 
     // PANEL DER ABAJO - COMO JUGAR
     graficosDibujarRect(panelDerX, panelDerY + (panelDerH / 2) + 1, panelDerW, (panelDerH / 2), 10);
@@ -606,7 +606,7 @@ void graficosDibujarPanelDerecho(int panelDerX, int panelDerY, int panelDerW, in
     }
 
     siguienteBorde = 0;
-    const char controles[8] = {"ASDFQEP)"};
+    const char controles[9] = {"ASDFQEP)"};
     const char *labels[] = {
       "MOVER\nIZQ",
       "ABAJO",
@@ -660,7 +660,7 @@ void graficosDibujarPanelIzqGrande(int panelGrandeX, int panelGrandeY, int panel
   int boxW = panelGrandeW - 10;
   int boxH = panelGrandeH / 4;
 
-  graficosDibujarPreview(pant, siguienteTipo, boxX + (boxW / 2), boxY + (boxH / 2), previewBlock, 2, colorPreview);
+  graficosDibujarPreview(siguienteTipo, boxX + (boxW / 2), boxY + (boxH / 2), previewBlock, 2, colorPreview);
 
   graficosDibujarRect(panelGrandeX, panelGrandeY + (panelGrandeH / 2) + 1, panelGrandeW, (panelGrandeH / 2), 10);
   graficosDibujarBorde(panelGrandeX, panelGrandeY + (panelGrandeH / 2) + 1, panelGrandeW, (panelGrandeH / 2), 14, 1);

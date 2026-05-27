@@ -38,7 +38,7 @@ void graficosDibujarPausa(const Pantalla* pant);
 void graficosDibujarGameOver(const Pantalla* pant);
 void graficosConfigurarResolucion(Pantalla* pant, int res, int escala);
 void graficosDibujarConfig(const Pantalla* pant, const char user[4], int cursor, int configPaso, int modoSel, int velSel, int paletaSel);
-void graficosDibujarPreview(const Pantalla* pant, char tipo, int cx, int cy, int block, int pad, uint8_t color);
+void graficosDibujarPreview(char tipo, int cx, int cy, int block, int pad, uint8_t color);
 void graficosDibujarPanelIzq(int panelIzqX, int panelIzqY, int panelIzqW, int panelIzqH, int escalaFuente, int escalaCharTitulo, int gapEstadisticas, int gapTitulo, int puntaje, int nivel, int lineasCompletas, const char user[]);
 void graficosDibujarPanelDerecho(int panelDerX, int panelDerY, int panelDerW, int panelDerH, char siguienteTipo, const Pantalla* pant);
 void graficosDibujarPanelIzqGrande(int panelDerX, int panelDerY, int panelDerW, int panelDerH, char siguienteTipo, const Pantalla* pant, int puntaje, int nivel, int filasCompletas);

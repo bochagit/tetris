@@ -1,4 +1,5 @@
 #include "tetris.h"
+#include "graficos.h"
 
 void inicializarBolsa(Bolsa* b,int modo){
 
@@ -388,6 +389,8 @@ bool puedeMover(PiezaActual *p, int dx, int dy, Tablero* t,int modo){
             nuevaFila = p->fila + i + dy;
             nuevaCol  = p->columna + j + dx;
 
+            if (nuevaFila < 0) continue;
+
             // piso
             if(nuevaFila >= t->filasTotales) return false;
 
@@ -613,14 +616,19 @@ int evaluarFilas(Tablero *tablero, char** filasCompletas)
     return cantCompletas;
 }
 
+static int esMinoValido(char c){
+    return c == 'I' || c == 'J' || c == 'L' || c == 'O' || c == 'S' || c == 'T' || c == 'Z' ||  c == 'X' || c == 'C' || c == 'P' || c == 'V' || c == '#'; 
+}
+
 int analizaLinea(char* fila, int columnas)
 {
     int i;
 
     for(i = 0; i < columnas; i++)
     {
-        if(*(fila + i) == '.')
-            return 0;
+        // if(*(fila + i) == '.')
+        //     return 0;
+        if (!esMinoValido(fila[i])) return 0;
     }
 
     return 1;
@@ -666,7 +674,7 @@ void actualizarPuntaje(int * puntaje,int lineas, int nivel)
 int actualizarJuego(Tablero *tablero, Bolsa* b,PiezaActual* p, int * puntaje, int* lineasCompletas, int* lockDelay, int modo, int nivel)
 {
     int lineas,gameOver=0;
-    char** filasCompletas=malloc(sizeof(char*)*4);
+    char** filasCompletas=malloc(sizeof(char*)*tablero->filasTotales);
     if(!filasCompletas)
         return -1;
 
@@ -678,6 +686,8 @@ int actualizarJuego(Tablero *tablero, Bolsa* b,PiezaActual* p, int * puntaje, in
         actualizarPuntaje(puntaje,lineas,nivel);
         tablero->LineasCompletas=1;
         *lineasCompletas += lineas;
+        free(filasCompletas);
+        return 0;
     }
 
     gameOver=crearNuevaPieza(b,p,tablero, modo);
@@ -710,13 +720,13 @@ void filasCompletasEliminar(Tablero *tablero)
     char** lectura=(tablero->celdas)+(tablero->filasTotales)-1;
     char** escritura=(tablero->celdas)+(tablero->filasTotales)-1;
     char** aux;
-    char** filasCompletas=malloc(sizeof(char*)*4);
+    char** filasCompletas=malloc(sizeof(char*)*tablero->filasTotales);
     if(!filasCompletas)
         return ;
 
     int cantCompletas=0;
     int i;
-    for(i=tablero->filasTotales-1;i>=tablero->filasOcultas;i--)
+    for(i=tablero->filasTotales-1;i>=0;i--)
     {
         if(analizaLinea(*lectura,tablero->columnas))
         {
@@ -766,4 +776,78 @@ char piezaOcupaCelda(const PiezaActual *p,int filaTablero,int colTablero,int col
     }
 
     return '.';
+}
+
+int iniciarPartida(Bolsa *b, PiezaActual *p, Tablero **t, Pantalla *pant, int *puntaje, int *nivel, int *lineasCompletas, int *gravedad, int *lockDelay, int *velocidadCaida, int *contadorPiezas, int *animandoLinea, int *framesAnimacion, int *timeFreeze, int *lockDelayMaximo, int *delayIzq, int *delayDer, int *modo, int *columnas, int modoSel, int velSel, int paletaSel){
+    if (modoSel == 0){
+        *modo = 0;
+        *columnas = CLASICO_COLUMNAS;
+        b->tam = 7;
+    } else if (modoSel == 1){
+        *modo = 1;
+        *columnas = DELUXE_COLUMNAS_FACIL;
+        b->tam = 11;
+    } else {
+        *modo = 1;
+        *columnas = DELUXE_COLUMNAS_DIFICIL;
+        b->tam = 11;
+    }
+
+    if (velSel == 0){
+        *velocidadCaida = 20;
+    } else if (velSel == 1){
+        *velocidadCaida = 15;
+    } else {
+        *velocidadCaida = 10;
+    }
+
+    *lockDelayMaximo = *velocidadCaida / 2;
+    graficosSetModo(paletaSel);
+
+    if (*t){
+        tablero_destruir(*t);
+        *t = NULL;
+    }
+
+    if (b->actual){
+        free(b->actual);
+        b->actual = NULL;
+    }
+
+    if (b->aux){
+        free(b->aux);
+        b->aux = NULL;
+    }
+
+    *t = tablero_crear(*columnas);
+    if (!*t) return -1;
+
+    tablero_vaciar(*t);
+
+    *puntaje = 0;
+    *nivel = 1;
+    *lineasCompletas = 0;
+    *gravedad = 0;
+    *lockDelay = 0;
+    *contadorPiezas = 0;
+    *animandoLinea = 0;
+    *framesAnimacion = 0;
+    *timeFreeze = 0;
+    *delayIzq = 0;
+    *delayDer = 0;
+
+    b->actual = malloc(b->tam);
+    b->aux = malloc(b->tam);
+    if (!b->actual || !b->aux) return -1;
+
+    inicializarBolsa(b, *modo);
+
+    if (p->tetromino){
+        destruyeMatriz(p->tetromino, 4);
+        p->tetromino = NULL;
+    }
+
+    if (crearNuevaPieza(b, p, *t, *modo)) return -1;
+
+    return 0;
 }

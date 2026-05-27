@@ -87,5 +87,7 @@ void calcularGhost(PiezaActual *p,Tablero *t, int modo);
 void pintarFilasCompletas(Tablero *tablero, char **filasCompletas,int cantidadCompletas);
 void filasCompletasEliminar(Tablero *tablero);
 char piezaOcupaCelda(const PiezaActual *p,int filaTablero,int colTablero,int columnas);
+int iniciarPartida(Bolsa *b, PiezaActual *p, Tablero **t, Pantalla *pant, int *puntaje, int *nivel, int *lineasCompletas, int *gravedad, int *lockDelay, int *velocidadCaida, int *contadorPiezas, int *animandoLinea, int *framesAnimacion, int *timeFreeze, int *lockDelayMaximo, int *delayIzq, int *delayDer, int *modo, int *columnas, int modoSel, int velSel, int paletaSel);
+
 
 #endif // TETRIS_H_INCLUDED
