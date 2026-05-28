@@ -58,7 +58,7 @@ Desarrollar un videojuego equivalente al juego TETRIS utilizando la biblioteca G
    - [x] A mayor velocidad, mayor los puntos obtenidos por el jugador.
 - [x] Selección del tetrominó de forma aleatoria por algoritmo sin tendencias hacia ciertos tipos.
 - [x] Solicitar nombre del jugador a través de interfaz gráfica.
-- [ ] Mostrar estadísticas del juego por nombre del jugador.
+- [x] Mostrar estadísticas del juego por nombre del jugador.
 - [x] Crear al menos dos sets de fuentes con diferentes tamaños.
 - [x] Ejecución con argumentos a main para iniciar con diferentes factores de escala y una resolución logica específica.
 - [x] Implementar todos los tetrominós originales.
