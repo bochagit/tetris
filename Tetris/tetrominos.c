@@ -779,17 +779,26 @@ char piezaOcupaCelda(const PiezaActual *p,int filaTablero,int colTablero,int col
 }
 
 int iniciarPartida(Bolsa *b, PiezaActual *p, Tablero **t, Pantalla *pant, VariablesJuego *v, VariablesConfiguracion *vc){
+    if (vc->resSel == 0){
+        vc->res = 320;
+        vc->escala = 4;
+    } else {
+        vc->res = 640;
+        vc->escala = 2;
+    }
+    graficosConfigurarResolucion(pant, vc->res, vc->escala);
+    
     if (vc->modoSel == 0){
         v->modo = 0;
-        //vc->columnas = CLASICO_COLUMNAS;
+        vc->columnas = CLASICO_COLUMNAS;
         b->tam = 7;
     } else if (vc->modoSel == 1){
         v->modo = 1;
-        //vc->columnas = DELUXE_COLUMNAS_FACIL;
+        vc->columnas = DELUXE_COLUMNAS_FACIL;
         b->tam = 11;
     } else {
         v->modo = 1;
-        //vc->columnas = DELUXE_COLUMNAS_DIFICIL;
+        vc->columnas = DELUXE_COLUMNAS_DIFICIL;
         b->tam = 11;
     }
 
@@ -931,8 +940,9 @@ int cargarConfiguracion(VariablesConfiguracion *vc,const char *archivo)
     if(!pf)
     {
 
+        vc->resSel = 1;
         vc->res = 320;
-        vc->escala = 3;
+        vc->escala = 4;
 
         strcpy(vc->user, "AAA");
 

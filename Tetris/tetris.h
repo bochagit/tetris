@@ -98,6 +98,7 @@ typedef struct{
 }VariablesJuego;
 
 typedef struct{
+    int resSel;
     int res;
     int escala;
     char user[4];

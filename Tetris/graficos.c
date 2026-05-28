@@ -83,6 +83,7 @@ void graficosPresentarFrame(void){
 }
 
 void graficosConfigurarResolucion(Pantalla* pant, int res, int escala){
+  gbt_destruir_ventana();
   if (res == 320){
     pant->anchoVentana = 320;
     pant->altoVentana = 200;
@@ -99,6 +100,9 @@ void graficosConfigurarResolucion(Pantalla* pant, int res, int escala){
     pant->pxPadding = 1;
     pant->tableroOffsetX = (pant->anchoVentana / 2) - ((pant->pixelesCelda * CLASICO_COLUMNAS) / 2);
     pant->tableroOffsetY = 45;
+  }
+  if (gbt_crear_ventana("Tetris", pant->anchoVentana, pant->altoVentana, pant->escala) != 0){
+    gbt_cerrar();
   }
 }
 
@@ -408,7 +412,7 @@ void graficosDibujarGameOver(const Pantalla* pant, Leaderboard *lb, int puntaje)
     graficosPresentarFrame();
 }
 
-void graficosDibujarConfig(const Pantalla* pant, const char user[4], int cursor, int configPaso, int modoSel, int velSel, int paletaSel){
+void graficosDibujarConfig(const Pantalla* pant, const char user[4], int cursor, int configPaso, int modoSel, int velSel, int paletaSel, int resSel){
   graficosComenzarFrame(15);
 
   int escalaChar, escalaTexto, anchoBoton, altoBoton, siguienteBloque;
@@ -424,11 +428,11 @@ void graficosDibujarConfig(const Pantalla* pant, const char user[4], int cursor,
     escalaTexto = 2;
     anchoBoton = (pant->anchoVentana * 25) / 100;
     altoBoton = (pant->altoVentana * 10) / 100;   
-    siguienteBloque = (pant->altoVentana * 18) / 100;
+    siguienteBloque = (pant->altoVentana * 15) / 100;
   }
 
   int startX = (pant->anchoVentana / 2);
-  int startY = pant->altoVentana / 4;
+  int startY = pant->anchoVentana == 320 ? pant->altoVentana / 6 : pant->altoVentana / 8;
 
   for (int i = 0; i < 3; i++){
     int x = (startX - ((12 * escalaChar * 3) / 2)) + i * (12 * escalaChar + 5);
@@ -507,6 +511,17 @@ void graficosDibujarConfig(const Pantalla* pant, const char user[4], int cursor,
 
   fuenteDibujarTexto(FUENTE_NOMONO, "DELUXE", btnPalX1 + (anchoBoton - (4 * escalaTexto * strlen("CLASICO"))) / 2, startY + (siguienteBloque * 3) + (altoBoton / 2) + (5 * escalaTexto) + 10, PAL_REFLEJO, escalaTexto, 1);
   graficosDibujarBorde(btnPalX1, startY + (siguienteBloque * 3) + (altoBoton / 2) + 10, anchoBoton, altoBoton, colorPal2, 1);
+
+  uint8_t colorRes1 = resSel == 0 ? 16 : 14;
+  uint8_t colorRes2 = resSel == 1 ? 16 : 14;
+
+  fuenteDibujarTexto(FUENTE_CHICA, "resolucion", startX - ((7 * escalaTexto * strlen("resolucion")) / 2), startY + (siguienteBloque * 4)  + 15, PAL_REFLEJO, escalaTexto, 2);
+
+  fuenteDibujarTexto(FUENTE_NOMONO, "CGA", btnPalX0 + (anchoBoton - (4 * escalaTexto * strlen("CLASICO"))) / 2, startY + (siguienteBloque * 4) + (altoBoton / 2) + (5 * escalaTexto) + 15, PAL_REFLEJO, escalaTexto, 1);
+  graficosDibujarBorde(btnPalX0, startY + (siguienteBloque * 4) + (altoBoton / 2) + 15, anchoBoton, altoBoton, colorRes1, 1);
+
+  fuenteDibujarTexto(FUENTE_NOMONO, "VGA", btnPalX1 + (anchoBoton - (4 * escalaTexto * strlen("CLASICO"))) / 2, startY + (siguienteBloque * 4) + (altoBoton / 2) + (5 * escalaTexto) + 15, PAL_REFLEJO, escalaTexto, 1);
+  graficosDibujarBorde(btnPalX1, startY + (siguienteBloque * 4) + (altoBoton / 2) + 15, anchoBoton, altoBoton, colorRes2, 1);
 
   graficosPresentarFrame();
 }

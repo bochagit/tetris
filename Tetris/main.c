@@ -84,7 +84,7 @@ int main(int argc, char *argv[]){
                 break;
 
             case ESTADO_CONFIG:
-                graficosDibujarConfig(&pant, vc.user, cursor, configPaso, vc.modoSel, vc.velSel, vc.paletaSel);
+                graficosDibujarConfig(&pant, vc.user, cursor, configPaso, vc.modoSel, vc.velSel, vc.paletaSel, vc.resSel);
 
                 if (configPaso == 0){
                     if (gbt_tecla_presionada(GBTK_IZQUIERDA)){
@@ -130,13 +130,18 @@ int main(int argc, char *argv[]){
                     if (gbt_tecla_presionada(GBTK_DERECHA)) vc.velSel = vc.velSel == 2 ? 0 : vc.velSel + 1;
                 } else if (configPaso == 3){
                     if (gbt_tecla_presionada(GBTK_IZQUIERDA) || gbt_tecla_presionada(GBTK_DERECHA)) vc.paletaSel = 1 - vc.paletaSel;
+                } else if (configPaso == 4){
+                    if (gbt_tecla_presionada(GBTK_IZQUIERDA) || gbt_tecla_presionada(GBTK_DERECHA)) vc.resSel = 1 - vc.resSel;
                 }
 
                 if (gbt_tecla_presionada(GBTK_ENTER)){
-                    if (configPaso < 3){
+                    if (configPaso < 4){
                         configPaso++;
                     } else {
+                        vc.res = vc.resSel == 0 ? 320 : 640;
+                        vc.escala = vc.resSel == 0 ? 4 : 2; 
                         guardarConfiguracion(&vc, archivoConfig);
+                        graficosConfigurarResolucion(&pant, vc.res, vc.escala);
 
                         if (iniciarPartida(&b, &p, &t, &pant, &v,&vc) != 0) return -1;
 
