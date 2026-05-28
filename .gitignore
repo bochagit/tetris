@@ -1,9 +1,9 @@
-# ==== BINARIOS ====
+# === BINARIOS ===
 *.exe
 *.out
 *.app
 
-# ==== OBJETOS DE COMPILACIÓN ====
+# === OBJETOS DE COMPILACIÓN ===
 *.o
 *.obj
 *.a
@@ -13,17 +13,20 @@
 # === CONFIGURACIÓN Y DEMÁS ===
 *.txt
 
-# ==== CODE::BLOCKS ====
+# === CODE::BLOCKS ===
 *.layout
 *.depend
 *.cbp
 *.cscope_file_list
 
-# ==== CARPETAS DE BUILD ====
+# === CARPETAS DE BUILD ===
 bin/
 obj/
 debug/
 bin/Debug
+
+# === Archivos ===
+*.dat
 
 # === LIBRERIAS ===
 lib/
