@@ -75,6 +75,38 @@ typedef struct{
     int cantidad;
 } Leaderboard;
 
+typedef struct{
+    int puntaje;
+    int nivel;
+    int lineasCompletas;
+    int gravedad;
+    int lockDelay;
+    int velocidadCaida;
+    int scoreGuardado;
+    int contadorPiezas;
+    int animandoLinea;
+    int framesAnimacion;
+    int timeFreeze;
+    int lockDelayMaximo;
+    int delayIzq;
+    int delayDer;
+    int modo;
+    int columnas;
+    int modoSel;
+    int velSel;
+    int paletaSel;
+}VariablesJuego;
+
+typedef struct{
+    int res;
+    int escala;
+    char user[4];
+    int columnas;
+    int modoSel;
+    int velSel;
+    int paletaSel;
+}VariablesConfiguracion;
+
 
 void mezclarBolsa(char* bolsa, int n);
 void mostrarBolsa(char* bolsa, int n);
@@ -98,10 +130,12 @@ void calcularGhost(PiezaActual *p,Tablero *t, int modo);
 void pintarFilasCompletas(Tablero *tablero, char **filasCompletas,int cantidadCompletas);
 void filasCompletasEliminar(Tablero *tablero);
 char piezaOcupaCelda(const PiezaActual *p,int filaTablero,int colTablero,int columnas);
-int iniciarPartida(Bolsa *b, PiezaActual *p, Tablero **t, Pantalla *pant, int *puntaje, int *nivel, int *lineasCompletas, int *gravedad, int *lockDelay, int *velocidadCaida, int *contadorPiezas, int *animandoLinea, int *framesAnimacion, int *timeFreeze, int *lockDelayMaximo, int *delayIzq, int *delayDer, int *modo, int *columnas, int modoSel, int velSel, int paletaSel);
+int iniciarPartida(Bolsa *b, PiezaActual *p, Tablero **t, Pantalla *pant, VariablesJuego *v, VariablesConfiguracion *vc);
 int cargarLeaderboard(Leaderboard *lb);
 void insertarOrdenado(Leaderboard *lb, Registro nuevo);
 int guardarLeaderboard(Leaderboard *lb);
+int guardarConfiguracion(VariablesConfiguracion *vc,const char *archivo);
+int cargarConfiguracion(VariablesConfiguracion *vc,const char *archivo);
 
 
 #endif // TETRIS_H_INCLUDED
