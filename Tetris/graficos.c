@@ -331,12 +331,13 @@ void graficosDibujarPausa(const Pantalla* pant){
   graficosPresentarFrame();
 }
 
-void graficosDibujarGameOver(const Pantalla* pant,Leaderboard *lb,int puntaje)
+void graficosDibujarGameOver(const Pantalla* pant, Leaderboard *lb, int puntaje)
 {
     graficosComenzarFrame(0);
 
     int escalaTexto, escalaChar;
     int botonW, botonH;
+    int topX, topY, filaH, offset;
 
     if (pant->anchoVentana == 320)
     {
@@ -344,6 +345,10 @@ void graficosDibujarGameOver(const Pantalla* pant,Leaderboard *lb,int puntaje)
         escalaChar = 1;
         botonW = 25;
         botonH = 25;
+        topX = 60;
+        topY = 90;
+        filaH = 14;
+        offset = 80;
     }
     else
     {
@@ -351,34 +356,54 @@ void graficosDibujarGameOver(const Pantalla* pant,Leaderboard *lb,int puntaje)
         escalaChar = 3;
         botonW = 50;
         botonH = 50;
+        topX = 120;
+        topY = 120;
+        filaH = 24;
+        offset = 150;
     }
 
+    int cx = pant->anchoVentana / 2;
 
-    fuenteDibujarTexto(FUENTE_GRANDE,"- GAME OVER -",(pant->anchoVentana / 2)- ((13 * escalaTexto * strlen("- GAME OVER -")) / 2),20,8,escalaTexto,1);
 
+    fuenteDibujarTexto(FUENTE_GRANDE, "- GAME OVER -", cx - ((13 * escalaTexto * strlen("- GAME OVER -")) / 2),20,8,escalaTexto,1);
+
+    char puntos[32];
+    sprintf(puntos, "puntos: %d", puntaje);
+    fuenteDibujarTexto(FUENTE_CHICA, puntos, cx - ((7 * escalaTexto * strlen(puntos)) / 2), 50, PAL_REFLEJO, escalaTexto, 1);
+
+    fuenteDibujarTexto(FUENTE_CHICA, "top 5", cx - ((7 * escalaTexto * strlen("top 5")) / 2), 70, 16, escalaTexto, 1);
+
+    if (!lb || lb->cantidad <= 0){
+      fuenteDibujarTexto(FUENTE_CHICA, "sin records", topX, topY, PAL_REFLEJO, escalaTexto, 1);
+    } else {
+      for (int i = 0; i < lb->cantidad; i++){
+        char pos[4];
+        char pts[16];
+
+        sprintf(pos, "%d", i + 1);
+        sprintf(pts, "%d", lb->vec[i].puntaje);
+
+        fuenteDibujarTexto(FUENTE_CHICA, pos, topX + cx / 3, topY + i * filaH, PAL_REFLEJO, escalaTexto, 1);
+        fuenteDibujarTexto(FUENTE_NOMONO, lb->vec[i].nombre, topX + cx - offset, topY + i * filaH + 2, 16, escalaTexto, 1);
+        fuenteDibujarTexto(FUENTE_CHICA, pts, topX + cx - 20, topY + i * filaH, PAL_REFLEJO, escalaTexto, 1);
+      }
+    }
 
     int botonY = pant->altoVentana - botonH - 20;
 
     int menuX = 40;
-
     graficosDibujarRect(menuX, botonY, botonW, botonH, 12);
     graficosDibujarRect(menuX + 2, botonY + 2, botonW, botonH, 0);
     graficosDibujarBorde(menuX + 2, botonY + 2, botonW, botonH, 14, 1);
-
-    fuenteDibujarChar(FUENTE_GRANDE,'M',menuX + ((botonW - (12 * escalaChar)) / 2),botonY + ((botonH - (12 * escalaChar)) / 2),PAL_REFLEJO,escalaChar);
-
-    fuenteDibujarTexto(FUENTE_CHICA,"MENU",menuX - 5,botonY - 18,PAL_REFLEJO,escalaTexto,1);
-
+    fuenteDibujarChar(FUENTE_GRANDE, 'M', menuX + ((botonW - (12 * escalaChar)) / 2), botonY + ((botonH - (12 * escalaChar)) / 2), PAL_REFLEJO, escalaChar);
+    fuenteDibujarTexto(FUENTE_CHICA, "menu", menuX - 5, botonY - 18, PAL_REFLEJO, escalaTexto, 1);
 
     int retryX = pant->anchoVentana - botonW - 40;
-
     graficosDibujarRect(retryX, botonY, botonW, botonH, 12);
     graficosDibujarRect(retryX + 2, botonY + 2, botonW, botonH, 0);
     graficosDibujarBorde(retryX + 2, botonY + 2, botonW, botonH, 14, 1);
-
-    fuenteDibujarChar(FUENTE_GRANDE,'R',retryX + ((botonW - (12 * escalaChar)) / 2),botonY + ((botonH - (12 * escalaChar)) / 2),PAL_REFLEJO,escalaChar);
-
-    fuenteDibujarTexto(FUENTE_CHICA,"RETRY",retryX - 2,botonY - 18,PAL_REFLEJO,escalaTexto,1);
+    fuenteDibujarChar(FUENTE_GRANDE, 'R', retryX + ((botonW - (12 * escalaChar)) / 2), botonY + ((botonH - (12 * escalaChar)) / 2), PAL_REFLEJO, escalaChar);
+    fuenteDibujarTexto(FUENTE_CHICA, "retry", retryX - 2, botonY - 18, PAL_REFLEJO, escalaTexto, 1);
 
     graficosPresentarFrame();
 }
@@ -395,11 +420,11 @@ void graficosDibujarConfig(const Pantalla* pant, const char user[4], int cursor,
     altoBoton = 20;
     siguienteBloque = 30;
   } else {
-    escalaChar = 3;
+    escalaChar = 2; 
     escalaTexto = 2;
-    anchoBoton = 320;
-    altoBoton = 80;
-    siguienteBloque = 100;
+    anchoBoton = (pant->anchoVentana * 25) / 100;
+    altoBoton = (pant->altoVentana * 10) / 100;   
+    siguienteBloque = (pant->altoVentana * 18) / 100;
   }
 
   int startX = (pant->anchoVentana / 2);
@@ -423,47 +448,65 @@ void graficosDibujarConfig(const Pantalla* pant, const char user[4], int cursor,
   fuenteDibujarChar(FUENTE_GRANDE, '<', bx, by, colorFlecha, escalaChar);
   fuenteDibujarChar(FUENTE_GRANDE, '>', bx, by + (12 * escalaChar * 2), colorFlecha, escalaChar);
 
+  int espacio;
+  if (pant->anchoVentana == 320){
+    espacio = 5;
+  } else {
+    espacio = anchoBoton * 8 / 100;
+    if (espacio < 8) espacio = 8;
+  }
+
+  int totalW3 = anchoBoton * 3 + espacio * 2;
+  int left3 = startX - (totalW3 / 2);
+  int btnModoX0 = left3;
+  int btnModoX1 = left3 + (anchoBoton + espacio);
+  int btnModoX2 = left3 + 2 * (anchoBoton + espacio);
+
   uint8_t colorModoClasico = modoSel == 0 ? 16 : 14;
   uint8_t colorModoFacil = modoSel == 1 ? 16 : 14;
   uint8_t colorModoDificil = modoSel == 2 ? 16 : 14;
 
   fuenteDibujarTexto(FUENTE_CHICA, "modo", startX - ((7 * escalaTexto * strlen("modo")) / 2), startY + siguienteBloque, PAL_REFLEJO, escalaTexto, 2);
 
-  fuenteDibujarTexto(FUENTE_NOMONO, "CLASICO", (startX - (anchoBoton * 2)) + (anchoBoton - (4 * escalaTexto * strlen("CLASICO"))) / 2, startY + siguienteBloque + (altoBoton / 2) + (5 * escalaTexto), PAL_REFLEJO, escalaTexto, 1);
-  graficosDibujarBorde(startX - (anchoBoton * 2), startY + siguienteBloque + (altoBoton / 2), anchoBoton, altoBoton, colorModoClasico, 1);
+  fuenteDibujarTexto(FUENTE_NOMONO, "CLASICO", btnModoX0 + (anchoBoton - (4 * escalaTexto * strlen("CLASICO"))) / 2, startY + siguienteBloque + (altoBoton / 2) + (5 * escalaTexto), PAL_REFLEJO, escalaTexto, 1);
+  graficosDibujarBorde(btnModoX0, startY + siguienteBloque + (altoBoton / 2), anchoBoton, altoBoton, colorModoClasico, 1);
 
-  fuenteDibujarTexto(FUENTE_NOMONO, "DX FACIL", (startX - (anchoBoton / 2)) + (anchoBoton - (4 * escalaTexto * strlen("CLASICO"))) / 2, startY + siguienteBloque + (altoBoton / 2) + (5 * escalaTexto), PAL_REFLEJO, escalaTexto, 1);
-  graficosDibujarBorde(startX - (anchoBoton / 2), startY + siguienteBloque + (altoBoton / 2), anchoBoton, altoBoton, colorModoFacil, 1);
+  fuenteDibujarTexto(FUENTE_NOMONO, "DX FACIL", btnModoX1 + (anchoBoton - (4 * escalaTexto * strlen("DX FACIL"))) / 2, startY + siguienteBloque + (altoBoton / 2) + (5 * escalaTexto), PAL_REFLEJO, escalaTexto, 1);
+  graficosDibujarBorde(btnModoX1, startY + siguienteBloque + (altoBoton / 2), anchoBoton, altoBoton, colorModoFacil, 1);
 
-  fuenteDibujarTexto(FUENTE_NOMONO, "DX DIFICIL", (startX + anchoBoton) + (anchoBoton - (4 * escalaTexto * strlen("CLASICO"))) / 2, startY + siguienteBloque + (altoBoton / 2) + (5 * escalaTexto), PAL_REFLEJO, escalaTexto, 1);
-  graficosDibujarBorde(startX + anchoBoton, startY + siguienteBloque + (altoBoton / 2), anchoBoton, altoBoton, colorModoDificil, 1);
+  fuenteDibujarTexto(FUENTE_NOMONO, "DX DIFICIL", btnModoX2 + (anchoBoton - (4 * escalaTexto * strlen("DX DIFICIL"))) / 2, startY + siguienteBloque + (altoBoton / 2) + (5 * escalaTexto), PAL_REFLEJO, escalaTexto, 1);
+  graficosDibujarBorde(btnModoX2, startY + siguienteBloque + (altoBoton / 2), anchoBoton, altoBoton, colorModoDificil, 1);
 
   uint8_t colorVel1 = velSel == 0 ? 16 : 14;
   uint8_t colorVel2 = velSel == 1 ? 16 : 14;
   uint8_t colorVel3 = velSel == 2 ? 16 : 14;
-  
+
   fuenteDibujarTexto(FUENTE_CHICA, "velocidad", startX - ((7 * escalaTexto * strlen("velocidad")) / 2), startY + (siguienteBloque * 2) + 5, PAL_REFLEJO, escalaTexto, 2);
-  
-  fuenteDibujarChar(FUENTE_CHICA, '1', startX - (anchoBoton * 2) + (anchoBoton - (7 * escalaTexto)) / 2, startY + (siguienteBloque * 2) + (altoBoton / 2) + 5 + ((8 * escalaTexto) / 2), PAL_REFLEJO, escalaTexto);
-  graficosDibujarBorde(startX - (anchoBoton * 2), startY + (siguienteBloque * 2) + (altoBoton / 2) + 5, anchoBoton, altoBoton, colorVel1, 1);
 
-  fuenteDibujarChar(FUENTE_CHICA, '2', startX - (anchoBoton / 2) + (anchoBoton - (7 * escalaTexto)) / 2, startY + (siguienteBloque * 2) + (altoBoton / 2) + 5 + ((8 * escalaTexto) / 2), PAL_REFLEJO, escalaTexto);
-  graficosDibujarBorde(startX - (anchoBoton / 2), startY + (siguienteBloque * 2) + (altoBoton / 2) + 5, anchoBoton, altoBoton, colorVel2, 1);
+  fuenteDibujarChar(FUENTE_CHICA, '1', btnModoX0 + (anchoBoton / 2) - (4 * escalaTexto / 2), startY + (siguienteBloque * 2) + (altoBoton / 2) + 5 + ((8 * escalaTexto) / 2), PAL_REFLEJO, escalaTexto);
+  graficosDibujarBorde(btnModoX0, startY + (siguienteBloque * 2) + (altoBoton / 2) + 5, anchoBoton, altoBoton, colorVel1, 1);
 
-  fuenteDibujarChar(FUENTE_CHICA, '3', startX + anchoBoton + (anchoBoton - (7 * escalaTexto)) / 2, startY + (siguienteBloque * 2) + (altoBoton / 2) + 5 + ((8 * escalaTexto) / 2), PAL_REFLEJO, escalaTexto);
-  graficosDibujarBorde(startX + anchoBoton, startY + (siguienteBloque * 2) + (altoBoton / 2) + 5, anchoBoton, altoBoton, colorVel3, 1);
+  fuenteDibujarChar(FUENTE_CHICA, '2', btnModoX1 + (anchoBoton / 2) - (4 * escalaTexto / 2), startY + (siguienteBloque * 2) + (altoBoton / 2) + 5 + ((8 * escalaTexto) / 2), PAL_REFLEJO, escalaTexto);
+  graficosDibujarBorde(btnModoX1, startY + (siguienteBloque * 2) + (altoBoton / 2) + 5, anchoBoton, altoBoton, colorVel2, 1);
 
-  
+  fuenteDibujarChar(FUENTE_CHICA, '3', btnModoX2 + (anchoBoton / 2) - (4 * escalaTexto / 2), startY + (siguienteBloque * 2) + (altoBoton / 2) + 5 + ((8 * escalaTexto) / 2), PAL_REFLEJO, escalaTexto);
+  graficosDibujarBorde(btnModoX2, startY + (siguienteBloque * 2) + (altoBoton / 2) + 5, anchoBoton, altoBoton, colorVel3, 1);
+
   uint8_t colorPal1 = paletaSel == 0 ? 16 : 14;
   uint8_t colorPal2 = paletaSel == 1 ? 16 : 14;
-  
+
   fuenteDibujarTexto(FUENTE_CHICA, "paleta", startX - ((7 * escalaTexto * strlen("paleta")) / 2), startY + (siguienteBloque * 3) + 10, PAL_REFLEJO, escalaTexto, 2);
 
-  fuenteDibujarTexto(FUENTE_NOMONO, "CLASICA", (startX - anchoBoton - 5) + (anchoBoton - (4 * escalaTexto * strlen("CLASICO"))) / 2, startY + (siguienteBloque * 3) + (altoBoton / 2) + (5 * escalaTexto) + 10, PAL_REFLEJO, escalaTexto, 1);
-  graficosDibujarBorde(startX - anchoBoton - 5, startY + (siguienteBloque * 3) + (altoBoton / 2) + 10, anchoBoton, altoBoton, colorPal1, 1);
+  int totalW2 = anchoBoton * 2 + espacio;
+  int left2 = startX - (totalW2 / 2);
+  int btnPalX0 = left2;
+  int btnPalX1 = left2 + (anchoBoton + espacio);
 
-  fuenteDibujarTexto(FUENTE_NOMONO, "DELUXE", (startX + 5) + (anchoBoton - (4 * escalaTexto * strlen("CLASICO"))) / 2, startY + (siguienteBloque * 3) + (altoBoton / 2) + (5 * escalaTexto) + 10, PAL_REFLEJO, escalaTexto, 1);
-  graficosDibujarBorde(startX + 5, startY + (siguienteBloque * 3) + (altoBoton / 2) + 10, anchoBoton, altoBoton, colorPal2, 1);
+  fuenteDibujarTexto(FUENTE_NOMONO, "CLASICA", btnPalX0 + (anchoBoton - (4 * escalaTexto * strlen("CLASICO"))) / 2, startY + (siguienteBloque * 3) + (altoBoton / 2) + (5 * escalaTexto) + 10, PAL_REFLEJO, escalaTexto, 1);
+  graficosDibujarBorde(btnPalX0, startY + (siguienteBloque * 3) + (altoBoton / 2) + 10, anchoBoton, altoBoton, colorPal1, 1);
+
+  fuenteDibujarTexto(FUENTE_NOMONO, "DELUXE", btnPalX1 + (anchoBoton - (4 * escalaTexto * strlen("CLASICO"))) / 2, startY + (siguienteBloque * 3) + (altoBoton / 2) + (5 * escalaTexto) + 10, PAL_REFLEJO, escalaTexto, 1);
+  graficosDibujarBorde(btnPalX1, startY + (siguienteBloque * 3) + (altoBoton / 2) + 10, anchoBoton, altoBoton, colorPal2, 1);
 
   graficosPresentarFrame();
 }
@@ -694,7 +737,7 @@ void graficosDibujarPanelIzqGrande(int panelGrandeX, int panelGrandeY, int panel
 
   char lineasText[10];
   sprintf(lineasText, "%d", filasCompletas);
-  
+
   char recordText[16];
   sprintf(recordText, "%d", 0);
 
