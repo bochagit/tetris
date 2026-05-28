@@ -8,7 +8,6 @@
 ### Desarrolladores:
 - Cardozo, Gonzalo. 43777470.
 - Morales Pessacq, Bruno. 44834035.
-- Pioli, Nicolas. 43781515.
 
 ---
 ## Objetivo del TP
@@ -47,7 +46,7 @@ Desarrollar un videojuego equivalente al juego TETRIS utilizando la biblioteca G
 ### Funcionalidades minimas
 
 - [x] Pantalla de presentación.
-- [ ] Documentación en el formato de nuestra preferencia explicando todo lo necesario para que un usuario pueda compilar, ejecutar y jugar.
+- [x] Documentación en el formato de nuestra preferencia explicando todo lo necesario para que un usuario pueda compilar, ejecutar y jugar.
 - [x] Resoluciones lógicas: CGA: 320x200 y VGA: 640x480.
 - Sistema de puntuación
    - [x] Puntos por limpiar una fila, con bonificación por filas extras eliminadas al mismo tiempo.
@@ -64,10 +63,10 @@ Desarrollar un videojuego equivalente al juego TETRIS utilizando la biblioteca G
 - [x] Ejecución con argumentos a main para iniciar con diferentes factores de escala y una resolución logica específica.
 - [x] Implementar todos los tetrominós originales.
 - [x] Rotación de piezas tanto a izquierda como a derecha.
-- [ ] Menú gráfico para guardar configuraciones perdurables entre sesiones.
+- [x] Menú gráfico para guardar configuraciones perdurables entre sesiones.
 - Configuraciones del menu
    - [x] Paleta de colores a utilizar.
-   - [ ] Resolución lógica a utilizar.
+   - [x] Resolución lógica a utilizar.
    - [x] Velocidad de caída de tetrominós.
 - [x] Pausa, pantalla de salida y volver a jugar al perder.
 
