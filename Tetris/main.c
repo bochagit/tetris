@@ -139,7 +139,7 @@ int main(int argc, char *argv[]){
                         configPaso++;
                     } else {
                         vc.res = vc.resSel == 0 ? 320 : 640;
-                        vc.escala = vc.resSel == 0 ? 4 : 2; 
+                        vc.escala = vc.resSel == 0 ? 4 : 2;
                         guardarConfiguracion(&vc, archivoConfig);
                         graficosConfigurarResolucion(&pant, vc.res, vc.escala);
 
@@ -230,11 +230,11 @@ int main(int argc, char *argv[]){
                     } else if (t->LineasCompletas == 1) {
                         v.animandoLinea = 1;
                         v.framesAnimacion = 0;
-                        v.contadorPiezas = 0;
                         v.gravedad = 0;
                         v.lockDelay = 0;
                         v.delayIzq = 0;
                         v.delayDer = 0;
+                        v.contadorPiezas++;
                     } else {
                         v.gravedad = 0;
                         v.contadorPiezas++;
