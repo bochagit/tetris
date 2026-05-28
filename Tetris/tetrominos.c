@@ -617,7 +617,7 @@ int evaluarFilas(Tablero *tablero, char** filasCompletas)
 }
 
 static int esMinoValido(char c){
-    return c == 'I' || c == 'J' || c == 'L' || c == 'O' || c == 'S' || c == 'T' || c == 'Z' ||  c == 'X' || c == 'C' || c == 'P' || c == 'V' || c == '#'; 
+    return c == 'I' || c == 'J' || c == 'L' || c == 'O' || c == 'S' || c == 'T' || c == 'Z' ||  c == 'X' || c == 'C' || c == 'P' || c == 'V' || c == '#';
 }
 
 int analizaLinea(char* fila, int columnas)
@@ -778,31 +778,31 @@ char piezaOcupaCelda(const PiezaActual *p,int filaTablero,int colTablero,int col
     return '.';
 }
 
-int iniciarPartida(Bolsa *b, PiezaActual *p, Tablero **t, Pantalla *pant, int *puntaje, int *nivel, int *lineasCompletas, int *gravedad, int *lockDelay, int *velocidadCaida, int *contadorPiezas, int *animandoLinea, int *framesAnimacion, int *timeFreeze, int *lockDelayMaximo, int *delayIzq, int *delayDer, int *modo, int *columnas, int modoSel, int velSel, int paletaSel){
-    if (modoSel == 0){
-        *modo = 0;
-        *columnas = CLASICO_COLUMNAS;
+int iniciarPartida(Bolsa *b, PiezaActual *p, Tablero **t, Pantalla *pant, VariablesJuego *v, VariablesConfiguracion *vc){
+    if (vc->modoSel == 0){
+        v->modo = 0;
+        //vc->columnas = CLASICO_COLUMNAS;
         b->tam = 7;
-    } else if (modoSel == 1){
-        *modo = 1;
-        *columnas = DELUXE_COLUMNAS_FACIL;
+    } else if (vc->modoSel == 1){
+        v->modo = 1;
+        //vc->columnas = DELUXE_COLUMNAS_FACIL;
         b->tam = 11;
     } else {
-        *modo = 1;
-        *columnas = DELUXE_COLUMNAS_DIFICIL;
+        v->modo = 1;
+        //vc->columnas = DELUXE_COLUMNAS_DIFICIL;
         b->tam = 11;
     }
 
-    if (velSel == 0){
-        *velocidadCaida = 20;
-    } else if (velSel == 1){
-        *velocidadCaida = 15;
+    if (vc->velSel == 0){
+        v->velocidadCaida = 20;
+    } else if (vc->velSel == 1){
+        v->velocidadCaida = 15;
     } else {
-        *velocidadCaida = 10;
+        v->velocidadCaida = 10;
     }
 
-    *lockDelayMaximo = *velocidadCaida / 2;
-    graficosSetModo(paletaSel);
+    v->lockDelayMaximo = v->velocidadCaida / 2;
+    graficosSetModo(vc->paletaSel);
 
     if (*t){
         tablero_destruir(*t);
@@ -819,35 +819,36 @@ int iniciarPartida(Bolsa *b, PiezaActual *p, Tablero **t, Pantalla *pant, int *p
         b->aux = NULL;
     }
 
-    *t = tablero_crear(*columnas);
+    *t = tablero_crear(vc->columnas);
     if (!*t) return -1;
 
     tablero_vaciar(*t);
 
-    *puntaje = 0;
-    *nivel = 1;
-    *lineasCompletas = 0;
-    *gravedad = 0;
-    *lockDelay = 0;
-    *contadorPiezas = 0;
-    *animandoLinea = 0;
-    *framesAnimacion = 0;
-    *timeFreeze = 0;
-    *delayIzq = 0;
-    *delayDer = 0;
+    v->puntaje = 0;
+    v->nivel = 1;
+    v->lineasCompletas = 0;
+    v->gravedad = 0;
+    v->lockDelay = 0;
+    v->contadorPiezas = 0;
+    v->animandoLinea = 0;
+    v->framesAnimacion = 0;
+    v->timeFreeze = 0;
+    v->delayIzq = 0;
+    v->delayDer = 0;
+    v->scoreGuardado=0;
 
     b->actual = malloc(b->tam);
     b->aux = malloc(b->tam);
     if (!b->actual || !b->aux) return -1;
 
-    inicializarBolsa(b, *modo);
+    inicializarBolsa(b, (v->modo));
 
     if (p->tetromino){
         destruyeMatriz(p->tetromino, 4);
         p->tetromino = NULL;
     }
 
-    if (crearNuevaPieza(b, p, *t, *modo)) return -1;
+    if (crearNuevaPieza(b, p, *t, (v->modo))) return -1;
 
     return 0;
 }
@@ -901,6 +902,52 @@ int guardarLeaderboard(Leaderboard *lb)
     fwrite(&(lb->cantidad),sizeof(int),1,pf);
 
     fwrite(lb->vec,sizeof(Registro),lb->cantidad,pf);
+
+    fclose(pf);
+
+    return 1;
+}
+int guardarConfiguracion(VariablesConfiguracion *vc,const char *archivo)
+{
+    FILE *pf;
+
+    pf = fopen(archivo, "wb");
+
+    if(!pf)
+        return 0;
+
+    fwrite(vc, sizeof(VariablesConfiguracion), 1, pf);
+
+    fclose(pf);
+
+    return 1;
+}
+int cargarConfiguracion(VariablesConfiguracion *vc,const char *archivo)
+{
+    FILE *pf;
+
+    pf = fopen(archivo, "rb");
+
+    if(!pf)
+    {
+
+        vc->res = 320;
+        vc->escala = 3;
+
+        strcpy(vc->user, "AAA");
+
+        vc->columnas = 10;
+
+        vc->modoSel = 0;
+        vc->velSel = 0;
+        vc->paletaSel = 0;
+
+        guardarConfiguracion(vc, archivo);
+
+        return 0;
+    }
+
+    fread(vc, sizeof(VariablesConfiguracion), 1, pf);
 
     fclose(pf);
 

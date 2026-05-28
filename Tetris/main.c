@@ -28,29 +28,18 @@ int main(int argc, char *argv[]){
     Tablero *t = NULL;
     Leaderboard lb;
     Registro nuevo;
+    VariablesJuego v;
+    VariablesConfiguracion vc;
 
+    const char *archivoConfig = "config.dat";
 
-    int puntaje=0;
-    int nivel = 1;
-    int lineasCompletas = 0;
-    int gravedad=0;
-    int lockDelay=0;
-    int velocidadCaida=20;
-    int contadorPiezas=0;
-    int animandoLinea = 0;
-    int framesAnimacion = 0;
-    int timeFreeze=0;
-    int lockDelayMaximo=velocidadCaida/2;
-    int delayIzq=0;
-    int delayDer=0;
-    int modo=0;
-    int columnas = 0;
-    int scoreGuardado=0;
+    if(argc > 1)
+    {
+        archivoConfig = argv[1];
+    }
 
-    int res = 320;
-    int escala = 3;
+    cargarConfiguracion(&vc, archivoConfig);
 
-    char user[4] = {'A', 'A', 'A', '\0'};
     const char alfabeto[] = {"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
     int cursor = 0;
     int opcion = 0;
@@ -58,25 +47,11 @@ int main(int argc, char *argv[]){
     int opcionMenu = 0;
 
     int configPaso = 0;
-    int modoSel = 0;
-    int velSel = 0;
-    int paletaSel = 0;
-
-    for (int i = 1; i < argc - 1; i++){
-        if (strcmp(argv[i], "--resolucion") == 0){
-            res = atoi(argv[i + 1]);
-            if (res != 320 && res != 640) res = 320;
-        }
-        if (strcmp(argv[i], "--escala") == 0){
-            escala = atoi(argv[i + 1]);
-            if (escala <= 0) escala = 1;
-        }
-    }
-
-    graficosConfigurarResolucion(&pant, res, escala);
+    v.modo=0;
+    graficosConfigurarResolucion(&pant,vc.res,vc.escala);
 
 
-    if (graficosIniciar(&pant, modo) != 0){
+    if (graficosIniciar(&pant, v.modo) != 0){
         return 1;
     }
 
@@ -87,8 +62,8 @@ int main(int argc, char *argv[]){
 
         switch (estado){
             case ESTADO_MENU:
-                graficosSetModo(paletaSel);
-                graficosDibujarMenu(&pant, modo, opcionMenu);
+                graficosSetModo(vc.paletaSel);
+                graficosDibujarMenu(&pant,v.modo, opcionMenu);
 
                 if (gbt_tecla_presionada(GBTK_ARRIBA) || gbt_tecla_presionada(GBTK_ABAJO)){
                     opcionMenu = 1 - opcionMenu;
@@ -96,20 +71,20 @@ int main(int argc, char *argv[]){
 
                 if (gbt_tecla_presionada(GBTK_ENTER)){
                     if (opcionMenu == 0){
-                        if (iniciarPartida(&b, &p, &t, &pant, &puntaje, &nivel, &lineasCompletas, &gravedad, &lockDelay, &velocidadCaida, &contadorPiezas, &animandoLinea, &framesAnimacion, &timeFreeze, &lockDelayMaximo, &delayIzq, &delayDer, &modo, &columnas, 0, 0, 0) != 0) return -1;
+                        if (iniciarPartida(&b, &p, &t, &pant,&v, &vc) != 0) return -1;
 
                         estado = ESTADO_CORRIENDO;
                     } else {
                         configPaso = 0;
                         cursor = 0;
-                        opcion = user[cursor] - 'A';
+                        opcion = vc.user[cursor] - 'A';
                         estado = ESTADO_CONFIG;
                     }
                 }
                 break;
 
             case ESTADO_CONFIG:
-                graficosDibujarConfig(&pant, user, cursor, configPaso, modoSel, velSel, paletaSel);
+                graficosDibujarConfig(&pant, vc.user, cursor, configPaso, vc.modoSel, vc.velSel, vc.paletaSel);
 
                 if (configPaso == 0){
                     if (gbt_tecla_presionada(GBTK_IZQUIERDA)){
@@ -118,7 +93,7 @@ int main(int argc, char *argv[]){
                         } else {
                             cursor = 2;
                         }
-                        opcion = user[cursor] - 'A';
+                        opcion = vc.user[cursor] - 'A';
                     }
 
                     if (gbt_tecla_presionada(GBTK_DERECHA)){
@@ -127,7 +102,7 @@ int main(int argc, char *argv[]){
                         } else {
                             cursor = 0;
                         }
-                        opcion = user[cursor] - 'A';
+                        opcion = vc.user[cursor] - 'A';
                     }
 
                     if (gbt_tecla_presionada(GBTK_ABAJO)){
@@ -136,7 +111,7 @@ int main(int argc, char *argv[]){
                         } else {
                             opcion--;
                         }
-                        user[cursor] = alfabeto[opcion];
+                        vc.user[cursor] = alfabeto[opcion];
                     }
 
                     if (gbt_tecla_presionada(GBTK_ARRIBA)){
@@ -145,23 +120,25 @@ int main(int argc, char *argv[]){
                         } else {
                             opcion++;
                         }
-                        user[cursor] = alfabeto[opcion];
+                        vc.user[cursor] = alfabeto[opcion];
                     }
                 } else if (configPaso == 1){
-                    if (gbt_tecla_presionada(GBTK_IZQUIERDA)) modoSel = modoSel == 0 ? 2 : modoSel - 1;
-                    if (gbt_tecla_presionada(GBTK_DERECHA)) modoSel = modoSel == 2 ? 0 : modoSel + 1;
+                    if (gbt_tecla_presionada(GBTK_IZQUIERDA)) vc.modoSel = vc.modoSel == 0 ? 2 : vc.modoSel - 1;
+                    if (gbt_tecla_presionada(GBTK_DERECHA)) vc.modoSel = vc.modoSel == 2 ? 0 : vc.modoSel + 1;
                 } else if (configPaso == 2){
-                    if (gbt_tecla_presionada(GBTK_IZQUIERDA)) velSel = velSel == 0 ? 2 : velSel - 1;
-                    if (gbt_tecla_presionada(GBTK_DERECHA)) velSel = velSel == 2 ? 0 : velSel + 1;
+                    if (gbt_tecla_presionada(GBTK_IZQUIERDA)) vc.velSel = vc.velSel == 0 ? 2 : vc.velSel - 1;
+                    if (gbt_tecla_presionada(GBTK_DERECHA)) vc.velSel = vc.velSel == 2 ? 0 : vc.velSel + 1;
                 } else if (configPaso == 3){
-                    if (gbt_tecla_presionada(GBTK_IZQUIERDA) || gbt_tecla_presionada(GBTK_DERECHA)) paletaSel = 1 - paletaSel;
+                    if (gbt_tecla_presionada(GBTK_IZQUIERDA) || gbt_tecla_presionada(GBTK_DERECHA)) vc.paletaSel = 1 - vc.paletaSel;
                 }
 
                 if (gbt_tecla_presionada(GBTK_ENTER)){
                     if (configPaso < 3){
                         configPaso++;
                     } else {
-                        if (iniciarPartida(&b, &p, &t, &pant, &puntaje, &nivel, &lineasCompletas, &gravedad, &lockDelay, &velocidadCaida, &contadorPiezas, &animandoLinea, &framesAnimacion, &timeFreeze, &lockDelayMaximo, &delayIzq, &delayDer, &modo, &columnas, modoSel, velSel, paletaSel) != 0) return -1;
+                        guardarConfiguracion(&vc, archivoConfig);
+
+                        if (iniciarPartida(&b, &p, &t, &pant, &v,&vc) != 0) return -1;
 
                         estado = ESTADO_CORRIENDO;
                     }
@@ -170,112 +147,112 @@ int main(int argc, char *argv[]){
                 break;
 
             case ESTADO_CORRIENDO:
-                if (animandoLinea){
-                    graficosDibujarJuego(&pant, t, &p, puntaje, nivel, lineasCompletas, user, b.siguienteTipo, modo);
+                if (v.animandoLinea){
+                    graficosDibujarJuego(&pant, t, &p, v.puntaje, v.nivel, v.lineasCompletas, vc.user, b.siguienteTipo, v.modo);
 
-                    framesAnimacion++;
-                    
-                    if (framesAnimacion >= 5){
+                    v.framesAnimacion++;
+
+                    if (v.framesAnimacion >= 5){
                         filasCompletasEliminar(t);
                         t->LineasCompletas = 0;
-                        animandoLinea = 0;
-                        framesAnimacion = 0;
+                        v.animandoLinea = 0;
+                        v.framesAnimacion = 0;
 
                         if (p.tetromino) {
                             destruyeMatriz(p.tetromino, 4);
                             p.tetromino = NULL;
                         }
 
-                        crearNuevaPieza(&b, &p, t, modo);
+                        crearNuevaPieza(&b, &p, t, v.modo);
                     }
 
                     gbt_esperar(50);
                     break;
                 }
 
-                if (gbt_tecla_sostenida(GBTK_a) && delayIzq==0){
-                    if (puedeMover(&p, -1, 0, t,modo)) p.columna--;
+                if (gbt_tecla_sostenida(GBTK_a) && v.delayIzq==0){
+                    if (puedeMover(&p, -1, 0, t,v.modo)) p.columna--;
                     if(p.columna<-3)p.columna=t->columnas-4;
 
-                    delayIzq=2;
+                    v.delayIzq=2;
                 }
 
-                if (gbt_tecla_sostenida(GBTK_d) && delayDer==0){
-                    if (puedeMover(&p, 1, 0, t,modo)) p.columna++;
+                if (gbt_tecla_sostenida(GBTK_d) && v.delayDer==0){
+                    if (puedeMover(&p, 1, 0, t,v.modo)) p.columna++;
                     if(p.columna>(t->columnas-1))p.columna=0;
 
-                    delayDer=2;
+                    v.delayDer=2;
                 }
 
-                if (gbt_tecla_sostenida(GBTK_s) && !timeFreeze){
-                    if (puedeMover(&p, 0, 1, t,modo)){
+                if (gbt_tecla_sostenida(GBTK_s) && !v.timeFreeze){
+                    if (puedeMover(&p, 0, 1, t,v.modo)){
                         p.fila++;
-                        actualizarPuntaje(&puntaje,0,nivel);
+                        actualizarPuntaje(&v.puntaje,0,v.nivel);
                     }
                 }
 
                 if (gbt_tecla_presionada(GBTK_q)){
-                    rotar(&p, 0, t,modo); // Rotar izq
+                    rotar(&p, 0, t,v.modo); // Rotar izq
                 }
 
                 if (gbt_tecla_presionada(GBTK_e)){
-                    rotar(&p, 1, t,modo); // Rotar der
+                    rotar(&p, 1, t,v.modo); // Rotar der
                 }
 
                 if (gbt_tecla_presionada(GBTK_p)) estado = ESTADO_PAUSA;
 
-                if (gbt_tecla_presionada(GBTK_f)) timeFreeze = !timeFreeze;
+                if (gbt_tecla_presionada(GBTK_f)) v.timeFreeze = !v.timeFreeze;
 
-                calcularGhost(&p,t,modo);
+                calcularGhost(&p,t,v.modo);
 
                 if(gbt_tecla_presionada(GBTK_ESPACIO))
                 {
-                    puntaje+=(p.GhostFila-p.fila);
+                    v.puntaje+=(p.GhostFila-p.fila);
                     p.fila=p.GhostFila-1;
                 }
 
 
-                if(!timeFreeze)
+                if(!v.timeFreeze)
                 {
-                    aplicarGravedad(t,&p,&lockDelay,&gravedad, velocidadCaida,modo);
+                    aplicarGravedad(t,&p,&(v.lockDelay),&(v.gravedad), v.velocidadCaida,v.modo);
                 }
 
-                if (lockDelay >= lockDelayMaximo) {
-                    int gameOver = actualizarJuego(t, &b, &p, &puntaje, &lineasCompletas, &lockDelay, modo, nivel);
+                if (v.lockDelay >= v.lockDelayMaximo) {
+                    int gameOver = actualizarJuego(t, &b, &p, &v.puntaje, &v.lineasCompletas, &v.lockDelay, v.modo, v.nivel);
 
                     if (gameOver) {
                         estado = ESTADO_GAMEOVER;
                     } else if (t->LineasCompletas == 1) {
-                        animandoLinea = 1;
-                        framesAnimacion = 0;
-                        contadorPiezas = 0;
-                        gravedad = 0;
-                        lockDelay = 0;
-                        delayIzq = 0;
-                        delayDer = 0;
+                        v.animandoLinea = 1;
+                        v.framesAnimacion = 0;
+                        v.contadorPiezas = 0;
+                        v.gravedad = 0;
+                        v.lockDelay = 0;
+                        v.delayIzq = 0;
+                        v.delayDer = 0;
                     } else {
-                        gravedad = 0;
-                        contadorPiezas++;
+                        v.gravedad = 0;
+                        v.contadorPiezas++;
                     }
                 }
-                if(contadorPiezas==10)
+                if(v.contadorPiezas==10)
                 {
-                    velocidadCaida*=(0.97);
-                    contadorPiezas=0;
-                    lockDelayMaximo=velocidadCaida/2;
-                    nivel++;
+                    (v.velocidadCaida)*=(0.97);
+                    v.contadorPiezas=0;
+                    v.lockDelayMaximo=(v.velocidadCaida)/2;
+                    v.nivel++;
                 }
 
-                graficosDibujarJuego(&pant, t, &p, puntaje, nivel, lineasCompletas, user, b.siguienteTipo, modo);
+                graficosDibujarJuego(&pant, t, &p, v.puntaje, v.nivel, v.lineasCompletas, vc.user, b.siguienteTipo, v.modo);
 
-                if(!timeFreeze)
+                if(!v.timeFreeze)
                 {
-                    gravedad++;
+                    v.gravedad++;
                 }
-                if(delayDer>0)
-                    delayDer--;
-                if(delayIzq>0)
-                    delayIzq--;
+                if(v.delayDer>0)
+                    v.delayDer--;
+                if(v.delayIzq>0)
+                    v.delayIzq--;
 
                 gbt_esperar(50);
                 break;
@@ -291,21 +268,21 @@ int main(int argc, char *argv[]){
                 break;
 
         case ESTADO_GAMEOVER:
-            if(!scoreGuardado)
+            if(!v.scoreGuardado)
             {
-                strcpy(nuevo.nombre, user);
-                nuevo.puntaje = puntaje;
+                strcpy(nuevo.nombre, vc.user);
+                nuevo.puntaje = v.puntaje;
 
                 cargarLeaderboard(&lb);
                 insertarOrdenado(&lb, nuevo);
                 guardarLeaderboard(&lb);
 
-                scoreGuardado=1;
+                v.scoreGuardado=1;
             }
-                graficosDibujarGameOver(&pant,&lb,puntaje);
+                graficosDibujarGameOver(&pant,&lb,v.puntaje);
 
                 if (gbt_tecla_presionada(GBTK_r)){
-                    if (iniciarPartida(&b, &p, &t, &pant, &puntaje, &nivel, &lineasCompletas, &gravedad, &lockDelay, &velocidadCaida, &contadorPiezas, &animandoLinea, &framesAnimacion, &timeFreeze, &lockDelayMaximo, &delayIzq, &delayDer, &modo, &columnas, modoSel, velSel, paletaSel) != 0) return -1;
+                    if (iniciarPartida(&b, &p, &t, &pant, &v,&vc) != 0) return -1;
 
                     estado = ESTADO_CORRIENDO;
                 }
