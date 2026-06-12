@@ -10,6 +10,11 @@ Apellido: Cardozo, Gonzalo Daniel
 DNI: 43777470
 Usuario: bochagit
 Entrega: Sí
+
+Apellido: Pioli, Nicolas Jose Gabriel
+DNI:
+Usuario:
+Entrega: No
 */
 
 #include <stdio.h>
@@ -17,6 +22,8 @@ Entrega: Sí
 #include "tablero.h"
 #include "graficos.h"
 #include "fuentes.h"
+
+//PARA LA DEFENSA: LA T CONGELA EN EL LUGAR
 
 int main(int argc, char *argv[]){
     srand(time(NULL));
@@ -30,6 +37,8 @@ int main(int argc, char *argv[]){
     Registro nuevo;
     VariablesJuego v;
     VariablesConfiguracion vc;
+
+    bool activaAntiMateria = false;
 
     const char *archivoConfig = "config.dat";
 
@@ -208,6 +217,13 @@ int main(int argc, char *argv[]){
 
                 if (gbt_tecla_presionada(GBTK_f)) v.timeFreeze = !v.timeFreeze;
 
+                if (gbt_tecla_presionada(GBTK_n)){
+                    if (v.modo == 0){
+                        activaAntiMateria = true;
+                        graficosAplicarPaletaAntimateria(activaAntiMateria);
+                    }
+                }
+
                 calcularGhost(&p,t,v.modo);
 
                 if(gbt_tecla_presionada(GBTK_ESPACIO))
@@ -222,22 +238,76 @@ int main(int argc, char *argv[]){
                     aplicarGravedad(t,&p,&(v.lockDelay),&(v.gravedad), v.velocidadCaida,v.modo);
                 }
 
-                if (v.lockDelay >= v.lockDelayMaximo) {
-                    int gameOver = actualizarJuego(t, &b, &p, &v.puntaje, &v.lineasCompletas, &v.lockDelay, v.modo, v.nivel);
+                if (gbt_tecla_presionada(GBTK_t)){
+                    int gameOverCong = actualizarJuego(t, &b, &p, &v.puntaje, &v.lineasCompletas, &v.lockDelay, v.modo, v.nivel);
 
-                    if (gameOver) {
+                    if (gameOverCong) {
                         estado = ESTADO_GAMEOVER;
                     } else if (t->LineasCompletas == 1) {
                         v.animandoLinea = 1;
                         v.framesAnimacion = 0;
+                        v.contadorPiezas = 0;
                         v.gravedad = 0;
                         v.lockDelay = 0;
                         v.delayIzq = 0;
                         v.delayDer = 0;
-                        v.contadorPiezas++;
                     } else {
                         v.gravedad = 0;
                         v.contadorPiezas++;
+                    }
+                }
+                if(v.contadorPiezas==10)
+                {
+                    (v.velocidadCaida)*=(0.97);
+                    v.contadorPiezas=0;
+                    v.lockDelayMaximo=(v.velocidadCaida)/2;
+                    v.nivel++;
+                }
+
+                if (v.lockDelay >= v.lockDelayMaximo) {
+                    if (activaAntiMateria){
+                        if (!antiMateria(t, &p)){
+                            activaAntiMateria = false;
+                            graficosAplicarPaletaAntimateria(activaAntiMateria);
+
+                            int gameOver = actualizarJuego(t, &b, &p, &v.puntaje, &v.lineasCompletas, &v.lockDelay, v.modo, v.nivel);
+                            if (gameOver) {
+                                estado = ESTADO_GAMEOVER;
+                            } else if (t->LineasCompletas == 1) {
+                                v.animandoLinea = 1;
+                                v.framesAnimacion = 0;
+                                v.contadorPiezas = 0;
+                                v.gravedad = 0;
+                                v.lockDelay = 0;
+                                v.delayIzq = 0;
+                                v.delayDer = 0;
+                            } else {
+                                v.gravedad = 0;
+                                v.contadorPiezas++;
+                            }
+                        }
+
+                        v.gravedad = 0;
+                        v.lockDelay = 0;
+                        v.delayIzq = 0;
+                        v.delayDer = 0;
+                    } else {
+                        int gameOver = actualizarJuego(t, &b, &p, &v.puntaje, &v.lineasCompletas, &v.lockDelay, v.modo, v.nivel);
+
+                        if (gameOver) {
+                            estado = ESTADO_GAMEOVER;
+                        } else if (t->LineasCompletas == 1) {
+                            v.animandoLinea = 1;
+                            v.framesAnimacion = 0;
+                            v.contadorPiezas = 0;
+                            v.gravedad = 0;
+                            v.lockDelay = 0;
+                            v.delayIzq = 0;
+                            v.delayDer = 0;
+                        } else {
+                            v.gravedad = 0;
+                            v.contadorPiezas++;
+                        }
                     }
                 }
                 if(v.contadorPiezas==10)

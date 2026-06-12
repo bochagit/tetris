@@ -43,5 +43,6 @@ void graficosDibujarPanelIzq(int panelIzqX, int panelIzqY, int panelIzqW, int pa
 void graficosDibujarPanelDerecho(int panelDerX, int panelDerY, int panelDerW, int panelDerH, char siguienteTipo, const Pantalla* pant);
 void graficosDibujarPanelIzqGrande(int panelDerX, int panelDerY, int panelDerW, int panelDerH, char siguienteTipo, const Pantalla* pant, int puntaje, int nivel, int filasCompletas);
 void graficosSetModo(int modo);
+void graficosAplicarPaletaAntimateria(bool activaAntiMateria);
 
 #endif // GRAFICOS_H_INCLUDED

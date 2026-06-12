@@ -51,6 +51,31 @@ tGBT_ColorRGB paleta_deluxe[CANT_COLORES] = {
   {0xFF, 0xFF, 0xFF}  // Transparente (GBT)
 };
 
+tGBT_ColorRGB paleta_negativo[CANT_COLORES] = {
+  {0x00, 0x00, 0x00}, // Negro absoluto - celdas tablero
+  {0x00, 0xFF, 0xFF}, // Cian electrico - I
+  {0x40, 0x00, 0xFF}, // Indigo intenso - J
+  {0xFF, 0x00, 0x80}, // Magenta profundo - L
+  {0xCC, 0xFF, 0x00}, // Verde acido - O
+  {0x00, 0xFF, 0x66}, // Verde neón - S
+  {0xAA, 0x00, 0xFF}, // Violeta energia - T
+  {0xFF, 0x20, 0x20}, // Rojo plasma - Z
+  {0x55, 0x00, 0x00}, // Rojo oscuro - Game Over
+  {0x33, 0x33, 0x33}, // Ghost
+  {0x05, 0x05, 0x12}, // Fondo estadisticas
+  {0x2A, 0x00, 0x4A}, // Animacion antimateria
+  {0x08, 0x08, 0x10}, // Fondo tablero
+  {0xCC, 0xEE, 0xFF}, // Reflejos azules
+  {0x55, 0x00, 0x88}, // Bordes violeta oscuro
+  {0x02, 0x02, 0x08}, // Fondo layout
+  {0x00, 0xFF, 0xAA}, // Energia antimateria
+  {0xFF, 0x00, 0xFF}, // X
+  {0x00, 0xFF, 0xAA}, // C
+  {0xFF, 0x44, 0xAA}, // P
+  {0x66, 0x00, 0xFF}, // V
+  {0xFF, 0xFF, 0xFF}  // Transparente
+};
+
 int graficosIniciar(const Pantalla* pant, int modo){
   if (gbt_iniciar() != 0) return -1;
 
@@ -108,6 +133,11 @@ void graficosConfigurarResolucion(Pantalla* pant, int res, int escala){
 
 void graficosSetModo(int modo){
   tGBT_ColorRGB *pal = modo == 1 ? paleta_deluxe : paleta;
+  gbt_aplicar_paleta(pal, CANT_COLORES, GBT_FORMATO_888);
+}
+
+void graficosAplicarPaletaAntimateria(bool activaAntiMateria){
+  tGBT_ColorRGB *pal = activaAntiMateria == true ? paleta_negativo : paleta;
   gbt_aplicar_paleta(pal, CANT_COLORES, GBT_FORMATO_888);
 }
 
@@ -633,26 +663,26 @@ void graficosDibujarPanelIzq(int panelIzqX, int panelIzqY, int panelIzqW, int pa
 
 void graficosDibujarPanelDerecho(int panelDerX, int panelDerY, int panelDerW, int panelDerH, char siguienteTipo, const Pantalla* pant){
   // PANEL DER ARRIBA - PROX PIEZA
-    graficosDibujarRect(panelDerX, panelDerY - 1, panelDerW, (panelDerH / 2), 10);
-    graficosDibujarBorde(panelDerX, panelDerY - 1, panelDerW, (panelDerH / 2), 14, 1);
+    graficosDibujarRect(panelDerX, panelDerY - 1, panelDerW, (panelDerH / 3), 10);
+    graficosDibujarBorde(panelDerX, panelDerY - 1, panelDerW, (panelDerH / 3), 14, 1);
 
     int escalaTexto = pant->anchoVentana == 320 ? 1 : 2;
 
-    fuenteDibujarTexto(FUENTE_CHICA, "siguiente\npieza:", panelDerX + 10, panelDerY + 10, PAL_REFLEJO, escalaTexto, 1);
-    graficosDibujarBorde(panelDerX + 5, panelDerY + (panelDerH / 5), panelDerW - 10, panelDerH / 4, 14, 1);
+    fuenteDibujarTexto(FUENTE_CHICA, "siguiente:", panelDerX + 10, panelDerY, PAL_REFLEJO, escalaTexto, 1);
+    graficosDibujarBorde(panelDerX + 5, panelDerY + (panelDerH / 15), panelDerW - 10, panelDerH / 4, 14, 1);
 
     uint8_t colorPreview = obtenerColorCelda(siguienteTipo);
     int previewBlock = pant->anchoVentana == 320 ? 12 : 24;
     int boxX = panelDerX + 5;
     int boxY = panelDerY + (panelDerH / 5);
     int boxW = panelDerW - 10;
-    int boxH = panelDerH / 4;
+    int boxH = panelDerH / 25;
 
     graficosDibujarPreview(siguienteTipo, boxX + (boxW / 2), boxY + (boxH / 2), previewBlock, 2, colorPreview);
 
     // PANEL DER ABAJO - COMO JUGAR
-    graficosDibujarRect(panelDerX, panelDerY + (panelDerH / 2) + 1, panelDerW, (panelDerH / 2), 10);
-    graficosDibujarBorde(panelDerX, panelDerY + (panelDerH / 2) + 1, panelDerW, (panelDerH / 2), 14, 1);
+    graficosDibujarRect(panelDerX, panelDerY + (panelDerH / 3) + 1, panelDerW, panelDerH - (panelDerH / 3), 10);
+    graficosDibujarBorde(panelDerX, panelDerY + (panelDerH / 3) + 1, panelDerW, panelDerH - (panelDerH / 3), 14, 1);
 
     int siguienteBorde = 0;
     int bordeW, bordeH, spacingX, spacingY, escalaChar;
@@ -671,13 +701,13 @@ void graficosDibujarPanelDerecho(int panelDerX, int panelDerY, int panelDerW, in
       escalaChar = 2;
     }
 
-    for (int i = 0; i < 4; i++){
-      graficosDibujarBorde(panelDerX + (spacingX * 2), (panelDerY + (panelDerH / 2) + 2) + siguienteBorde + spacingY, bordeW, bordeH, PAL_REFLEJO, 1);
+    for (int i = 0; i < 5; i++){
+      graficosDibujarBorde(panelDerX + (spacingX * 2), (panelDerY + (panelDerH / 3) + 2) + siguienteBorde + spacingY, bordeW, bordeH, PAL_REFLEJO, 1);
       siguienteBorde += bordeH + spacingY;
     }
 
     siguienteBorde = 0;
-    const char controles[9] = {"ASDFQEP)"};
+    const char controles[10] = {"ASDFQEPTN)"};
     const char *labels[] = {
       "MOVER\nIZQ",
       "ABAJO",
@@ -686,33 +716,35 @@ void graficosDibujarPanelDerecho(int panelDerX, int panelDerY, int panelDerW, in
       "ROTAR\nIZQ",
       "ROTAR\nDER",
       "PAUSA",
+      "FIJAR",
+      "ANTI",
       "SALIR"
     };
 
-    for (int i = 0; i < 4; i++){
-      fuenteDibujarChar(FUENTE_GRANDE, controles[i], panelDerX + (spacingX * 2) + ((bordeW - (12 * escalaChar)) / 2), (panelDerY + (panelDerH / 2) + 1) + siguienteBorde + spacingY + ((bordeH - (12 * escalaChar)) / 2), 11, escalaChar);
-      fuenteDibujarTexto(FUENTE_NOMONO, labels[i], panelDerX + bordeW + (spacingX * 2 + 2), (panelDerY + (panelDerH / 2) + 1) + siguienteBorde + spacingY + 2, PAL_REFLEJO, escalaChar, 1);
+    for (int i = 0; i < 5; i++){
+      fuenteDibujarChar(FUENTE_GRANDE, controles[i], panelDerX + (spacingX * 2) + ((bordeW - (12 * escalaChar)) / 2), (panelDerY + (panelDerH / 3) + 1) + siguienteBorde + spacingY + ((bordeH - (12 * escalaChar)) / 2), 11, escalaChar);
+      fuenteDibujarTexto(FUENTE_NOMONO, labels[i], panelDerX + bordeW + (spacingX * 2 + 2), (panelDerY + (panelDerH / 3) + 1) + siguienteBorde + spacingY + 2, PAL_REFLEJO, escalaChar, 1);
       siguienteBorde += bordeH + spacingY;
     }
 
     siguienteBorde = 0;
 
-    for (int i = 0; i < 4; i++){
-      graficosDibujarBorde(panelDerX + (panelDerW / 2) + (spacingX * 2), (panelDerY + (panelDerH / 2) + 2) + siguienteBorde + spacingY, bordeW, bordeH, PAL_REFLEJO, 1);
+    for (int i = 0; i < 5; i++){
+      graficosDibujarBorde(panelDerX + (panelDerW / 2) + (spacingX * 2), (panelDerY + (panelDerH / 3) + 2) + siguienteBorde + spacingY, bordeW, bordeH, PAL_REFLEJO, 1);
       siguienteBorde += bordeH + spacingY;
     }
 
     siguienteBorde = 0;
 
-    for (int i = 4; i < 8; i++){
-      fuenteDibujarChar(FUENTE_GRANDE, controles[i], panelDerX + (panelDerW / 2) + (spacingX * 2) + ((bordeW - (12 * escalaChar)) / 2), (panelDerY + (panelDerH / 2) + 1) + siguienteBorde + spacingY + ((bordeH - (12 * escalaChar)) / 2), 11, escalaChar);
-      fuenteDibujarTexto(FUENTE_NOMONO, labels[i], panelDerX + (panelDerW / 2) + bordeW + (spacingX * 2 + 2), (panelDerY + (panelDerH / 2) + 1) + siguienteBorde + spacingY + 2, PAL_REFLEJO, escalaChar, 1);
+    for (int i = 5; i < 10; i++){
+      fuenteDibujarChar(FUENTE_GRANDE, controles[i], panelDerX + (panelDerW / 2) + (spacingX * 2) + ((bordeW - (12 * escalaChar)) / 2), (panelDerY + (panelDerH / 3) + 1) + siguienteBorde + spacingY + ((bordeH - (12 * escalaChar)) / 2), 11, escalaChar);
+      fuenteDibujarTexto(FUENTE_NOMONO, labels[i], panelDerX + (panelDerW / 2) + bordeW + (spacingX * 2 + 2), (panelDerY + (panelDerH / 3) + 1) + siguienteBorde + spacingY + 2, PAL_REFLEJO, escalaChar, 1);
       siguienteBorde += bordeH + spacingY;
     }
 
-    graficosDibujarBorde(panelDerX + (spacingX * 2), (panelDerY + (panelDerH / 2) + 2) + siguienteBorde + spacingY, bordeW * 3, bordeH, PAL_REFLEJO, 1);
-    fuenteDibujarTexto(FUENTE_CHICA, "space", panelDerX + (spacingX) + (((bordeW * 3) - (6 * escalaChar * strlen("space"))) / 2), (panelDerY + (panelDerH / 2) + 1) + siguienteBorde + spacingY + (bordeH / 2), 11, escalaChar, 1);
-    fuenteDibujarTexto(FUENTE_NOMONO, "HARD\nDROP", panelDerX + (bordeW * 3) + (spacingX * 2 + 2), (panelDerY + (panelDerH / 2) + 1) + siguienteBorde + spacingY + 2, PAL_REFLEJO, escalaChar, 1);
+    graficosDibujarBorde(panelDerX + (spacingX * 2), (panelDerY + (panelDerH / 2) + 2) + siguienteBorde - (bordeH + spacingY), bordeW * 3, bordeH, PAL_REFLEJO, 1);
+    fuenteDibujarTexto(FUENTE_CHICA, "space", panelDerX + (spacingX) + (((bordeW * 3) - (6 * escalaChar * strlen("space"))) / 2), (panelDerY + (panelDerH / 2) + 1) + siguienteBorde - (bordeH), 11, escalaChar, 1);
+    fuenteDibujarTexto(FUENTE_NOMONO, "HARD\nDROP", panelDerX + (bordeW * 3) + (spacingX * 2 + 2), (panelDerY + (panelDerH / 2) + 1) + siguienteBorde - (bordeH + spacingY), PAL_REFLEJO, escalaChar, 1);
 }
 
 void graficosDibujarPanelIzqGrande(int panelGrandeX, int panelGrandeY, int panelGrandeW, int panelGrandeH, char siguienteTipo, const Pantalla* pant, int puntaje, int nivel, int filasCompletas){

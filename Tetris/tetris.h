@@ -137,6 +137,7 @@ void insertarOrdenado(Leaderboard *lb, Registro nuevo);
 int guardarLeaderboard(Leaderboard *lb);
 int guardarConfiguracion(VariablesConfiguracion *vc,const char *archivo);
 int cargarConfiguracion(VariablesConfiguracion *vc,const char *archivo);
-
+void congelarPiezaEnLugar(Tablero* t, PiezaActual* p);
+bool antiMateria(Tablero* t, PiezaActual* p);
 
 #endif // TETRIS_H_INCLUDED

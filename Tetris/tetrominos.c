@@ -787,7 +787,7 @@ int iniciarPartida(Bolsa *b, PiezaActual *p, Tablero **t, Pantalla *pant, Variab
         vc->escala = 2;
     }
     graficosConfigurarResolucion(pant, vc->res, vc->escala);
-    
+
     if (vc->modoSel == 0){
         v->modo = 0;
         vc->columnas = CLASICO_COLUMNAS;
@@ -962,4 +962,52 @@ int cargarConfiguracion(VariablesConfiguracion *vc,const char *archivo)
     fclose(pf);
 
     return 1;
+}
+
+void congelarPiezaEnLugar(Tablero* t, PiezaActual* p){
+    int i, j, Fila, Col;
+    char** aux = p->tetromino;
+    char* auxFila;
+    for(i = 0; i < 4; i++){
+        for(j = 0; j < 4; j++){
+            auxFila = (*aux) + j;
+            if(*auxFila == p->tipo){
+                Fila = (p->fila + i);
+                Col  = (p->columna + j);
+                t->celdas[Fila][Col]= p->tipo;
+            }
+        }
+    }
+    aux++;
+}
+
+bool antiMateria(Tablero* t, PiezaActual* p){
+    int i, j, nuevaFila, nuevaCol;
+    int minosRestantes = 0;
+
+    for(i = 0; i < 4; i++){
+        for(j = 0; j < 4; j++){
+            if (p->tetromino[i][j] != p->tipo) continue;
+
+            nuevaFila = p->fila + i + 1;
+            nuevaCol  = p->columna + j + 0;
+
+            if (nuevaFila < t->filasTotales - 1){
+                if(t->celdas[nuevaFila][nuevaCol] != '.'){
+                    t->celdas[nuevaFila][nuevaCol] = '.';
+                    p->tetromino[i][j] = '.';
+                }
+            } else {
+                return false;
+            }
+        }
+    }
+
+    for (i = 0; i < 4; i++){
+        for (j = 0; j < 4; j++){
+            if (p->tetromino[i][j] == p->tipo) minosRestantes++;
+        }
+    }
+
+    return minosRestantes > 0;
 }
