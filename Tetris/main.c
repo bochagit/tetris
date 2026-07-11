@@ -58,21 +58,38 @@ int main(int argc, char *argv[]){
     while (1){
         gbt_procesar_entrada();
 
-        if (gbt_tecla_presionada(GBTK_ESCAPE)) break;
+        if (gbt_tecla_presionada(GBTK_ESCAPE)){
+            if (estado == ESTADO_CORRIENDO || estado == ESTADO_PAUSA){
+                guardarEstadoPartida(t, &p, &b, &v, &vc);
+            }
+            break;
+        };
 
         switch (estado){
             case ESTADO_MENU:
                 graficosSetModo(vc.paletaSel);
-                graficosDibujarMenu(&pant,v.modo, opcionMenu);
 
-                if (gbt_tecla_presionada(GBTK_ARRIBA) || gbt_tecla_presionada(GBTK_ABAJO)){
-                    opcionMenu = 1 - opcionMenu;
+                bool hayPartidaGuardada = existePartidaValida(&vc);
+
+                int totalOpciones = hayPartidaGuardada ? 3 : 2;
+
+                graficosDibujarMenu(&pant,v.modo, opcionMenu, totalOpciones);
+
+                if (gbt_tecla_presionada(GBTK_ARRIBA)){
+                    opcionMenu = opcionMenu == 0 ? totalOpciones - 1 : opcionMenu - 1;
+                }
+                
+                if (gbt_tecla_presionada(GBTK_ABAJO)){
+                    opcionMenu = (opcionMenu + 1) % totalOpciones;
                 }
 
                 if (gbt_tecla_presionada(GBTK_ENTER)){
-                    if (opcionMenu == 0){
-                        if (iniciarPartida(&b, &p, &t, &pant,&v, &vc) != 0) return -1;
-
+                    if (hayPartidaGuardada && opcionMenu == 0){
+                        if (!cargarEstadoPartida(&t, &p, &b, &v, &vc)) return -1;
+                        estado = ESTADO_CORRIENDO;
+                    } else if ((hayPartidaGuardada && opcionMenu == 1) || (!hayPartidaGuardada && opcionMenu == 0)){
+                        eliminarPartidaGuardada();
+                        if (iniciarPartida(&b, &p, &t, &pant, &v, &vc) != 0) return -1;
                         estado = ESTADO_CORRIENDO;
                     } else {
                         configPaso = 0;
@@ -234,6 +251,7 @@ int main(int argc, char *argv[]){
 
                     if (gameOverCong) {
                         estado = ESTADO_GAMEOVER;
+                        eliminarPartidaGuardada();
                     } else if (t->LineasCompletas == 1) {
                         v.animandoLinea = 1;
                         v.framesAnimacion = 0;
@@ -264,6 +282,7 @@ int main(int argc, char *argv[]){
                             int gameOver = actualizarJuego(t, &b, &p, &v.puntaje, &v.lineasCompletas, &v.lockDelay, v.modo, v.nivel);
                             if (gameOver) {
                                 estado = ESTADO_GAMEOVER;
+                                eliminarPartidaGuardada();
                             } else if (t->LineasCompletas == 1) {
                                 v.animandoLinea = 1;
                                 v.framesAnimacion = 0;
@@ -287,6 +306,7 @@ int main(int argc, char *argv[]){
 
                         if (gameOver) {
                             estado = ESTADO_GAMEOVER;
+                            eliminarPartidaGuardada();
                         } else if (t->LineasCompletas == 1) {
                             v.animandoLinea = 1;
                             v.framesAnimacion = 0;
