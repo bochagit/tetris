@@ -964,6 +964,117 @@ int cargarConfiguracion(VariablesConfiguracion *vc,const char *archivo)
     return 1;
 }
 
+int guardarEstadoPartida(Tablero* t, PiezaActual* p, Bolsa* b, VariablesJuego* v, VariablesConfiguracion* vc){
+    FILE* fp;
+
+    fp = fopen("partida.sav", "wb");
+    if (!fp) return 0;
+
+    fwrite(vc, sizeof(VariablesConfiguracion), 1, fp);
+    fwrite(v, sizeof(VariablesJuego), 1, fp);
+
+    fwrite(&t->columnas, sizeof(int), 1, fp);
+    fwrite(&t->LineasCompletas, sizeof(int), 1, fp);
+    for (int i = 0; i < t->filasTotales; i++){
+        fwrite(t->celdas[i], sizeof(char), t->columnas, fp);
+    }
+
+    fwrite(p, sizeof(PiezaActual), 1, fp);
+    for (int i = 0; i < 4; i++){
+        fwrite(p->tetromino[i], sizeof(char), 4, fp);
+    }
+
+    fwrite(&b->indice, sizeof(int), 1, fp);
+    fwrite(&b->siguienteTipo, sizeof(char), 1, fp);
+    fwrite(&b->tam, sizeof(size_t), 1, fp);
+    fwrite(b->actual, sizeof(char), b->tam, fp);
+    fwrite(b->aux, sizeof(char), b->tam, fp);
+
+    fclose(fp);
+    return 1;
+}
+
+int cargarEstadoPartida(Tablero** t, PiezaActual* p, Bolsa* b, VariablesJuego* v, VariablesConfiguracion* vc){
+    FILE* fp;
+
+    fp = fopen("partida.sav", "rb");
+    if (!fp) return 0;
+
+    VariablesConfiguracion configGuardada;
+    fread(&configGuardada, sizeof(VariablesConfiguracion), 1, fp);
+
+    if (memcmp(&configGuardada, vc, sizeof(VariablesConfiguracion))){
+        fclose(fp);
+        remove("partida.sav");
+        return 0;
+    }
+
+    fread(v, sizeof(VariablesJuego), 1, fp);
+
+    int columnas, lineasCompletas;
+    fread(&columnas, sizeof(int), 1, fp);
+    fread(&lineasCompletas, sizeof(int), 1, fp);
+
+    *t = tablero_crear(columnas);
+    if (!*t){
+        fclose(fp);
+        return 0;
+    }
+
+    (*t)->LineasCompletas = lineasCompletas;
+
+    for (int i = 0; i < (*t)->filasTotales; i++){
+        fread((*t)->celdas[i], sizeof(char), (*t)->columnas, fp);
+    }
+
+    fread(p, sizeof(PiezaActual), 1, fp);
+    p->tetromino = crearMatriz(4, 4);
+    if (!p->tetromino){ 
+        fclose(fp); 
+        tablero_destruir(*t); 
+        return 0;
+    }
+
+    for (int i = 0; i < 4; i++){
+        fread(p->tetromino[i], sizeof(char), 4, fp);
+    }
+
+    fread(&b->indice, sizeof(int), 1, fp);
+    fread(&b->siguienteTipo, sizeof(char), 1, fp);
+    fread(&b->tam, sizeof(size_t), 1, fp);
+
+    b->actual = malloc(b->tam * sizeof(char));
+    b->aux = malloc(b->tam * sizeof(char));
+    if (!b->actual || !b->aux){ 
+        fclose(fp);
+        return 0;
+    }
+
+    fread(b->actual, sizeof(char), b->tam, fp);
+    fread(b->aux, sizeof(char), b->tam, fp);
+
+    fclose(fp);
+    return 1;
+}
+
+bool existePartidaValida(VariablesConfiguracion* vcActual){
+  FILE* fp = fopen("partida.sav", "rb");
+  if (!fp) return false;
+
+  VariablesConfiguracion configGuardada;
+  if (fread(&configGuardada, sizeof(VariablesConfiguracion), 1, fp) != 1){
+    fclose(fp);
+    return false;
+  }
+
+  fclose(fp);
+  return memcmp(&configGuardada, vcActual, sizeof(VariablesConfiguracion)) == 0;
+}
+
+void eliminarPartidaGuardada(void){
+    remove("partida.sav");
+}
+
 void congelarPiezaEnLugar(Tablero* t, PiezaActual* p){
     int i, j, Fila, Col;
     char** aux = p->tetromino;

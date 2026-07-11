@@ -302,33 +302,28 @@ void graficosDibujarJuego(const Pantalla* pant, const Tablero *t, const PiezaAct
   graficosPresentarFrame();
 }
 
-void graficosDibujarMenu(const Pantalla* pant, int modo, int opcionMenu){
+void graficosDibujarMenu(const Pantalla* pant, int modo, int opcionMenu, int totalOpciones){
   graficosComenzarFrame(15);
 
-  int escalaTexto, escalaCharTitulo, botonH, botonJugarW, botonConfigW;
+  int escalaTexto, escalaCharTitulo, botonH, botonJugarW, botonConfigW, botonContinuarW;
 
   if (pant->anchoVentana == 320){
     escalaTexto = 1;
     escalaCharTitulo = 2;
     botonJugarW = 90;
+    botonContinuarW = 140;
     botonConfigW = 210;
     botonH = 25;
   } else {
     escalaTexto = 2;
     escalaCharTitulo = 3;
     botonJugarW = 170;
+    botonContinuarW = 250;
     botonConfigW = 370;
     botonH = 50;
   }
 
   fuenteDibujarTexto(FUENTE_GRANDE, "MENU", pant->anchoVentana / 2 - ((13 * escalaTexto * strlen("MENU")) / 2), pant->altoVentana / 4, PAL_REFLEJO, escalaTexto, 1);
-
-  // fuenteDibujarChar(FUENTE_GRANDE, 'T', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2), 20, PAL_T, escalaCharTitulo);
-  // fuenteDibujarChar(FUENTE_GRANDE, 'E', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2) + 13 * escalaCharTitulo, 20, PAL_O, escalaCharTitulo);
-  // fuenteDibujarChar(FUENTE_GRANDE, 'T', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2) + 26 * escalaCharTitulo, 20, PAL_T, escalaCharTitulo);
-  // fuenteDibujarChar(FUENTE_GRANDE, 'R', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2) + 39 * escalaCharTitulo, 20, PAL_J, escalaCharTitulo);
-  // fuenteDibujarChar(FUENTE_GRANDE, 'I', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2) + 52 * escalaCharTitulo, 20, PAL_I, escalaCharTitulo);
-  // fuenteDibujarChar(FUENTE_GRANDE, 'S', pant->anchoVentana / 2 - ((13 * escalaCharTitulo * strlen("TETRIS")) / 2) + 65 * escalaCharTitulo, 20, PAL_S, escalaCharTitulo);
 
   const char *titulo = "TETRIS";
   int charW = 13 * escalaCharTitulo;
@@ -342,14 +337,32 @@ void graficosDibujarMenu(const Pantalla* pant, int modo, int opcionMenu){
     }
   }
 
-  int colorBordeJugar = opcionMenu == 0 ? 16 : 14;
-  int colorBordeConfig = opcionMenu == 1 ? 16 : 14;
+  bool hayContinuar = (totalOpciones == 3);
 
-  graficosDibujarBorde(((pant->anchoVentana / 2) - (botonJugarW / 2)), pant->altoVentana / 2, botonJugarW, botonH, colorBordeJugar, 1);
-  fuenteDibujarTexto(FUENTE_GRANDE, "JUGAR", ((pant->anchoVentana / 2) - ((12 * escalaTexto * strlen("JUGAR")) / 2)), pant->altoVentana / 2 + ((botonH / 2) - 6), PAL_REFLEJO, escalaTexto, 1);
+  int idxContinuar = hayContinuar ? 0 : -1;
+  int idxJugar = hayContinuar ? 1 : 0;
+  int idxConfig = hayContinuar ? 2 : 1;
 
-  graficosDibujarBorde(((pant->anchoVentana / 2) - (botonConfigW / 2)), pant->altoVentana / 2 + (botonH + 10), botonConfigW, botonH, colorBordeConfig, 1);
-  fuenteDibujarTexto(FUENTE_GRANDE, "CONFIGURACION", ((pant->anchoVentana / 2) - ((12 * escalaTexto * strlen("CONFIGURACION")) / 2)), pant->altoVentana / 2 + ((botonH / 2) - 6) + (botonH + 10), PAL_REFLEJO, escalaTexto, 1);
+  int colorBordeContinuar = opcionMenu == idxContinuar ? 16 : 14;
+  int colorBordeJugar = opcionMenu == idxJugar ? 16 : 14;
+  int colorBordeConfig = opcionMenu == idxConfig ? 16 : 14;
+
+  int y = pant->altoVentana / 2;
+
+  if (hayContinuar){
+    graficosDibujarBorde(((pant->anchoVentana / 2) - (botonContinuarW / 2)), y, botonContinuarW, botonH, colorBordeContinuar, 1);
+    fuenteDibujarTexto(FUENTE_GRANDE, "CONTINUAR", ((pant->anchoVentana / 2) - ((12 * escalaTexto * strlen("CONTINUAR")) / 2)), y + ((botonH / 2) - 6), PAL_REFLEJO, escalaTexto, 1);
+    y += botonH + 10;
+  }
+
+  graficosDibujarBorde(((pant->anchoVentana / 2) - (botonJugarW / 2)), y, botonJugarW, botonH, colorBordeJugar, 1);
+  fuenteDibujarTexto(FUENTE_GRANDE, "JUGAR", ((pant->anchoVentana / 2) - ((12 * escalaTexto * strlen("JUGAR")) / 2)), y + ((botonH / 2) - 6), PAL_REFLEJO, escalaTexto, 1);
+  y += botonH + 10;
+
+  graficosDibujarBorde(((pant->anchoVentana / 2) - (botonConfigW / 2)), y, botonConfigW, botonH, colorBordeConfig, 1);
+  fuenteDibujarTexto(FUENTE_GRANDE, "CONFIGURACION", ((pant->anchoVentana / 2) - ((12 * escalaTexto * strlen("CONFIGURACION")) / 2)), y + ((botonH / 2) - 6), PAL_REFLEJO, escalaTexto, 1);
+
+  graficosPresentarFrame();
 
   graficosPresentarFrame();
 }

@@ -8,20 +8,12 @@
 #define DELUXE_COLUMNAS_FACIL 16
 #define CELDA_VACIA '.'
 #define MAX_TOPS 5
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include "matriz.h"
 #include <time.h>
-
-//typedef struct{
-//    Tablero *tablero;
-//    PiezaActual *p;
-//    char *bolsa;
-
-
-
-//}Partida;
 
 typedef struct {
   int anchoVentana;
@@ -96,7 +88,7 @@ typedef struct{
     int modoSel;
     int velSel;
     int paletaSel;
-}VariablesJuego;
+} VariablesJuego;
 
 typedef struct{
     int resSel;
@@ -107,8 +99,7 @@ typedef struct{
     int modoSel;
     int velSel;
     int paletaSel;
-}VariablesConfiguracion;
-
+} VariablesConfiguracion;
 
 void mezclarBolsa(char* bolsa, int n);
 void mostrarBolsa(char* bolsa, int n);
@@ -138,6 +129,10 @@ void insertarOrdenado(Leaderboard *lb, Registro nuevo);
 int guardarLeaderboard(Leaderboard *lb);
 int guardarConfiguracion(VariablesConfiguracion *vc,const char *archivo);
 int cargarConfiguracion(VariablesConfiguracion *vc,const char *archivo);
+int guardarEstadoPartida(Tablero* t, PiezaActual* p, Bolsa* b, VariablesJuego* v, VariablesConfiguracion* vc);
+int cargarEstadoPartida(Tablero** t, PiezaActual* p, Bolsa* b, VariablesJuego* v, VariablesConfiguracion* vc);
+bool existePartidaValida(VariablesConfiguracion* vcActual);
+void eliminarPartidaGuardada(void);
 void congelarPiezaEnLugar(Tablero* t, PiezaActual* p);
 bool antiMateria(Tablero* t, PiezaActual* p);
 
