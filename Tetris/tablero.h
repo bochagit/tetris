@@ -5,8 +5,6 @@
 #include "matriz.h"
 #include <stdbool.h>
 #include <stdlib.h>
-#include <windows.h>
-#include <conio.h>
 
 Tablero *tablero_crear(int);
 void tablero_destruir(Tablero *tablero);

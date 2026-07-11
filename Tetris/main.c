@@ -4,17 +4,10 @@ Integrantes del equipo:
 Apellido: Morales Pessacq, Bruno
 DNI: 44834035
 Usuario: BrunoMoralesP
-Entrega: Sí
 
 Apellido: Cardozo, Gonzalo Daniel
 DNI: 43777470
 Usuario: bochagit
-Entrega: Sí
-
-Apellido: Pioli, Nicolas Jose Gabriel
-DNI:
-Usuario:
-Entrega: No
 */
 
 #include <stdio.h>
@@ -22,8 +15,6 @@ Entrega: No
 #include "tablero.h"
 #include "graficos.h"
 #include "fuentes.h"
-
-//PARA LA DEFENSA: LA T CONGELA EN EL LUGAR
 
 int main(int argc, char *argv[]){
     srand(time(NULL));

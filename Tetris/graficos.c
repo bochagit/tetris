@@ -707,7 +707,7 @@ void graficosDibujarPanelDerecho(int panelDerX, int panelDerY, int panelDerW, in
     }
 
     siguienteBorde = 0;
-    const char controles[10] = {"ASDFQEPTN)"};
+    const char controles[11] = {"ASDFQEPTN)"};
     const char *labels[] = {
       "MOVER\nIZQ",
       "ABAJO",

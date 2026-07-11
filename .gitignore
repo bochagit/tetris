@@ -12,12 +12,16 @@
 
 # === CONFIGURACIÓN Y DEMÁS ===
 *.txt
+Makefile
 
 # === CODE::BLOCKS ===
 *.layout
 *.depend
 *.cbp
 *.cscope_file_list
+
+# === VSCode ===
+.vscode/
 
 # === CARPETAS DE BUILD ===
 bin/

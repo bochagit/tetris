@@ -10,6 +10,7 @@
 #define MAX_TOPS 5
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "matriz.h"
 #include <time.h>
 

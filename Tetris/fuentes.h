@@ -2,6 +2,7 @@
 #define FUENTES_H_INCLUDED
 
 #include <stdint.h>
+#include <string.h>
 
 #define GRANDE_W 12
 #define GRANDE_H 12
