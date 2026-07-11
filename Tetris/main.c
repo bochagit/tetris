@@ -250,8 +250,8 @@ int main(int argc, char *argv[]){
                     int gameOverCong = actualizarJuego(t, &b, &p, &v.puntaje, &v.lineasCompletas, &v.lockDelay, v.modo, v.nivel);
 
                     if (gameOverCong) {
-                        estado = ESTADO_GAMEOVER;
                         eliminarPartidaGuardada();
+                        estado = ESTADO_GAMEOVER;
                     } else if (t->LineasCompletas == 1) {
                         v.animandoLinea = 1;
                         v.framesAnimacion = 0;
@@ -281,8 +281,8 @@ int main(int argc, char *argv[]){
 
                             int gameOver = actualizarJuego(t, &b, &p, &v.puntaje, &v.lineasCompletas, &v.lockDelay, v.modo, v.nivel);
                             if (gameOver) {
-                                estado = ESTADO_GAMEOVER;
                                 eliminarPartidaGuardada();
+                                estado = ESTADO_GAMEOVER;
                             } else if (t->LineasCompletas == 1) {
                                 v.animandoLinea = 1;
                                 v.framesAnimacion = 0;
@@ -305,8 +305,8 @@ int main(int argc, char *argv[]){
                         int gameOver = actualizarJuego(t, &b, &p, &v.puntaje, &v.lineasCompletas, &v.lockDelay, v.modo, v.nivel);
 
                         if (gameOver) {
-                            estado = ESTADO_GAMEOVER;
                             eliminarPartidaGuardada();
+                            estado = ESTADO_GAMEOVER;
                         } else if (t->LineasCompletas == 1) {
                             v.animandoLinea = 1;
                             v.framesAnimacion = 0;
